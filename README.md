@@ -36,10 +36,7 @@
 - `app.js`
 - `lesson01.js`〜`lesson20.js`
 - `manifest.webmanifest`
-- `app-icon-192.png`
-- `app-icon-512.png`
-- `apple-touch-icon.png`
-- `favicon-32.png`
+- `app-icon.png`
 - `README.md`
 - `LANGUAGE_CHECK.md`
 - `APPROVED_RULES.md`
