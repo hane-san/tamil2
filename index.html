@@ -2,53 +2,50 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0b7d78">
-  <meta name="description" content="標準的な口語タミル語を例文からほどく、スマートフォン向け基礎文法試作アプリ。">
-  <title>சென்னை தமிழ்｜タミル語基礎文法</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#087f78">
+  <title>タミル語 文法の庭</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-shell">
-    <header class="topbar">
-      <a class="brand" href="#top" aria-label="ページ先頭へ">
-        <span class="brand-mark" aria-hidden="true"><span>த</span></span>
-        <span class="brand-copy">
-          <strong>சென்னை தமிழ்</strong>
-          <small>タミル語基礎文法</small>
-        </span>
-      </a>
-      <button class="menu-button" id="lessonMenuButton" type="button" aria-expanded="false" aria-controls="lessonMenu">
-        <span id="currentLessonLabel">第1課</span><span aria-hidden="true">⌄</span>
-      </button>
-    </header>
-
-    <nav class="lesson-menu" id="lessonMenu" aria-label="課を選ぶ" hidden></nav>
-
-    <main id="top" class="lesson-root" tabindex="-1" aria-live="polite"></main>
-
-    <footer class="audio-dock" aria-label="音声操作">
-      <div class="audio-settings" role="group" aria-label="再生設定">
-        <div class="segmented" aria-label="速度">
-          <button type="button" class="setting-button is-active" data-speed="1">通常</button>
-          <button type="button" class="setting-button" data-speed="0.72">ゆっくり</button>
-        </div>
-        <div class="segmented" aria-label="繰り返し回数">
-          <button type="button" class="setting-button is-active" data-repeat="1">1回</button>
-          <button type="button" class="setting-button" data-repeat="2">2回</button>
-        </div>
-      </div>
-      <div class="audio-actions">
-        <button type="button" class="dock-button dock-button-primary" id="playAllButton">
-          <span aria-hidden="true">▶</span> 連続再生
-        </button>
-        <button type="button" class="dock-button" id="stopButton">
-          <span aria-hidden="true">■</span> 停止
-        </button>
-      </div>
-      <p class="voice-status" id="voiceStatus" role="status"></p>
-    </footer>
+  <div class="tropical-sky" aria-hidden="true">
+    <span class="sun"></span>
+    <span class="leaf leaf-a"></span>
+    <span class="leaf leaf-b"></span>
+    <span class="wave wave-a"></span>
+    <span class="wave wave-b"></span>
   </div>
+
+  <header class="hero">
+    <div class="kolam" aria-hidden="true"></div>
+    <p class="kicker">பேசும் தமிழ் · STANDARD SPOKEN TAMIL</p>
+    <h1>タミル語<br><span>文法の庭</span></h1>
+    <p class="hero-copy">形を見て、音で確かめる。</p>
+  </header>
+
+  <nav class="lesson-tabs" id="lessonTabs" aria-label="課を選ぶ"></nav>
+
+  <main id="app" class="app-shell" aria-live="polite"></main>
+
+  <aside class="audio-dock" aria-label="音声設定">
+    <button type="button" class="dock-stop" id="stopAudio" aria-label="音声を停止">■</button>
+    <label>
+      <span>速さ</span>
+      <select id="speechRate">
+        <option value="0.72">ゆっくり</option>
+        <option value="0.88" selected>自然</option>
+        <option value="1">速め</option>
+      </select>
+    </label>
+    <label>
+      <span>回数</span>
+      <select id="repeatCount">
+        <option value="1" selected>1回</option>
+        <option value="2">2回</option>
+      </select>
+    </label>
+    <button type="button" class="dock-play" id="playLesson">課内を再生</button>
+  </aside>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

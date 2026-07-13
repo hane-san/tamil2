@@ -1,430 +1,122 @@
-:root {
-  --ivory: #fff9e9;
-  --paper: #fffef8;
-  --paper-warm: #fff4cf;
-  --teal: #0b7d78;
-  --teal-deep: #075d5a;
-  --teal-soft: #dff4ef;
-  --mango: #f4b83f;
-  --mango-soft: #fff0b7;
-  --pink: #cf3972;
-  --pink-soft: #fde8f0;
-  --navy: #18343f;
-  --muted: #627077;
-  --line: #d9e3dc;
-  --success: #176c4c;
-  --danger: #a33a3a;
-  --shadow: 0 12px 34px rgba(26, 67, 67, 0.12);
-  --radius-lg: 24px;
-  --radius-md: 17px;
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
+:root{
+  --sea:#087f78;
+  --sea-deep:#075b5b;
+  --lagoon:#4ecdc4;
+  --mango:#f6b73c;
+  --mango-soft:#ffe5a5;
+  --bougainvillea:#e64b7a;
+  --coral:#f47d62;
+  --palm:#2f8f62;
+  --ink:#17353a;
+  --muted:#62777a;
+  --paper:#fff9e9;
+  --card:#fffdf6;
+  --line:rgba(7,91,91,.15);
+  --shadow:0 14px 40px rgba(7,91,91,.12);
 }
-
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; background: var(--ivory); }
-body {
-  margin: 0;
-  color: var(--navy);
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
   background:
-    radial-gradient(circle at 96% 3%, rgba(244,184,63,.18) 0 70px, transparent 72px),
-    radial-gradient(circle at 3% 18%, rgba(11,125,120,.10) 0 54px, transparent 56px),
-    var(--ivory);
-  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI", "Noto Sans JP", sans-serif;
-  line-height: 1.72;
-  -webkit-text-size-adjust: 100%;
+    radial-gradient(circle at 7% 3%,rgba(246,183,60,.32),transparent 19rem),
+    radial-gradient(circle at 97% 12%,rgba(230,75,122,.16),transparent 18rem),
+    linear-gradient(180deg,#dff7ed 0,#fff4cf 23rem,var(--paper) 42rem,var(--paper) 100%);
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Tamil","Nirmala UI","Hiragino Sans","Yu Gothic UI",Meiryo,sans-serif;
+  line-height:1.75;
+  min-height:100vh;
+  padding-bottom:calc(106px + env(safe-area-inset-bottom));
 }
-button, select { font: inherit; }
-button { -webkit-tap-highlight-color: transparent; }
-a { color: inherit; }
-
-.app-shell { min-height: 100dvh; }
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 30;
-  min-height: calc(58px + var(--safe-top));
-  padding: calc(8px + var(--safe-top)) 14px 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  background: rgba(255, 249, 233, .94);
-  border-bottom: 1px solid rgba(11,125,120,.14);
-  backdrop-filter: blur(16px);
+button,select{font:inherit}
+button{cursor:pointer}
+.tropical-sky{position:absolute;inset:0 0 auto;height:440px;overflow:hidden;pointer-events:none;z-index:-1}
+.sun{position:absolute;width:132px;height:132px;border-radius:50%;right:-34px;top:35px;background:rgba(246,183,60,.68);box-shadow:0 0 0 22px rgba(246,183,60,.12)}
+.leaf{position:absolute;width:138px;height:50px;border:3px solid rgba(47,143,98,.27);border-left:0;border-bottom:0;border-radius:100% 0;transform-origin:left center}
+.leaf::after{content:"";position:absolute;left:7px;top:25px;width:115px;border-top:2px solid rgba(47,143,98,.22);transform:rotate(-9deg)}
+.leaf-a{left:-42px;top:104px;transform:rotate(20deg)}
+.leaf-b{right:-59px;top:236px;transform:rotate(190deg)}
+.wave{position:absolute;width:370px;height:90px;border-radius:50%;border-top:4px solid rgba(8,127,120,.20)}
+.wave-a{left:-80px;top:310px;transform:rotate(7deg)}
+.wave-b{right:-120px;top:338px;transform:rotate(-5deg);border-color:rgba(230,75,122,.13)}
+.hero{max-width:820px;margin:auto;padding:36px 22px 18px;position:relative}
+.kicker{margin:0 0 7px;color:var(--sea-deep);font-size:.71rem;font-weight:900;letter-spacing:.14em}
+h1{margin:0;font-size:clamp(2.3rem,12vw,4.7rem);line-height:.96;letter-spacing:-.055em;color:var(--sea-deep)}
+h1 span{color:var(--bougainvillea);text-shadow:3px 3px 0 rgba(255,255,255,.65)}
+.hero-copy{margin:15px 0 0;color:var(--ink);font-weight:750}
+.kolam{position:absolute;right:29px;bottom:24px;width:70px;height:70px;opacity:.52;background:
+  radial-gradient(circle,transparent 5px,var(--sea) 5.5px 7px,transparent 7.5px) 0 0/35px 35px,
+  radial-gradient(circle,transparent 5px,var(--mango) 5.5px 7px,transparent 7.5px) 17.5px 17.5px/35px 35px;transform:rotate(45deg)}
+.lesson-tabs{position:sticky;top:0;z-index:30;display:flex;gap:9px;overflow-x:auto;padding:11px max(16px,calc((100vw - 820px)/2 + 16px));background:rgba(255,249,233,.87);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);scrollbar-width:none}
+.lesson-tabs::-webkit-scrollbar{display:none}
+.lesson-tab{flex:0 0 auto;border:1px solid rgba(7,91,91,.18);border-radius:999px;padding:9px 14px;background:rgba(255,255,255,.8);color:var(--sea-deep);font-weight:900;font-size:.86rem}
+.lesson-tab.active{background:var(--sea);border-color:var(--sea);color:white;box-shadow:0 6px 18px rgba(8,127,120,.23)}
+.app-shell{max-width:820px;margin:auto;padding:18px 16px 48px}
+.lesson-head{position:relative;overflow:hidden;padding:24px 20px;border-radius:27px;background:linear-gradient(135deg,var(--sea-deep),var(--sea) 55%,#19a59a);color:white;box-shadow:var(--shadow)}
+.lesson-head::after{content:"";position:absolute;width:150px;height:150px;border:26px solid rgba(255,229,165,.22);border-radius:50%;right:-65px;bottom:-87px}
+.lesson-no{margin:0;color:var(--mango-soft);font-size:.73rem;font-weight:900;letter-spacing:.14em}
+.lesson-head h2{position:relative;margin:5px 0 9px;font-size:clamp(1.55rem,6vw,2.15rem);line-height:1.25;z-index:1}
+.lesson-question{position:relative;margin:0;max-width:37rem;color:rgba(255,255,255,.84);font-size:.94rem;z-index:1}
+.section{margin-top:18px;padding:20px 17px;border-radius:24px;background:rgba(255,253,246,.94);border:1px solid var(--line);box-shadow:0 7px 24px rgba(7,91,91,.065)}
+.section-title{display:flex;align-items:center;gap:9px;margin:0 0 14px;font-size:1.08rem;color:var(--sea-deep)}
+.section-title::before{content:"";width:10px;height:10px;border-radius:50% 50% 50% 0;background:var(--mango);transform:rotate(-45deg);box-shadow:9px 8px 0 var(--bougainvillea)}
+.explain{margin:.65rem 0;color:#29484c}
+.explain strong{color:var(--sea-deep);background:linear-gradient(transparent 58%,rgba(246,183,60,.33) 58%)}
+.example-grid,.form-grid,.mini-grid{display:grid;gap:12px}
+.example-card,.form-card,.mini-card{position:relative;border:1px solid rgba(7,91,91,.13);border-radius:19px;background:white;overflow:hidden}
+.example-card{padding:17px 15px 15px}
+.example-card.featured{border-color:rgba(230,75,122,.29);box-shadow:inset 4px 0 0 var(--bougainvillea)}
+.tamil-line{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;border:0;background:transparent;color:var(--ink);padding:0;width:100%;text-align:left}
+.tamil-text{font-family:"Noto Sans Tamil","Nirmala UI",Latha,sans-serif;font-size:clamp(1.28rem,6vw,1.72rem);line-height:1.5;font-weight:730;letter-spacing:.01em}
+.speaker{flex:0 0 34px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(8,127,120,.10);color:var(--sea-deep);font-size:.9rem;transition:.16s}
+.tamil-line:hover .speaker,.tamil-line:focus-visible .speaker{background:var(--sea);color:white}
+.speaking{background:linear-gradient(90deg,rgba(78,205,196,.14),rgba(246,183,60,.12));border-radius:12px}
+.roman{margin:8px 0 0;color:var(--sea-deep);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.91rem;font-weight:750;word-break:break-word}
+.katakana{margin:3px 0 0;color:var(--muted);font-size:.86rem}
+.translation{margin:8px 0 0;font-weight:760}
+.literal{margin:5px 0 0;color:var(--muted);font-size:.83rem}
+.morph-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.morph{padding:5px 8px;border-radius:9px;background:#eef9f5;color:var(--sea-deep);font-size:.76rem;border:1px solid rgba(8,127,120,.12)}
+.morph b{color:var(--bougainvillea)}
+.change-toggle{margin-top:13px;border:0;border-radius:999px;padding:8px 12px;background:rgba(246,183,60,.18);color:#76520b;font-weight:900;font-size:.78rem}
+.change-panel{display:none;margin-top:11px;padding:11px;border-radius:14px;background:linear-gradient(135deg,#effbf6,#fff8df)}
+.change-panel.open{display:grid;gap:7px}
+.change-step{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:7px 3px;border-bottom:1px dashed rgba(7,91,91,.16)}
+.change-step:last-child{border-bottom:0}
+.change-step .tamil-text{font-size:1.07rem}
+.change-meaning{font-size:.79rem;color:var(--muted)}
+.compare{display:grid;gap:9px}
+.compare-row{display:grid;grid-template-columns:1fr;gap:4px;padding:12px 13px;border-left:4px solid var(--lagoon);border-radius:5px 15px 15px 5px;background:#f5fbf8}
+.compare-row:nth-child(2n){border-left-color:var(--mango);background:#fff9e8}
+.short-reading{padding:15px;border-radius:18px;background:linear-gradient(135deg,rgba(8,127,120,.08),rgba(246,183,60,.13));border:1px solid rgba(7,91,91,.11)}
+.reading-line{padding:10px 0;border-bottom:1px dashed rgba(7,91,91,.16)}
+.reading-line:last-child{border-bottom:0}
+.note{margin-top:13px;padding:12px 14px;border-radius:14px;background:rgba(230,75,122,.075);border-left:4px solid var(--bougainvillea);font-size:.88rem;color:#5b3d48}
+.quiz-list{display:grid;gap:12px}
+.quiz{padding:14px;border:1px solid rgba(7,91,91,.13);border-radius:17px;background:#fff}
+.quiz p{margin:0 0 9px;font-weight:800}
+.quiz-options{display:grid;gap:7px}
+.quiz-option{border:1px solid rgba(7,91,91,.16);border-radius:12px;padding:9px 11px;background:#fff;text-align:left;color:var(--ink)}
+.quiz-option.correct{background:#eaf8ef;border-color:#55a96e}
+.quiz-option.wrong{background:#fff0ed;border-color:#e07b66}
+.quiz-feedback{min-height:1.4em;margin-top:7px;font-size:.82rem;font-weight:800}
+.map-line{display:flex;align-items:center;gap:8px;overflow-x:auto;padding:3px 0;scrollbar-width:none}
+.map-node{flex:0 0 auto;padding:8px 11px;border-radius:999px;background:#edf7f4;color:var(--sea-deep);font-size:.78rem;font-weight:800}
+.map-node.current{background:var(--mango);color:#463100}
+.map-arrow{color:var(--bougainvillea);font-weight:900}
+.audio-dock{position:fixed;z-index:60;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(94vw,720px);display:flex;align-items:end;gap:8px;padding:10px;border:1px solid rgba(7,91,91,.18);border-radius:21px;background:rgba(255,253,246,.94);backdrop-filter:blur(16px);box-shadow:0 16px 38px rgba(7,91,91,.22)}
+.audio-dock label{display:grid;gap:2px;flex:1;min-width:0}
+.audio-dock label span{font-size:.61rem;font-weight:900;color:var(--muted);padding-left:4px}
+.audio-dock select{width:100%;height:38px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);padding:0 7px;font-size:.78rem;font-weight:800}
+.dock-stop,.dock-play{height:42px;border:0;border-radius:13px;font-weight:900}
+.dock-stop{flex:0 0 42px;background:#ffe7e1;color:#a04434}
+.dock-play{flex:1.35;background:var(--sea);color:white;padding:0 12px;font-size:.82rem}
+.toast{position:fixed;z-index:100;top:16px;left:50%;transform:translate(-50%,-18px);padding:9px 13px;border-radius:999px;background:var(--ink);color:white;font-size:.78rem;font-weight:800;opacity:0;pointer-events:none;transition:.2s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(min-width:660px){
+  .example-grid,.form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mini-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .section{padding:24px}
+  .compare-row{grid-template-columns:1.1fr 1fr;align-items:center}
 }
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  text-decoration: none;
-  min-width: 0;
-}
-.brand-mark {
-  width: 40px;
-  height: 40px;
-  flex: 0 0 40px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  color: var(--teal-deep);
-  background: var(--mango-soft);
-  border: 2px solid rgba(11,125,120,.34);
-  box-shadow: inset 0 0 0 4px rgba(255,255,255,.58);
-  position: relative;
-}
-.brand-mark::before,
-.brand-mark::after {
-  content: "";
-  position: absolute;
-  inset: 5px;
-  border: 1px solid rgba(207,57,114,.35);
-  transform: rotate(45deg);
-  border-radius: 4px;
-}
-.brand-mark::after { transform: rotate(0deg); }
-.brand-mark span {
-  position: relative;
-  z-index: 1;
-  font-family: "Noto Sans Tamil", "Tamil Sangam MN", Latha, sans-serif;
-  font-weight: 800;
-  font-size: 18px;
-}
-.brand-copy { line-height: 1.06; min-width: 0; }
-.brand-copy strong {
-  display: block;
-  font-family: "Noto Sans Tamil", "Tamil Sangam MN", Latha, sans-serif;
-  font-size: 15px;
-  color: var(--teal-deep);
-  white-space: nowrap;
-}
-.brand-copy small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; font-weight: 700; }
-.menu-button {
-  min-height: 42px;
-  padding: 8px 12px;
-  border: 1px solid rgba(11,125,120,.23);
-  border-radius: 999px;
-  color: var(--teal-deep);
-  background: var(--paper);
-  font-weight: 800;
-  cursor: pointer;
-}
-.lesson-menu {
-  position: fixed;
-  z-index: 40;
-  top: calc(62px + var(--safe-top));
-  right: 12px;
-  width: min(310px, calc(100vw - 24px));
-  padding: 9px;
-  background: var(--paper);
-  border: 1px solid rgba(11,125,120,.2);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-}
-.lesson-menu button {
-  width: 100%;
-  min-height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 9px 12px;
-  border: 0;
-  border-radius: 13px;
-  color: var(--navy);
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-}
-.lesson-menu button + button { margin-top: 4px; }
-.lesson-menu button.is-current { background: var(--teal-soft); color: var(--teal-deep); }
-.lesson-menu small { color: var(--muted); }
-
-.lesson-root {
-  width: min(100%, 760px);
-  margin: 0 auto;
-  padding: 18px 14px calc(190px + var(--safe-bottom));
-  outline: none;
-}
-.lesson-hero {
-  position: relative;
-  overflow: hidden;
-  padding: 24px 20px 21px;
-  border-radius: 28px;
-  color: white;
-  background: var(--teal);
-  box-shadow: var(--shadow);
-}
-.lesson-hero::before {
-  content: "";
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  right: -52px;
-  top: -54px;
-  border: 18px double rgba(255,255,255,.14);
-  transform: rotate(45deg);
-}
-.lesson-hero::after {
-  content: "";
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 10px;
-  height: 8px;
-  opacity: .5;
-  background:
-    linear-gradient(135deg, transparent 35%, rgba(255,255,255,.55) 36% 44%, transparent 45%) 0 0/18px 9px,
-    linear-gradient(45deg, transparent 35%, rgba(244,184,63,.85) 36% 44%, transparent 45%) 9px 0/18px 9px;
-}
-.lesson-number { margin: 0 0 5px; color: var(--mango-soft); font-weight: 900; font-size: 12px; letter-spacing: .12em; }
-.lesson-hero h1 { margin: 0; font-size: clamp(25px, 7vw, 38px); line-height: 1.26; letter-spacing: .01em; }
-.lesson-question { margin: 13px 0 0; max-width: 36em; color: rgba(255,255,255,.9); font-weight: 650; line-height: 1.7; }
-.hero-example { margin-top: 18px; position: relative; z-index: 1; }
-
-.lesson-section { margin-top: 32px; scroll-margin-top: 82px; }
-.section-heading {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 13px;
-  color: var(--teal-deep);
-  font-size: 20px;
-  line-height: 1.3;
-}
-.section-heading::before {
-  content: "";
-  width: 10px;
-  height: 24px;
-  border-radius: 999px;
-  background: var(--mango);
-  box-shadow: 6px 6px 0 -2px var(--pink);
-}
-.section-lead { margin: -4px 2px 14px; color: var(--muted); font-size: 14px; }
-
-.example-grid { display: grid; gap: 12px; }
-.example-card {
-  position: relative;
-  padding: 17px 16px 16px;
-  border: 1px solid rgba(11,125,120,.16);
-  border-radius: var(--radius-lg);
-  background: var(--paper);
-  box-shadow: 0 7px 24px rgba(30,76,75,.07);
-  transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
-}
-.example-card.is-playing {
-  border-color: var(--mango);
-  background: #fffaf0;
-  box-shadow: 0 0 0 3px rgba(244,184,63,.24), 0 10px 28px rgba(30,76,75,.11);
-}
-.example-card.hero-card {
-  border-color: rgba(255,255,255,.28);
-  background: rgba(255,255,255,.95);
-  color: var(--navy);
-}
-.speak-button {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(11,125,120,.18);
-  border-radius: 50%;
-  color: var(--teal-deep);
-  background: var(--teal-soft);
-  font-size: 18px;
-  cursor: pointer;
-}
-.speak-button:active { transform: scale(.96); }
-.example-body { padding-right: 48px; }
-.tamil-line {
-  margin: 0;
-  font-family: "Noto Sans Tamil", "Tamil Sangam MN", Latha, sans-serif;
-  font-size: clamp(24px, 6.7vw, 34px);
-  line-height: 1.55;
-  font-weight: 760;
-  color: #173d43;
-  word-break: keep-all;
-}
-.roman-line {
-  margin: 8px 0 0;
-  color: var(--teal-deep);
-  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  font-size: 14px;
-  line-height: 1.55;
-  overflow-wrap: anywhere;
-}
-.surface-line { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
-.katakana-line { margin: 7px 0 0; color: #4f5960; font-size: 13px; letter-spacing: .015em; }
-.japanese-line { margin: 10px 0 0; font-weight: 800; line-height: 1.6; }
-.literal-line {
-  margin: 7px 0 0;
-  padding-left: 10px;
-  border-left: 3px solid var(--mango);
-  color: var(--muted);
-  font-size: 12px;
-}
-.card-note {
-  margin: 11px 0 0;
-  padding-top: 10px;
-  border-top: 1px dashed var(--line);
-  color: #4e6268;
-  font-size: 13px;
-}
-
-.explain-stack { display: grid; gap: 13px; }
-.explain-card {
-  padding: 18px 17px;
-  border-radius: var(--radius-lg);
-  background: var(--paper);
-  border: 1px solid var(--line);
-}
-.explain-card h3 { margin: 0 0 10px; color: var(--teal-deep); font-size: 17px; line-height: 1.45; }
-.explain-card p { margin: 0; }
-.explain-card p + p { margin-top: 9px; }
-.explain-card strong { color: #133d45; }
-.pattern-list { display: grid; gap: 9px; margin-top: 13px; }
-.pattern-row {
-  padding: 11px 12px;
-  border-radius: 14px;
-  background: var(--teal-soft);
-  border-left: 4px solid var(--teal);
-}
-.pattern-row .pattern-tamil {
-  font-family: "Noto Sans Tamil", "Tamil Sangam MN", Latha, sans-serif;
-  font-size: 19px;
-  font-weight: 750;
-  line-height: 1.55;
-}
-.pattern-row .pattern-roman { color: var(--teal-deep); font-family: ui-monospace, monospace; font-size: 12px; }
-.pattern-row .pattern-japanese { margin-top: 3px; font-size: 13px; font-weight: 750; }
-.pattern-row .pattern-note { margin-top: 3px; color: var(--muted); font-size: 11px; }
-
-.morpheme-wrap { margin-top: 12px; overflow-x: auto; }
-.morpheme-table { width: 100%; min-width: 430px; border-collapse: separate; border-spacing: 0; font-size: 12px; }
-.morpheme-table th, .morpheme-table td { padding: 9px 10px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
-.morpheme-table th { color: var(--teal-deep); background: var(--teal-soft); }
-.morpheme-table tr:last-child td { border-bottom: 0; }
-.morpheme-form { font-family: ui-monospace, monospace; font-weight: 800; color: #204d54; }
-
-.compare-grid { display: grid; gap: 11px; }
-.compare-card {
-  padding: 15px;
-  border-radius: var(--radius-md);
-  background: var(--paper);
-  border: 1px solid var(--line);
-}
-.compare-card h3 { margin: 0 0 9px; font-size: 15px; color: var(--pink); }
-.compare-row { padding: 9px 0; }
-.compare-row + .compare-row { border-top: 1px dashed var(--line); }
-.compare-tamil { font-family: "Noto Sans Tamil", "Tamil Sangam MN", Latha, sans-serif; font-size: 18px; font-weight: 720; }
-.compare-roman { font-family: ui-monospace, monospace; color: var(--teal-deep); font-size: 12px; }
-.compare-japanese { font-size: 13px; font-weight: 700; }
-.compare-note { margin-top: 4px; color: var(--muted); font-size: 11px; }
-
-.pronoun-table-wrap { overflow-x: auto; border-radius: 18px; border: 1px solid var(--line); background: var(--paper); }
-.pronoun-table { width: 100%; min-width: 620px; border-collapse: collapse; font-size: 12px; }
-.pronoun-table th, .pronoun-table td { padding: 10px 9px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
-.pronoun-table th { position: sticky; top: 0; background: var(--teal-soft); color: var(--teal-deep); }
-.pronoun-table tr:last-child td { border-bottom: 0; }
-.pronoun-table .ta { font-family: "Noto Sans Tamil", "Tamil Sangam MN", Latha, sans-serif; font-size: 16px; font-weight: 750; }
-.pronoun-table .rom { color: var(--teal-deep); font-family: ui-monospace, monospace; font-size: 11px; }
-.register-chip { display: inline-block; margin-top: 3px; padding: 2px 6px; border-radius: 999px; color: var(--pink); background: var(--pink-soft); font-size: 9px; font-weight: 800; }
-
-.reading-card {
-  padding: 19px 17px;
-  border-radius: var(--radius-lg);
-  background: var(--paper-warm);
-  border: 1px solid rgba(244,184,63,.5);
-}
-.reading-card .example-card { box-shadow: none; background: rgba(255,255,255,.74); }
-.reading-card .example-card + .example-card { margin-top: 10px; }
-
-.quiz-list { display: grid; gap: 13px; }
-.quiz-card { padding: 17px; border-radius: var(--radius-lg); background: var(--paper); border: 1px solid var(--line); }
-.quiz-number { margin: 0; color: var(--pink); font-size: 11px; font-weight: 900; letter-spacing: .08em; }
-.quiz-prompt { margin: 5px 0 12px; font-weight: 800; line-height: 1.65; }
-.quiz-options { display: grid; gap: 8px; }
-.quiz-option {
-  min-height: 48px;
-  padding: 10px 12px;
-  border: 1px solid rgba(11,125,120,.2);
-  border-radius: 13px;
-  color: var(--navy);
-  background: #fff;
-  text-align: left;
-  cursor: pointer;
-}
-.quiz-option.is-correct { color: var(--success); border-color: rgba(23,108,76,.45); background: #eaf7ef; }
-.quiz-option.is-wrong { color: var(--danger); border-color: rgba(163,58,58,.38); background: #fff0ef; }
-.quiz-feedback { min-height: 1.7em; margin: 9px 0 0; color: var(--muted); font-size: 12px; }
-
-.lesson-map { display: grid; gap: 8px; }
-.map-row { display: grid; grid-template-columns: 92px 1fr; gap: 10px; align-items: start; padding: 10px 12px; border-radius: 14px; background: var(--teal-soft); }
-.map-row strong { color: var(--teal-deep); font-size: 12px; }
-.map-row span { font-size: 12px; }
-
-.vocab-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.vocab-item { padding: 10px 11px; border-radius: 14px; background: var(--paper); border: 1px solid var(--line); }
-.vocab-item .ta { font-family: "Noto Sans Tamil", "Tamil Sangam MN", Latha, sans-serif; font-size: 17px; font-weight: 750; }
-.vocab-item .rom { color: var(--teal-deep); font-family: ui-monospace, monospace; font-size: 10px; }
-.vocab-item .jp { font-size: 11px; }
-
-.audio-dock {
-  position: fixed;
-  z-index: 35;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 9px 12px calc(10px + var(--safe-bottom));
-  background: rgba(255, 254, 248, .96);
-  border-top: 1px solid rgba(11,125,120,.18);
-  box-shadow: 0 -12px 32px rgba(24,52,63,.11);
-  backdrop-filter: blur(18px);
-}
-.audio-settings, .audio-actions { width: min(100%, 760px); margin: 0 auto; display: flex; gap: 8px; }
-.audio-settings { justify-content: space-between; }
-.audio-actions { margin-top: 8px; }
-.segmented { flex: 1; display: grid; grid-template-columns: 1fr 1fr; padding: 3px; border-radius: 12px; background: #edf2ee; }
-.setting-button { min-height: 32px; padding: 4px 7px; border: 0; border-radius: 9px; color: var(--muted); background: transparent; font-size: 11px; font-weight: 800; cursor: pointer; }
-.setting-button.is-active { color: var(--teal-deep); background: white; box-shadow: 0 2px 8px rgba(30,70,70,.09); }
-.dock-button { flex: 1; min-height: 45px; padding: 8px 10px; border: 1px solid rgba(11,125,120,.2); border-radius: 14px; color: var(--teal-deep); background: var(--teal-soft); font-weight: 850; cursor: pointer; }
-.dock-button-primary { color: white; background: var(--teal); border-color: var(--teal); }
-.voice-status { width: min(100%, 760px); min-height: 1.2em; margin: 5px auto 0; color: var(--muted); text-align: center; font-size: 9px; line-height: 1.3; }
-.toast {
-  position: fixed;
-  z-index: 80;
-  left: 50%;
-  bottom: calc(165px + var(--safe-bottom));
-  max-width: calc(100vw - 30px);
-  padding: 9px 13px;
-  border-radius: 999px;
-  color: white;
-  background: rgba(24,52,63,.94);
-  opacity: 0;
-  transform: translate(-50%, 12px);
-  pointer-events: none;
-  transition: .18s ease;
-  font-size: 11px;
-}
-.toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
-
-@media (min-width: 650px) {
-  .lesson-root { padding-left: 20px; padding-right: 20px; }
-  .example-grid.two-column, .compare-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .vocab-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (max-width: 370px) {
-  .lesson-root { padding-left: 10px; padding-right: 10px; }
-  .lesson-hero { padding-left: 16px; padding-right: 16px; }
-  .example-card { padding-left: 13px; padding-right: 13px; }
-  .tamil-line { font-size: 23px; }
-  .vocab-grid { grid-template-columns: 1fr; }
-  .audio-dock { padding-left: 8px; padding-right: 8px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
-}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
