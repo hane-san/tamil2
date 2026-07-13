@@ -1,0 +1,19 @@
+{
+  "name": "タミル語 文法の庭",
+  "short_name": "タミル語",
+  "description": "例文を分解しながら学ぶ、標準口語タミル語の基礎文法アプリ",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf5e8",
+  "theme_color": "#0b7774",
+  "icons": [
+    {
+      "src": "app-icon.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
