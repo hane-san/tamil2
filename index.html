@@ -3,24 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#087f78">
+  <meta name="theme-color" content="#0b7774">
   <title>タミル語 文法の庭</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="tropical-sky" aria-hidden="true">
-    <span class="sun"></span>
-    <span class="leaf leaf-a"></span>
-    <span class="leaf leaf-b"></span>
-    <span class="wave wave-a"></span>
-    <span class="wave wave-b"></span>
+  <div class="tropical-frame" aria-hidden="true">
+    <span class="sun-disc"></span>
+    <span class="palm-stroke palm-stroke-a"></span>
+    <span class="palm-stroke palm-stroke-b"></span>
+    <span class="sea-line sea-line-a"></span>
+    <span class="sea-line sea-line-b"></span>
   </div>
 
   <header class="hero">
-    <div class="kolam" aria-hidden="true"></div>
-    <p class="kicker">பேசும் தமிழ் · STANDARD SPOKEN TAMIL</p>
-    <h1>タミル語<br><span>文法の庭</span></h1>
-    <p class="hero-copy">形を見て、音で確かめる。</p>
+    <div class="hero-copyblock">
+      <p class="kicker">பேசும் தமிழ் <span>·</span> STANDARD SPOKEN TAMIL</p>
+      <h1>タミル語<br><span>文法の庭</span></h1>
+      <p class="hero-copy">形をほどく。音でつなぐ。映画の会話へ近づく。</p>
+    </div>
+    <div class="hero-emblem" aria-hidden="true">
+      <span class="hero-emblem-sun"></span>
+      <span class="hero-emblem-wave"></span>
+      <span class="hero-emblem-kolam"></span>
+    </div>
   </header>
 
   <nav class="lesson-tabs" id="lessonTabs" aria-label="課を選ぶ"></nav>
@@ -45,6 +51,7 @@
       </select>
     </label>
     <button type="button" class="dock-play" id="playLesson">課内を再生</button>
+    <span class="voice-status" id="voiceStatus" hidden></span>
   </aside>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
