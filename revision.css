@@ -1,0 +1,15 @@
+/* Standard-spoken revision layer */
+.register-note{position:relative;z-index:1;display:inline-flex;margin:12px 0 0;padding:6px 10px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(255,255,255,.1);color:#fff4c8;font-size:.7rem;font-weight:850;letter-spacing:.02em}
+.katakana{margin-top:7px;color:#3f5559;font-size:.91rem;font-weight:680;line-height:1.55}
+.structure-roman{margin-top:3px;font-size:.82rem;font-weight:690}
+.structure-roman::before{content:"構造：";color:var(--muted);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic UI",sans-serif;font-size:.68rem;font-weight:800}
+.variant-list{display:grid;gap:7px;margin-top:12px;padding-top:11px;border-top:1px dashed var(--line-strong)}
+.variant-row{display:grid;grid-template-columns:7.4rem minmax(0,1fr);gap:9px;align-items:start;padding:8px 9px;border-radius:12px}
+.chennai-variant{background:rgba(217,78,123,.075)}
+.written-variant{background:rgba(11,119,116,.07)}
+.variant-label{display:inline-flex;align-items:center;justify-content:center;min-height:25px;padding:3px 7px;border-radius:999px;background:#fff;color:var(--sea-deep);font-size:.67rem;font-weight:900}
+.chennai-variant .variant-label{color:var(--bougainvillea)}
+.variant-copy{display:grid;gap:1px;min-width:0}
+.variant-copy b{color:var(--ink);font-family:"Noto Sans Tamil","Nirmala UI",Latha,sans-serif;font-size:1rem;line-height:1.45;overflow-wrap:anywhere}
+.variant-copy small{color:var(--muted);font-size:.69rem;line-height:1.45}
+@media(max-width:520px){.variant-row{grid-template-columns:1fr;gap:5px}.variant-label{justify-self:start}}
