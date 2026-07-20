@@ -1,0 +1,19 @@
+{
+  "name": "わたしから始める タミル語動詞エンジン",
+  "short_name": "タミル語動詞",
+  "description": "一人称から対話、人物・物事、複合動作、引用・条件・関係節へ組み上げるチェンナイ口語タミル語教材",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fffaf0",
+  "theme_color": "#0d736f",
+  "icons": [
+    {
+      "src": "app-icon.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
