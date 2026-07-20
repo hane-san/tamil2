@@ -2,87 +2,137 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0b7774">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="タミル語 文法の庭">
-  <title>タミル語 文法の庭</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d736f">
+  <meta name="color-scheme" content="light">
+  <title>わたしから始める タミル語動詞エンジン</title>
+  <meta name="description" content="一人称から対話、人物・物事、進行・連鎖・依頼、引用・条件・関係節へ組み上げる、チェンナイ口語タミル語の読める・聞ける教材アプリ。">
   <link rel="icon" type="image/png" href="app-icon.png">
   <link rel="apple-touch-icon" href="app-icon.png">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="revision.css">
+  <link rel="manifest" href="manifest-v24.webmanifest">
+  <link rel="stylesheet" href="styles-v24.css">
 </head>
 <body>
-  <div class="tropical-frame" aria-hidden="true">
-    <span class="sun-disc"></span>
-    <span class="palm-stroke palm-stroke-a"></span>
-    <span class="palm-stroke palm-stroke-b"></span>
-    <span class="sea-line sea-line-a"></span>
-    <span class="sea-line sea-line-b"></span>
-  </div>
+  <a class="skip-link" href="#main">本文へ</a>
 
-  <header class="hero">
-    <div class="hero-copyblock">
-      <p class="kicker">பேசும் தமிழ் <span>·</span> STANDARD SPOKEN TAMIL</p>
-      <h1>タミル語<br><span>文法の庭</span></h1>
-      <p class="hero-copy">形をほどく。音でつなぐ。映画の会話へ近づく。</p>
+  <header class="app-header">
+    <div class="brand-wrap">
+      <button class="icon-button menu-button" id="menuButton" type="button" aria-label="章一覧を開く" aria-expanded="false" aria-controls="chapterDrawer">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="brand">
+        <span class="brand-kicker">சென்னை பேச்சுத் தமிழ் · CHENNAI SPOKEN TAMIL</span>
+        <strong>わたしから始める<br><em>タミル語動詞エンジン</em></strong>
+      </div>
+      <button class="icon-button settings-button" id="settingsButton" type="button" aria-label="表示設定を開く" aria-expanded="false" aria-controls="settingsPanel">Aa</button>
     </div>
-    <div class="hero-emblem" aria-hidden="true">
-      <img class="hero-app-icon" src="app-icon.png" alt="">
+    <div class="chapter-progress" aria-label="全体の進捗">
+      <span id="progressLabel">第1章 / 18章</span>
+      <span class="progress-track"><span id="progressFill"></span></span>
     </div>
   </header>
 
-  <nav class="lesson-tabs" id="lessonTabs" aria-label="課を選ぶ"></nav>
-
-  <aside class="audio-dock" aria-label="音声設定">
-    <button type="button" class="dock-stop" id="stopAudio" aria-label="音声を停止">■</button>
-    <label>
-      <span>速さ</span>
-      <select id="speechRate">
-        <option value="0.72">ゆっくり</option>
-        <option value="0.88" selected>自然</option>
-        <option value="1">速め</option>
-      </select>
-    </label>
-    <label>
-      <span>回数</span>
-      <select id="repeatCount">
-        <option value="1" selected>1回</option>
-        <option value="2">2回</option>
-      </select>
-    </label>
-    <button type="button" class="dock-play" id="playLesson">課内を再生</button>
-    <span class="voice-status" id="voiceStatus" hidden></span>
+  <aside class="drawer" id="chapterDrawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <span class="eyebrow">CONTENTS</span>
+        <h2>長文化・完成編 v2.4・全18章</h2>
+      </div>
+      <button class="close-button" id="drawerClose" type="button" aria-label="章一覧を閉じる">×</button>
+    </div>
+    <section class="drawer-tools" aria-label="章を探す">
+      <label class="chapter-search" for="chapterSearch">
+        <span aria-hidden="true">⌕</span>
+        <input id="chapterSearch" type="search" inputmode="search" autocomplete="off" placeholder="章名・文法・タミル語で検索">
+      </label>
+      <div class="drawer-progress-card">
+        <div><strong id="drawerProgressText">0 / 18章 完了</strong><small id="drawerProgressDetail">学習ステップ 0 / 90</small></div>
+        <span class="drawer-progress-track" aria-hidden="true"><span id="drawerProgressFill"></span></span>
+      </div>
+      <div class="drawer-quick-actions">
+        <button id="resumeChapterButton" type="button">▶ 第1章から始める</button>
+        <button id="incompleteFilterButton" type="button" aria-pressed="false">未完了だけ</button>
+      </div>
+      <div class="part-filter" id="partFilter" aria-label="部で絞り込む">
+        <button type="button" data-part-filter="ALL" class="active" aria-pressed="true">全て</button>
+        <button type="button" data-part-filter="PART I" aria-pressed="false">私</button>
+        <button type="button" data-part-filter="PART II" aria-pressed="false">対話</button>
+        <button type="button" data-part-filter="PART III" aria-pressed="false">人物</button>
+        <button type="button" data-part-filter="PART IV" aria-pressed="false">動作</button>
+        <button type="button" data-part-filter="PART V" aria-pressed="false">長文</button>
+      </div>
+    </section>
+    <nav id="chapterNav" aria-label="章一覧"></nav>
+    <p class="chapter-nav-empty" id="chapterNavEmpty" hidden>条件に合う章がありません。検索語か絞り込みを変えてください。</p>
+    <div class="drawer-note">
+      <strong>全18章の到達点</strong>
+      <p>「私は〜する」から始め、対話・人物・物事・複合動作を経て、引用・条件・理由・「私が見た映画」のような名詞内の文まで同じ述語エンジンで組み上げます。</p>
+    </div>
   </aside>
+  <button class="scrim" id="drawerScrim" type="button" aria-label="章一覧を閉じる" hidden></button>
 
-  <main id="app" class="app-shell" aria-live="polite"></main>
+  <section class="settings-panel" id="settingsPanel" aria-hidden="true">
+    <div class="settings-head">
+      <div>
+        <span class="eyebrow">DISPLAY</span>
+        <h2>読み方の設定</h2>
+      </div>
+      <button class="close-button" id="settingsClose" type="button" aria-label="設定を閉じる">×</button>
+    </div>
+    <label class="toggle-row">
+      <span><strong>カナ</strong><small>想起と音読の補助</small></span>
+      <input id="toggleKana" type="checkbox" checked>
+      <span class="toggle-ui" aria-hidden="true"></span>
+    </label>
+    <label class="toggle-row">
+      <span><strong>直訳</strong><small>タミル語の組み方を見る</small></span>
+      <input id="toggleLiteral" type="checkbox" checked>
+      <span class="toggle-ui" aria-hidden="true"></span>
+    </label>
+    <label class="toggle-row">
+      <span><strong>語の切れ目</strong><small>ローマ字の形態素ハイフン</small></span>
+      <input id="toggleMorph" type="checkbox" checked>
+      <span class="toggle-ui" aria-hidden="true"></span>
+    </label>
+    <div class="settings-actions">
+      <button class="soft-button" id="printChapterButton" type="button">この章を印刷</button>
+      <button class="soft-button" id="printBookButton" type="button">全18章を印刷</button>
+      <button class="text-button danger-text" id="resetProgressButton" type="button">学習記録をリセット</button>
+    </div>
+  </section>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <main id="main" tabindex="-1">
+    <article id="lesson" class="lesson" aria-live="polite"></article>
+  </main>
 
-  <script src="lesson01.js"></script>
-  <script src="lesson02.js"></script>
-  <script src="lesson03.js"></script>
-  <script src="lesson04.js"></script>
-  <script src="lesson05.js"></script>
-  <script src="lesson06.js"></script>
-  <script src="lesson07.js"></script>
-  <script src="lesson08.js"></script>
-  <script src="lesson09.js"></script>
-  <script src="lesson10.js"></script>
-  <script src="lesson11.js"></script>
-  <script src="lesson12.js"></script>
-  <script src="lesson13.js"></script>
-  <script src="lesson14.js"></script>
-  <script src="lesson15.js"></script>
-  <script src="lesson16.js"></script>
-  <script src="lesson17.js"></script>
-  <script src="lesson18.js"></script>
-  <script src="lesson19.js"></script>
-  <script src="lesson20.js"></script>
-  <script src="lesson-revision.js"></script>
-  <script src="app.js"></script>
-  <script src="lesson-ui-revision.js"></script>
+  <nav class="bottom-nav" aria-label="章内メニュー">
+    <button type="button" data-view="read" class="active"><span>01</span>読む</button>
+    <button type="button" data-view="examples"><span>02</span>例文</button>
+    <button type="button" data-view="forms"><span>03</span>形</button>
+    <button type="button" data-view="practice"><span>04</span>練習</button>
+  </nav>
+
+  <section class="audio-dock" id="audioDock" aria-label="音声プレーヤー" aria-hidden="true">
+    <div class="now-playing">
+      <span class="audio-label">NOW PLAYING</span>
+      <strong id="audioTamil" lang="ta">—</strong>
+      <small id="audioJapanese">文のスピーカーを押してください</small>
+    </div>
+    <div class="audio-controls">
+      <button id="audioPrev" type="button" aria-label="前の例文">‹</button>
+      <button id="audioPlay" class="audio-main" type="button" aria-label="再生・一時停止">▶</button>
+      <button id="audioNext" type="button" aria-label="次の例文">›</button>
+      <button id="audioStop" type="button" aria-label="停止">■</button>
+      <button id="audioSpeed" class="audio-chip" type="button" aria-label="再生速度">1.0×</button>
+      <button id="audioRepeat" class="audio-chip" type="button" aria-label="繰り返し回数">×1</button>
+      <button id="audioClose" type="button" aria-label="プレーヤーを閉じる">×</button>
+    </div>
+  </section>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="printBook" class="print-book" aria-hidden="true"></div>
+
+  <script src="curriculum-v24.js"></script>
+  <script src="app-v24.js"></script>
 </body>
 </html>
