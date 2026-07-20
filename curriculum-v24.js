@@ -5,7 +5,7 @@
  */
 window.TAMIL_BOOK = {
   meta: {
-    title: "わたしから始める タミル語動詞エンジン",
+    title: "口語タミル語の教科書",
     edition: "長文化・完成編 v2.4",
     register: "チェンナイ口語（Standard Spoken Tamil を基準）",
     chapterCount: 18
