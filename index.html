@@ -6,9 +6,11 @@
   <meta name="theme-color" content="#0d736f">
   <meta name="color-scheme" content="light">
   <title>口語タミル語の教科書</title>
-  <meta name="description" content="一人称から対話、人物・物事、進行・連鎖・依頼、引用・条件・関係節へ組み上げる、チェンナイ口語タミル語の読める・聞ける教材アプリ。">
-  <link rel="icon" type="image/png" href="app-icon.png">\n  <link rel="apple-touch-icon" href="app-icon.png">\n  <link rel="manifest" href="manifest-v24.webmanifest">
-  <link rel="stylesheet" href="styles-v24.css">
+  <meta name="description" content="一人称から対話、長文化、旅行場面へ組み上げる、チェンナイ口語タミル語の読める・聞ける教材アプリ。">
+  <link rel="icon" type="image/png" href="app-icon.png">
+  <link rel="apple-touch-icon" href="app-icon.png">
+  <link rel="manifest" href="manifest-v25.webmanifest">
+  <link rel="stylesheet" href="styles-v25.css">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ</a>
@@ -25,7 +27,7 @@
       <button class="icon-button settings-button" id="settingsButton" type="button" aria-label="表示設定を開く" aria-expanded="false" aria-controls="settingsPanel">Aa</button>
     </div>
     <div class="chapter-progress" aria-label="全体の進捗">
-      <span id="progressLabel">第1章 / 18章</span>
+      <span id="progressLabel">第1章 / 28章</span>
       <span class="progress-track"><span id="progressFill"></span></span>
     </div>
   </header>
@@ -34,7 +36,7 @@
     <div class="drawer-head">
       <div>
         <span class="eyebrow">CONTENTS</span>
-        <h2>長文化・完成編 v2.4・全18章</h2>
+        <h2>旅行科 v2.5・全28章</h2>
       </div>
       <button class="close-button" id="drawerClose" type="button" aria-label="章一覧を閉じる">×</button>
     </div>
@@ -44,7 +46,7 @@
         <input id="chapterSearch" type="search" inputmode="search" autocomplete="off" placeholder="章名・文法・タミル語で検索">
       </label>
       <div class="drawer-progress-card">
-        <div><strong id="drawerProgressText">0 / 18章 完了</strong><small id="drawerProgressDetail">学習ステップ 0 / 90</small></div>
+        <div><strong id="drawerProgressText">0 / 28章 完了</strong><small id="drawerProgressDetail">学習ステップ 0 / 140</small></div>
         <span class="drawer-progress-track" aria-hidden="true"><span id="drawerProgressFill"></span></span>
       </div>
       <div class="drawer-quick-actions">
@@ -58,13 +60,14 @@
         <button type="button" data-part-filter="PART III" aria-pressed="false">人物</button>
         <button type="button" data-part-filter="PART IV" aria-pressed="false">動作</button>
         <button type="button" data-part-filter="PART V" aria-pressed="false">長文</button>
+        <button type="button" data-part-filter="PART VI" aria-pressed="false">旅行</button>
       </div>
     </section>
     <nav id="chapterNav" aria-label="章一覧"></nav>
     <p class="chapter-nav-empty" id="chapterNavEmpty" hidden>条件に合う章がありません。検索語か絞り込みを変えてください。</p>
     <div class="drawer-note">
-      <strong>全18章の到達点</strong>
-      <p>「私は〜する」から始め、対話・人物・物事・複合動作を経て、引用・条件・理由・「私が見た映画」のような名詞内の文まで同じ述語エンジンで組み上げます。</p>
+      <strong>基礎18章＋旅行科10章</strong>
+      <p>文法の骨格を作ったあと、空港・宿・移動・食事・買物・寺院・体調・雑談の語彙を、同じ述語エンジンで使い回します。</p>
     </div>
   </aside>
   <button class="scrim" id="drawerScrim" type="button" aria-label="章一覧を閉じる" hidden></button>
@@ -94,7 +97,7 @@
     </label>
     <div class="settings-actions">
       <button class="soft-button" id="printChapterButton" type="button">この章を印刷</button>
-      <button class="soft-button" id="printBookButton" type="button">全18章を印刷</button>
+      <button class="soft-button" id="printBookButton" type="button">全28章を印刷</button>
       <button class="text-button danger-text" id="resetProgressButton" type="button">学習記録をリセット</button>
     </div>
   </section>
@@ -130,7 +133,8 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <div id="printBook" class="print-book" aria-hidden="true"></div>
 
-  <script src="curriculum-v24.js"></script>
-  <script src="app-v24.js"></script>
+  <script src="curriculum-v25.js"></script>
+  <script src="travel-v25.js"></script>
+  <script src="app-v25.js"></script>
 </body>
 </html>
