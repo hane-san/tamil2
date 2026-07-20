@@ -1,0 +1,19 @@
+{
+  "name": "口語タミル語の教科書",
+  "short_name": "口語タミル語",
+  "description": "一人称から対話、長文化、旅行10場面へ組み上げるチェンナイ口語タミル語教材",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fffaf0",
+  "theme_color": "#0d736f",
+  "icons": [
+    {
+      "src": "app-icon.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
