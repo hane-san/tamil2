@@ -1,12 +1,13 @@
-const CACHE_NAME = "tamil-verb-engine-v2-github-v24-title-20260720";
+const CACHE_NAME = "tamil2-spoken-tamil-v25-migration-20260720";
 const APP_FILES = [
   "./",
   "./index.html",
-  "./styles-v24.css",
-  "./curriculum-v24.js",
-  "./app-v24.js",
+  "./styles-v25.css",
+  "./curriculum-v25.js",
+  "./travel-v25.js",
+  "./app-v25.js",
   "./app-icon.png",
-  "./manifest-v24.webmanifest"
+  "./manifest-v25.webmanifest"
 ];
 
 self.addEventListener("install", event => {
