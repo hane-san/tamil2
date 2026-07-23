@@ -247,7 +247,8 @@
   }
 
   function renderStepStrip(chapter) {
-    const labels = ["読む", "聞く", chapter.formConfig.mode === "vocabulary" ? "語彙" : "形", "練習", "確認"];
+    const formStepLabel = chapter.formConfig.mode === "vocabulary" ? "語彙" : chapter.formConfig.mode === "grammar" ? "文法" : "形";
+    const labels = ["読む", "聞く", formStepLabel, "練習", "確認"];
     const names = ["read", "listen", "forms", "practice", "check"];
     const progress = getChapterProgress(chapter.id);
     return `<div class="step-strip" aria-label="章の学習手順">

@@ -1,4 +1,4 @@
-const CACHE_NAME = "tamil2-spoken-tamil-v26-20260722";
+const CACHE_NAME = "tamil2-spoken-tamil-v26-r2-20260722";
 const APP_FILES = [
   "./",
   "./index.html",
