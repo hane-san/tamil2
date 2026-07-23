@@ -1,14 +1,15 @@
-const CACHE_NAME = "tamil2-spoken-tamil-v26-r2-20260722";
+const CACHE_NAME = "tamil2-spoken-tamil-v27-transcription-20260723";
 const APP_FILES = [
   "./",
   "./index.html",
-  "./styles-v26.css",
-  "./curriculum-v25.js",
-  "./travel-v25.js",
-  "./grammar-v26.js",
-  "./app-v26.js",
+  "./styles-v27.css",
+  "./curriculum-v27.js",
+  "./travel-v27.js",
+  "./grammar-v27.js",
+  "./transcription-v27.js",
+  "./app-v27.js",
   "./app-icon.png",
-  "./manifest-v26.webmanifest"
+  "./manifest-v27.webmanifest"
 ];
 
 self.addEventListener("install", event => {
