@@ -6,11 +6,11 @@
   <meta name="theme-color" content="#0d736f">
   <meta name="color-scheme" content="light">
   <title>口語タミル語の教科書</title>
-  <meta name="description" content="一人称から対話、旅行場面、文法補完へ組み上げる、チェンナイ口語タミル語の読める・聞ける教材アプリ。">
+  <meta name="description" content="文字・名詞格の早見から対話、旅行場面、文法補完へ組み上げる、チェンナイ口語タミル語の読める・聞ける教材アプリ。">
   <link rel="icon" type="image/png" href="app-icon.png">
   <link rel="apple-touch-icon" href="app-icon.png">
-  <link rel="manifest" href="manifest-v27.webmanifest">
-  <link rel="stylesheet" href="styles-v27.css">
+  <link rel="manifest" href="manifest-v28.webmanifest">
+  <link rel="stylesheet" href="styles-v28.css">
 </head>
 <body>
   <a class="skip-link" href="#main">本文へ</a>
@@ -36,7 +36,7 @@
     <div class="drawer-head">
       <div>
         <span class="eyebrow">CONTENTS</span>
-        <h2>音声・転写精修版 v2.7・全38章</h2>
+        <h2>音声・文字・格リファレンス版 v2.8・全38章</h2>
       </div>
       <button class="close-button" id="drawerClose" type="button" aria-label="章一覧を閉じる">×</button>
     </div>
@@ -67,8 +67,8 @@
     <nav id="chapterNav" aria-label="章一覧"></nav>
     <p class="chapter-nav-empty" id="chapterNavEmpty" hidden>条件に合う章がありません。検索語か絞り込みを変えてください。</p>
     <div class="drawer-note">
-      <strong>基礎18章＋旅行科10章＋文法補完科10章</strong>
-      <p>旅行語彙を使い回しながら、存在・所有・格・指示・数量・比較・焦点・名詞化・使役まで、広い文法の漏れを回収します。</p>
+      <strong>PART 0＋基礎18章＋旅行科10章＋文法補完科10章</strong>
+      <p>文字音声表と名詞格の早見へいつでも戻りつつ、既存38章を順番どおり進められます。</p>
     </div>
   </aside>
   <button class="scrim" id="drawerScrim" type="button" aria-label="章一覧を閉じる" hidden></button>
@@ -98,7 +98,7 @@
     </label>
     <div class="settings-actions">
       <button class="soft-button" id="printChapterButton" type="button">この章を印刷</button>
-      <button class="soft-button" id="printBookButton" type="button">全38章を印刷</button>
+      <button class="soft-button" id="printBookButton" type="button">PART 0＋全38章を印刷</button>
       <button class="text-button danger-text" id="resetProgressButton" type="button">学習記録をリセット</button>
     </div>
   </section>
@@ -134,10 +134,11 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <div id="printBook" class="print-book" aria-hidden="true"></div>
 
-  <script src="curriculum-v27.js"></script>
-  <script src="travel-v27.js"></script>
-  <script src="grammar-v27.js"></script>
-  <script src="transcription-v27.js"></script>
-  <script src="app-v27.js"></script>
+  <script src="curriculum-v28.js"></script>
+  <script src="travel-v28.js"></script>
+  <script src="grammar-v28.js"></script>
+  <script src="reference-v28.js"></script>
+  <script src="transcription-v28.js"></script>
+  <script src="app-v28.js"></script>
 </body>
 </html>
