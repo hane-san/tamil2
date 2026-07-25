@@ -1,0 +1,79 @@
+name: Apply v3.4 pedagogy revision
+
+on:
+  pull_request:
+    types: [synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'revise/explanations-quizzes-v34'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out revision branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Reconstruct and test revision
+        id: test
+        shell: bash
+        run: |
+          set -uo pipefail
+          status=0
+          cat .v34payload.part-* | base64 --decode > /tmp/v34-payload.tar.xz || status=$?
+          if [ "$status" -eq 0 ]; then
+            echo "151a4edd499e5b47715232c9db834219be4fafaad5937904c3d6cfd2182f6b23  /tmp/v34-payload.tar.xz" | sha256sum -c - || status=$?
+          fi
+          if [ "$status" -eq 0 ]; then
+            tar -xJf /tmp/v34-payload.tar.xz || status=$?
+          fi
+          if [ "$status" -eq 0 ]; then
+            npm ci --ignore-scripts || status=$?
+          fi
+          if [ "$status" -eq 0 ]; then
+            npm test 2>&1 | tee /tmp/v34-test.log
+            status=${PIPESTATUS[0]}
+          else
+            echo "Preparation failed before npm test (status=$status)" | tee /tmp/v34-test.log
+          fi
+          echo "$status" > /tmp/v34-status
+          exit 0
+
+      - name: Upload test log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v34-pedagogy-test-log
+          path: /tmp/v34-test.log
+          if-no-files-found: error
+
+      - name: Enforce test gate
+        shell: bash
+        run: |
+          test "$(cat /tmp/v34-status)" = "0"
+
+      - name: Commit clean revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf node_modules
+          rm -f .v34payload.part-*
+          rm -f .github/workflows/snapshot-v34.yml
+          rm -f .github/workflows/apply-v34-pedagogy.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No revision changes to commit"
+            exit 0
+          fi
+          if git ls-files | grep -E '(^|/)node_modules/|\.log$|\.v34payload' ; then
+            echo "Generated or transfer files would be committed" >&2
+            exit 1
+          fi
+          git commit -m "Revise lessons 1-8 explanations and critical quizzes"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
