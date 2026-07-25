@@ -1,0 +1,13 @@
+{
+  "name": "spoken-tamil-textbook",
+  "version": "3.0.0-rc.1",
+  "private": true,
+  "scripts": {
+    "test": "npm run test:data && npm run test:dom",
+    "test:data": "node tests/validate-v30.mjs",
+    "test:dom": "node tests/dom-v30.cjs"
+  },
+  "devDependencies": {
+    "jsdom": "22.1.0"
+  }
+}
