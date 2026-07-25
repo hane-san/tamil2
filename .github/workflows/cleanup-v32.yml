@@ -1,0 +1,42 @@
+name: Clean v3.2 release branch
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out release branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Remove generated dependencies and logs
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf node_modules
+          rm -f v32-test-output.log
+          cat > .gitignore <<'EOF'
+          node_modules/
+          *.log
+          .DS_Store
+          EOF
+          rm -f .github/workflows/cleanup-v32.yml
+
+      - name: Commit cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Clean v3.2 release artifacts"
+          git push origin HEAD:${{ github.head_ref }}
