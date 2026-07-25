@@ -1,0 +1,42 @@
+name: Unpack TN-SST v3.0-rc.1 in release branch
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  unpack:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out release branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Expand approved package
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar -xzf .deploy-v30.tar.gz
+          rm -f .deploy-v30.tar.gz
+          rm -f .github/workflows/deploy-v30.yml
+          rm -f .github/workflows/unpack-v30-pr.yml
+
+      - name: Commit extracted release
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+            exit 0
+          fi
+          git commit -m "Publish TN-SST v3.0-rc.1"
+          git push origin HEAD:${{ github.head_ref }}
