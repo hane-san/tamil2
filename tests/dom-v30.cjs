@@ -82,7 +82,7 @@ async function main() {
   const { document, Event, KeyboardEvent } = dom.window;
 
   assert(document.title.includes("第1課"), "initial title must identify lesson 1");
-  assert(document.getElementById("progressLabel").textContent.includes("第1課 / 4課"), "progress label must show 4-lesson scope");
+  assert(document.getElementById("progressLabel").textContent.includes("第1課 / 6課"), "progress label must show 6-lesson scope");
   assert(!document.body.classList.contains("hide-kana"), "v3 migration must restore kana visibility");
   assert(document.getElementById("toggleKana").checked, "kana toggle must be checked after migration");
 
@@ -126,14 +126,16 @@ async function main() {
 
   document.getElementById("menuButton").dispatchEvent(new Event("click", { bubbles: true }));
   const publicLessonButtons = document.querySelectorAll("#chapterNav button[data-chapter]");
-  assert(publicLessonButtons.length === 4, "drawer must expose exactly four public lessons");
+  assert(publicLessonButtons.length === 6, "drawer must expose exactly six public lessons");
 
-  for (const lessonNumber of [3, 4]) {
+  const shortReadingCue = { 3: "இது ரவியோட கார்", 4: "வீட்டுல இருக்கேன்", 5: "இந்த கோவில் பற்றி", 6: "என்கிட்ட டிக்கெட் இருக்கு" };
+  for (const lessonNumber of [3, 4, 5, 6]) {
     document.querySelector(`#chapterNav button[data-chapter="${lessonNumber - 1}"]`).dispatchEvent(new Event("click", { bubbles: true }));
     assert(document.title.includes(`第${lessonNumber}課`), `lesson ${lessonNumber} navigation must work`);
-    assert(document.querySelector(".view-read .reading-section:last-child").textContent.includes(lessonNumber === 3 ? "இது ரவியோட கார்" : "வீட்டுல இருக்கேன்"), `lesson ${lessonNumber} must render its short reading`);
+    assert(document.querySelector(".view-read .reading-section:last-child").textContent.includes(shortReadingCue[lessonNumber]), `lesson ${lessonNumber} must render its short reading`);
     document.querySelector("button[data-view='examples']").dispatchEvent(new Event("click", { bubbles: true }));
-    assert(document.querySelectorAll(".view-examples .example-feature, .view-examples .example-row").length === 10, `lesson ${lessonNumber} must render 10 examples`);
+    const expectedExampleCount = lessonNumber === 6 ? 11 : 10;
+    assert(document.querySelectorAll(".view-examples .example-feature, .view-examples .example-row").length === expectedExampleCount, `lesson ${lessonNumber} must render ${expectedExampleCount} examples`);
     document.getElementById("menuButton").dispatchEvent(new Event("click", { bubbles: true }));
   }
   document.querySelector("#chapterNav [data-open-reference]").dispatchEvent(new Event("click", { bubbles: true }));
@@ -161,7 +163,7 @@ async function main() {
     console.log(`DOM validation passed: ${assertions} assertions`);
     console.log("- legacy kana setting migrated without deleting progress");
     console.log("- card, glyph, keyboard, continuous, and letter audio are single-fire");
-    console.log("- PART 0 + 4 lessons, short readings, and 216-character table render");
+    console.log("- PART 0 + 6 lessons, short readings, and 216-character table render");
   }
 
   dom.window.close();

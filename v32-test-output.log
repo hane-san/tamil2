@@ -1,0 +1,20 @@
+
+> spoken-tamil-textbook@3.2.0-rc.1 test
+> npm run test:data && npm run test:dom
+
+
+> spoken-tamil-textbook@3.2.0-rc.1 test:data
+> node tests/validate-v30.mjs
+
+v3.2 validation passed: 5225 assertions
+- 66 golden transliteration cases
+- 130 public data entries linted
+- PART 0 + lessons 1–6 only
+
+> spoken-tamil-textbook@3.2.0-rc.1 test:dom
+> node tests/dom-v30.cjs
+
+DOM validation passed: 40 assertions
+- legacy kana setting migrated without deleting progress
+- card, glyph, keyboard, continuous, and letter audio are single-fire
+- PART 0 + 6 lessons, short readings, and 216-character table render
