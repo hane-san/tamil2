@@ -304,15 +304,26 @@
     return `
       ${renderSectionHeading("START HERE", "まず、この一文を分解する")}
       ${renderExample(chapter.heroExample, true, `hero-${chapter.number}`)}
+      <aside class="roman-guide"><strong>読み方メモ</strong>解説の括弧内は構造ローマ字です。例：<span lang="ta">வீட்டுக்கு</span> <span class="roman-inline">(vīṭṭ-ukku)</span>。カナや発音ローマ字とは役割を分けています。</aside>
+      ${renderCriticalPoints(chapter)}
       <div class="prose">
         ${chapter.readSections.map(section => renderReadingSection(section)).join("")}
       </div>`;
+  }
+
+  function renderCriticalPoints(chapter) {
+    if (!chapter.criticalPoints?.length) return "";
+    return `<section class="critical-points" aria-label="この課の急所">
+      <div class="critical-points-head"><span>3 KEY POINTS</span><strong>この課で持ち帰る3点</strong></div>
+      <ol>${chapter.criticalPoints.map(point => `<li>${enrichTamil(point)}</li>`).join("")}</ol>
+    </section>`;
   }
 
   function renderReadingSection(section) {
     return `
       <section class="reading-section">
         ${renderSectionHeading(section.kicker, section.heading)}
+        ${section.takeaway ? `<div class="reading-takeaway"><span>この段落の結論</span><strong>${enrichTamil(section.takeaway)}</strong></div>` : ""}
         ${section.paragraphs.map(paragraph => `<p>${enrichTamil(paragraph)}</p>`).join("")}
         ${section.caseMap ? renderCaseQuickMap(section.caseMap) : ""}
         ${section.objectMap ? renderObjectDecisionMap(section.objectMap) : ""}
@@ -604,7 +615,7 @@
     return `
       <div class="quiz-intro">
         <div class="quiz-score-ring">${printMode ? "解答" : quiz.finished ? `${score}/${chapter.quiz.length}` : `${answered}/${chapter.quiz.length}`}</div>
-        <div><h2>1問1診断</h2><p>誤答はすべて既出の実在形。どの特徴を取り違えたかを一つずつ確認します。</p></div>
+        <div><h2>この課の5つの急所</h2><p>分解 → 意味 → 実用場面 → 混同防止 → 総合復習の順で、本当に持ち帰る点だけを確認します。</p></div>
       </div>
       ${chapter.quiz.map((question, index) => renderQuizQuestion(chapter, question, index, quiz, printMode)).join("")}
       ${printMode ? "" : `<button class="quiz-finish" type="button" data-finish-quiz ${answered < chapter.quiz.length ? "disabled" : ""}>採点して課を完了</button>`}`;
@@ -616,8 +627,8 @@
     const effectiveSelected = printMode ? question.answer : selected;
     const selectedTag = selected != null && selected !== question.answer ? question.tags[selected] : null;
     return `<article class="quiz-card">
-      <span class="quiz-number">QUESTION ${pad(index + 1)}</span>
-      <h3>${question.q}</h3>
+      <div class="quiz-meta"><span class="quiz-number">QUESTION ${pad(index + 1)}</span>${question.focus ? `<span class="quiz-focus">${escapeHtml(question.focus)}</span>` : ""}</div>
+      <h3>${enrichTamil(question.q)}</h3>
       <div class="quiz-options">
         ${question.options.map((option, optionIndex) => {
           const isSelected = optionIndex === effectiveSelected;
@@ -625,7 +636,7 @@
           return `<button class="quiz-option ${isSelected ? `selected ${status}` : ""}" type="button" data-question="${index}" data-quiz-option="${optionIndex}" ${locked ? "disabled" : ""}>${option}</button>`;
         }).join("")}
       </div>
-      ${locked ? `<div class="quiz-feedback"><strong>${effectiveSelected === question.answer ? "✓ 正解" : `診断：${selectedTag || "再確認"}`}</strong>${question.feedback}</div>` : ""}
+      ${locked ? `<div class="quiz-feedback"><strong>${effectiveSelected === question.answer ? "✓ 正解" : `診断：${selectedTag || "再確認"}`}</strong><p>${enrichTamil(question.feedback)}</p>${question.rule ? `<div class="quiz-rule"><span>持ち帰る一行</span>${enrichTamil(question.rule)}</div>` : ""}</div>` : ""}
     </article>`;
   }
 
@@ -772,7 +783,7 @@
     quiz.answers[questionIndex] = optionIndex;
     getChapterProgress(chapter.id).practice = true;
     render();
-    requestAnimationFrame(() => document.querySelector(`[data-question="${questionIndex}"]`)?.closest(".quiz-card")?.scrollIntoView({ block: "center", behavior: "smooth" }));
+    requestAnimationFrame(() => document?.querySelector(`[data-question="${questionIndex}"]`)?.closest(".quiz-card")?.scrollIntoView({ block: "center", behavior: "smooth" }));
   }
 
   function finishQuiz() {

@@ -1,4 +1,4 @@
-# 言語検証記録 v3.3-rc.1
+# 言語検証記録 v3.4-rc.1
 
 更新日：2026-07-26
 
@@ -233,7 +233,31 @@ reṇṭu puttakam irukku.
 
 ランタイムにも同じ文字種ガードを入れた。`ta-IN` を優先し、端末にタミル語音声がない場合は一度だけ通知して既定音声で試す。
 
-## 12. データ監査結果
+## 12. 初心者向け解説と問題の監査
+
+第1〜8課の例文、`targetTamil`、TTS、転写、形態分析は変更せず、説明と復習導線を `pedagogy-v34.js` で差し替えた。
+
+解説の表示順：
+
+1. この課で持ち帰る3点
+2. まず結論
+3. 形を読む
+4. なぜその形になるか
+5. 実際に使う場面
+6. 混同防止
+7. 3文の短い読み取り
+
+解説中のTamil語句は、`வீட்டுக்கு (vīṭṭ-ukku)` のようにTamil文字と括弧内の `structuredRoman` を一緒に表示する。括弧内は固定文字転写に検証済み形態境界を付けた構造表示であり、`pronunciationRoman` ではない。たとえば `வீடு (vīṭu)` の発音層が `vīḍu` でも、解説の括弧内を `vīḍu` へ置き換えない。
+
+各課の5問は次の焦点へ固定した。
+
+```text
+形態分解 → 機能選択 → 実用場面 → 混同防止 → 総合復習
+```
+
+全問に選択肢別診断タグ、理由、再利用可能な「持ち帰る一行」を持たせた。単純な語義暗記、教材外の珍しい活用、複数正答になり得る場面依存問題は避けた。誤答は検証済みの実在形または正しい説明を一特徴だけ入れ替えている。
+
+## 13. データ監査結果
 
 公開データ：
 
@@ -254,7 +278,7 @@ reṇṭu puttakam irukku.
 `node tests/validate-v30.mjs` の結果：
 
 ```text
-v3.3 validation passed: 6867 assertions
+v3.4 validation passed: 7156 assertions
 - 66 golden transliteration cases
 - 172 public data entries linted
 - PART 0 + lessons 1–8 only
@@ -277,10 +301,13 @@ v3.3 validation passed: 6867 assertions
 - レビューステータス
 - 重複ID
 - 問題と診断タグ
+- 各課3つの急所と結論先行の解説構造
+- 解説中の括弧付き構造ローマ字
+- 5種類の問題焦点、理由、持ち帰る一行
 - 公開入口から旧v2.8正本を除外
 - 発音・カナ変異の件数対応、空値、NFC
 
-## 13. UI監査
+## 14. UI監査
 
 実装済み：
 
@@ -293,15 +320,18 @@ v3.3 validation passed: 6867 assertions
 - TTS不在通知
 - PART 0＋第1〜8課だけをナビ・印刷対象にする
 - 全8課に3文の短い読み取りを表示する
+- 全8課に「持ち帰る3点」と初心者向け6段階解説を表示する
+- 解説中のTamil語句へ括弧付き構造ローマ字を表示する
+- 問題を5つの急所に固定し、解答後に理由と持ち帰る一行を表示する
 - 旧URL、アイコン、ローカル保存キーを維持
 
 `tests/dom-v30.cjs` のDOM操作テスト結果：
 
 ```text
-DOM validation passed: 46 assertions
+DOM validation passed: 53 assertions
 - legacy kana setting migrated without deleting progress
 - card, glyph, keyboard, continuous, and letter audio are single-fire
-- PART 0 + 8 lessons, short readings, and 216-character table render
+- PART 0 + 8 lessons, beginner explanations, critical quizzes, short readings, and 216-character table render
 ```
 
 未完了：
@@ -313,7 +343,7 @@ DOM validation passed: 46 assertions
 
 公開後に同一URLで最終確認し、不具合があればrc内で修正する。
 
-## 14. 今回廃止した旧ルール
+## 15. 今回廃止した旧ルール
 
 - 「チェンナイ口語＝単一標準」
 - `roman` 一欄へ厳密転写・構造・発音を混在
@@ -324,7 +354,7 @@ DOM validation passed: 46 assertions
 - カナからTamil文字を逆生成
 - 旧38章を現行コードにあるという理由だけで正本扱い
 
-## 15. 後置詞と格
+## 16. 後置詞と格
 
 第5課は、後置詞を単独の日本語訳ではなく、前の名詞句を含む完成形で登録した。
 
@@ -337,7 +367,7 @@ DOM validation passed: 46 assertions
 
 `பற்றி` は主表示、patti は発音層、`பத்தி` は会話綴りの対応形とした。文字置換で全語を口語化しない。`பக்கத்துல` は `பக்கம்` の接続形＋SST場所形として、基準点との近接関係を作る。
 
-## 16. 名詞述語・存在・所有・経験者
+## 17. 名詞述語・存在・所有・経験者
 
 第6課では、次を別の述語骨格として固定した。
 
@@ -350,11 +380,11 @@ DOM validation passed: 46 assertions
 
 肯定名詞文へ `இருக்கு` を無差別に入れない。存在・非所有の `இல்லை` と、理解否定の会話形 `புரியல` を同じ否定型として自動生成しない。`என்கிட்ட` の文語対応形 `என்னிடம்` は別レジスター層に保持する。
 
-## 17. リリース判定
+## 18. リリース判定
 
-構造、固定文字転写、公開範囲、データ移行、機械検査はリリース可能。個別発音とカナの全件ネイティブ音声監査が残るため、版は `v3.3-rc.1` とする。
+構造、固定文字転写、公開範囲、データ移行、機械検査はリリース可能。個別発音とカナの全件ネイティブ音声監査が残るため、版は `v3.4-rc.1` とする。
 
-## 18. 動詞の設計図
+## 19. 動詞の設計図
 
 第7課では、動詞を「意味の核・TAM／時制幹・人称語尾」の三層で読む。ただしこれは分析骨格であり、未知動詞を自動活用する生成規則ではない。
 
@@ -366,7 +396,7 @@ DOM validation passed: 46 assertions
 
 口語表面形を正本にし、書記形は `counterparts` へ置く。`structuredRoman` からハイフンを除いた文字列が固定転写と一致することを検査する。
 
-## 19. 一人称の現在・過去・未来
+## 20. 一人称の現在・過去・未来
 
 第8課では人物を一人称に固定し、時間語とTAMだけを動かす。
 
