@@ -17,8 +17,10 @@ const runtimeFiles = [
   "lesson04-v31.js",
   "lesson05-v32.js",
   "lesson06-v32.js",
+  "lesson07-v33.js",
+  "lesson08-v33.js",
   "reading-v31.js",
-  "curriculum-v32.js"
+  "curriculum-v33.js"
 ];
 
 for (const file of runtimeFiles) {
@@ -76,8 +78,8 @@ for (const [tamil, expected] of golden) {
 }
 
 assert(golden.length >= 50, `golden count is ${golden.length}; expected at least 50`);
-assert(book.chapters.length === 6, `public chapter count is ${book.chapters.length}; expected 6`);
-assert(book.chapters.map(chapter => chapter.number).join(",") === "1,2,3,4,5,6", "public chapters must be lessons 1–6 in order");
+assert(book.chapters.length === 8, `public chapter count is ${book.chapters.length}; expected 8`);
+assert(book.chapters.map(chapter => chapter.number).join(",") === "1,2,3,4,5,6,7,8", "public chapters must be lessons 1–8 in order");
 assert(reference.examples.length >= 8 && reference.examples.length <= 12, "PART 0 must have 8–12 examples");
 
 for (const chapter of book.chapters) {
@@ -194,12 +196,12 @@ assert(app.includes("voiceNoticeShown"), "missing Tamil voice notification guard
 assert(app.includes("isTamilTtsText"), "runtime TTS layer guard is missing");
 
 if (failures.length) {
-  console.error(`v3.2 validation failed: ${failures.length} issue(s), ${assertions} assertions`);
+  console.error(`v3.3 validation failed: ${failures.length} issue(s), ${assertions} assertions`);
   failures.forEach(failure => console.error(`- ${failure}`));
   process.exitCode = 1;
 } else {
-  console.log(`v3.2 validation passed: ${assertions} assertions`);
+  console.log(`v3.3 validation passed: ${assertions} assertions`);
   console.log(`- ${golden.length} golden transliteration cases`);
   console.log(`- ${entries.length} public data entries linted`);
-  console.log("- PART 0 + lessons 1–6 only");
+  console.log("- PART 0 + lessons 1–8 only");
 }

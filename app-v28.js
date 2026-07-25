@@ -1097,7 +1097,8 @@
 
   function chapterPart(chapter) {
     if (chapter.number === 0) return { code: "PART 0", title: "文字と名詞格" };
-    return { code: "PART I", title: "名詞と代名詞の土台" };
+    return book.parts.find(part => part.chapters.includes(chapter.number))
+      ?? { code: "PART I", title: "基礎" };
   }
 
   function updateHash() {
