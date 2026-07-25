@@ -1,16 +1,16 @@
-const CACHE_NAME = "tamil2-spoken-tamil-v28-part0-audio-20260723";
+const CACHE_NAME = "tamil2-tn-sst-v30-rc1-20260725";
 const APP_FILES = [
   "./",
   "./index.html",
   "./styles-v28.css",
-  "./curriculum-v28.js",
-  "./travel-v28.js",
-  "./grammar-v28.js",
-  "./reference-v28.js",
-  "./transcription-v28.js",
+  "./tamil-core-v30.js",
+  "./reference-v30.js",
+  "./lesson01-v30.js",
+  "./lesson02-v30.js",
+  "./curriculum-v30.js",
   "./app-v28.js",
   "./app-icon.png",
-  "./manifest-v28.webmanifest"
+  "./manifest-v30.webmanifest"
 ];
 
 self.addEventListener("install", event => {
@@ -28,6 +28,18 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put("./index.html", copy));
+          return response;
+        })
+        .catch(() => caches.match("./index.html"))
+    );
+    return;
+  }
   event.respondWith(
     caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
       const copy = response.clone();

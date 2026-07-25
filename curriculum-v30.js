@@ -1,0 +1,25 @@
+(() => {
+  "use strict";
+
+  const chapters = [...(window.TAMIL_LESSONS_V30 || [])].sort((left, right) => left.number - right.number);
+  if (chapters.length !== 2 || chapters[0]?.number !== 1 || chapters[1]?.number !== 2) {
+    throw new Error("v3.0-rc.1 の公開範囲は第1課・第2課だけです");
+  }
+
+  window.TAMIL_BOOK = Object.freeze({
+    meta: Object.freeze({
+      title: "口語タミル語の教科書",
+      edition: "統合規格 v2.0-rc.1 対応版 v3.0-rc.1",
+      primaryRegister: "SST",
+      regionalProfile: "TN-GENERAL",
+      styleTags: Object.freeze(["neutral"]),
+      publicScope: "PART 0＋第1課＋第2課",
+      legacyDataPolicy: "v2.8以前の38章は履歴データとして保持し、公開教材の正本にはしない"
+    }),
+    parts: Object.freeze([
+      Object.freeze({ code: "PART I", title: "名詞と代名詞の土台", chapters: Object.freeze([1, 2]) })
+    ]),
+    coreVerbs: Object.freeze([]),
+    chapters: Object.freeze(chapters)
+  });
+})();
