@@ -1,0 +1,68 @@
+name: Apply TN-SST v3.3-rc.1 release
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out release branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Verify and expand v3.3 payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .v33payload.part-* | base64 --decode > /tmp/v33payload.tar.xz
+          echo "b604a75c14e6f52d475eb7f036bf8a3f33b68908ea6c540c142bde0a1ccf2e7f  /tmp/v33payload.tar.xz" | sha256sum --check
+          tar -tJf /tmp/v33payload.tar.xz > /dev/null
+          tar -xJf /tmp/v33payload.tar.xz
+          rm -f /tmp/v33payload.tar.xz
+
+      - name: Remove temporary transfer files
+        shell: bash
+        run: |
+          rm -f .v33payload.part-*
+          rm -f .github/workflows/snapshot-v33.yml
+          rm -f .github/workflows/apply-v33.yml
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Validate release
+        run: npm test
+
+      - name: Commit published release
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- \
+            APPROVED_RULES.md LANGUAGE_CHECK.md README.md app-v28.js \
+            curriculum-v33.js index.html lesson07-v33.js lesson08-v33.js \
+            manifest-v33.webmanifest package-lock.json package.json sw.js \
+            tests/dom-v30.cjs tests/validate-v30.mjs \
+            .github/workflows/snapshot-v33.yml .github/workflows/apply-v33.yml \
+            .v33payload.part-00 .v33payload.part-01 .v33payload.part-02 .v33payload.part-03
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+            exit 0
+          fi
+          git commit -m "Publish TN-SST v3.3-rc.1 lessons 7 and 8"
+          git push origin HEAD:${{ github.head_ref }}
