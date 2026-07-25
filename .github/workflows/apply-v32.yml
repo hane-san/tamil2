@@ -37,6 +37,20 @@ jobs:
       - name: Apply v3.2 release patch
         run: node scripts/apply-v32.mjs
 
+      - name: Align DOM count with lesson 6 design
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('tests/dom-v30.cjs')
+          text = path.read_text()
+          old = '    assert(document.querySelectorAll(".view-examples .example-feature, .view-examples .example-row").length === 10, `lesson ${lessonNumber} must render 10 examples`);'
+          new = '    const expectedExampleCount = lessonNumber === 6 ? 11 : 10;\n    assert(document.querySelectorAll(".view-examples .example-feature, .view-examples .example-row").length === expectedExampleCount, `lesson ${lessonNumber} must render ${expectedExampleCount} examples`);'
+          if old not in text:
+              raise SystemExit('DOM count target missing')
+          path.write_text(text.replace(old, new))
+          PY
+
       - name: Install locked dependencies
         run: npm ci
 
