@@ -20,7 +20,8 @@ const runtimeFiles = [
   "lesson07-v33.js",
   "lesson08-v33.js",
   "reading-v31.js",
-  "curriculum-v33.js"
+  "pedagogy-v34.js",
+  "curriculum-v34.js"
 ];
 
 for (const file of runtimeFiles) {
@@ -84,11 +85,23 @@ assert(reference.examples.length >= 8 && reference.examples.length <= 12, "PART 
 
 for (const chapter of book.chapters) {
   assert(chapter.examples.length >= 8 && chapter.examples.length <= 12, `${chapter.id}: examples must be 8–12`);
-  assert(chapter.quiz.length >= 3 && chapter.quiz.length <= 5, `${chapter.id}: quiz must be 3–5 questions`);
+  assert(chapter.quiz.length === 5, `${chapter.id}: revised quiz must contain five critical questions`);
+  assert(chapter.criticalPoints?.length === 3, `${chapter.id}: expected three critical points`);
+  assert(chapter.readSections.length >= 6, `${chapter.id}: revised explanation must contain five teaching blocks plus a short reading`);
+  chapter.readSections.forEach((section, index) => {
+    assert(Boolean(section.heading), `${chapter.id} section ${index + 1}: heading missing`);
+    assert(Array.isArray(section.paragraphs) && section.paragraphs.length > 0, `${chapter.id} section ${index + 1}: paragraphs missing`);
+    assert(Boolean(section.takeaway), `${chapter.id} section ${index + 1}: takeaway missing`);
+    const joined = [section.takeaway, ...section.paragraphs].join(" ");
+    assert(joined.includes("roman-inline"), `${chapter.id} section ${index + 1}: Tamil explanation lacks parenthetical structured roman`);
+  });
+  const expectedFocus = ["形態分解", "機能選択", "実用場面", "混同防止", "総合復習"];
   chapter.quiz.forEach((question, index) => {
     assert(question.options.length === 4, `${chapter.id} quiz ${index + 1}: expected four options`);
     assert(new Set(question.options).size === question.options.length, `${chapter.id} quiz ${index + 1}: duplicate option`);
     assert(question.tags.length === question.options.length, `${chapter.id} quiz ${index + 1}: diagnostic tags mismatch`);
+    assert(question.focus === expectedFocus[index], `${chapter.id} quiz ${index + 1}: focus must be ${expectedFocus[index]}`);
+    assert(Boolean(question.rule), `${chapter.id} quiz ${index + 1}: carry-home rule missing`);
   });
   const miniReadings = chapter.readSections.filter(section => section.miniReading);
   assert(miniReadings.length === 1, `${chapter.id}: expected one short reading section`);
@@ -196,11 +209,11 @@ assert(app.includes("voiceNoticeShown"), "missing Tamil voice notification guard
 assert(app.includes("isTamilTtsText"), "runtime TTS layer guard is missing");
 
 if (failures.length) {
-  console.error(`v3.3 validation failed: ${failures.length} issue(s), ${assertions} assertions`);
+  console.error(`v3.4 validation failed: ${failures.length} issue(s), ${assertions} assertions`);
   failures.forEach(failure => console.error(`- ${failure}`));
   process.exitCode = 1;
 } else {
-  console.log(`v3.3 validation passed: ${assertions} assertions`);
+  console.log(`v3.4 validation passed: ${assertions} assertions`);
   console.log(`- ${golden.length} golden transliteration cases`);
   console.log(`- ${entries.length} public data entries linted`);
   console.log("- PART 0 + lessons 1–8 only");

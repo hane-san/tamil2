@@ -98,6 +98,11 @@ async function main() {
   assert(hero.querySelector(".kana-reading").textContent.includes("ヴィーットゥラ"), "katakana must render");
   assert(hero.querySelector(".spoken-reading").textContent.includes("vīṭṭula"), "pronunciationRoman must render");
 
+  assert(document.querySelectorAll(".critical-points li").length === 3, "lesson 1 must show three critical points");
+  assert(document.querySelectorAll(".reading-takeaway").length >= 6, "lesson 1 must show a takeaway for every explanation block");
+  assert(document.querySelector(".roman-guide").textContent.includes("構造ローマ字"), "beginner roman guide must render");
+  assert(document.querySelector(".view-read .roman-inline").textContent.includes("("), "parenthetical structured roman must render in explanations");
+
   const beforeCardClick = dom.window.__spokenUtterances.length;
   hero.querySelector(".tamil-line").dispatchEvent(new Event("click", { bubbles: true }));
   assert(dom.window.__spokenUtterances.length === beforeCardClick + 1, "card body click must speak exactly once");
@@ -118,6 +123,14 @@ async function main() {
   assert(exampleCards.length === 10, `lesson 1 must render 10 examples; got ${exampleCards.length}`);
   const smallKana = document.querySelector(".view-examples .example-row .kana-line");
   assert(dom.window.getComputedStyle(smallKana).fontSize === "12px", "small example kana must compute to 12px");
+
+  document.querySelector("button[data-view='practice']").dispatchEvent(new Event("click", { bubbles: true }));
+  assert(document.querySelectorAll(".quiz-card").length === 5, "lesson 1 must render five critical review questions");
+  assert(document.querySelectorAll(".quiz-focus").length === 5, "each quiz must show its diagnostic focus");
+  const firstQuizOption = document.querySelector(".quiz-card .quiz-option");
+  firstQuizOption.dispatchEvent(new Event("click", { bubbles: true }));
+  assert(document.querySelector(".quiz-feedback .quiz-rule").textContent.includes("持ち帰る一行"), "quiz feedback must show a carry-home rule");
+  document.querySelector("button[data-view='examples']").dispatchEvent(new Event("click", { bubbles: true }));
 
   const continuous = document.querySelector("[data-continuous='true']");
   const beforeContinuous = dom.window.__spokenUtterances.length;
