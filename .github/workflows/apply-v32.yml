@@ -40,8 +40,25 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
-      - name: Validate release
-        run: npm test
+      - name: Validate release and capture output
+        id: validation
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          npm test 2>&1 | tee v32-test-output.log
+
+      - name: Upload validation output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v32-test-output
+          path: v32-test-output.log
+          if-no-files-found: error
+
+      - name: Enforce validation result
+        if: steps.validation.outcome == 'failure'
+        run: exit 1
 
       - name: Commit published release
         shell: bash
