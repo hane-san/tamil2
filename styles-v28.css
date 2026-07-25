@@ -526,7 +526,7 @@ main { display: block; }
 .example-row .tamil-line { font-size: 18px; }
 .example-row.dialogue .tamil-line { font-size: 16px; line-height: 1.58; }
 .example-row .roman-line { font-size: 11px; }
-.example-row .kana-line { font-size: 10px; }
+.example-row .kana-line { font-size: 12px; }
 .example-row .reading-line { grid-template-columns: 36px minmax(0, 1fr); gap: 5px; }
 .example-row .reading-tag { font-size: 7px; }
 .example-row .meaning-line {
@@ -726,8 +726,8 @@ main { display: block; }
 .spoken-code { color: var(--teal); font: 700 10px/1.4 ui-monospace, monospace; }
 .word-audio {
   float: right;
-  width: 25px;
-  height: 25px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   border: 1px solid #9ac7bc;
   border-radius: 50%;
@@ -773,9 +773,9 @@ main { display: block; }
   font: 800 8px/1.2 var(--font-sans);
   letter-spacing: .08em;
 }
-.vocab-card strong { display: block; padding-right: 28px; color: #183e42; font: 800 16px/1.35 var(--font-ta); }
+.vocab-card strong { display: block; padding-right: 48px; color: #183e42; font: 800 16px/1.35 var(--font-ta); }
 .vocab-roman { display: block; margin-top: 3px; overflow-wrap: anywhere; color: var(--teal); font: 700 10px/1.35 ui-monospace, monospace; }
-.vocab-card .kana-line { display: block; margin-top: 2px; font-size: 10px; }
+.vocab-card .kana-line { display: block; margin-top: 2px; font-size: 12px; }
 .vocab-ja { display: block; margin-top: 7px; color: var(--ink); font: 800 12px/1.35 var(--font-sans); }
 .vocab-card small { display: block; margin-top: 4px; color: var(--muted); font: 600 9px/1.35 var(--font-sans); }
 
@@ -798,7 +798,7 @@ main { display: block; }
   color: #2f617a;
   font: 800 13px/1.3 var(--font-sans);
 }
-.grammar-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.grammar-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 9px; }
 .grammar-card {
   position: relative;
   min-width: 0;
@@ -815,18 +815,20 @@ main { display: block; }
   font: 800 8px/1.2 var(--font-sans);
   letter-spacing: .08em;
 }
-.grammar-card strong { display: block; padding-right: 28px; color: #183e42; font: 800 16px/1.35 var(--font-ta); }
+.grammar-card strong { display: block; padding-right: 48px; color: #183e42; font: 800 16px/1.35 var(--font-ta); }
 .grammar-roman { display: block; margin-top: 3px; overflow-wrap: anywhere; color: var(--teal); font: 700 10px/1.35 ui-monospace, monospace; }
 .grammar-structure { display: block; margin-top: 2px; overflow-wrap: anywhere; color: #806317; font-size: 9px; }
+.grammar-strict { display: block; margin-top: 2px; overflow-wrap: anywhere; color: #657477; font: 600 9px/1.35 ui-monospace, monospace; }
 .grammar-card .spoken-code small,
 .grammar-card .grammar-structure small,
+.grammar-card .grammar-strict small,
 .grammar-card .kana-line small {
   display: inline;
   margin: 0 5px 0 0;
   color: var(--muted);
   font: 800 7px/1 var(--font-sans);
 }
-.grammar-card .kana-line { display: block; margin-top: 2px; font-size: 10px; }
+.grammar-card .kana-line { display: block; margin-top: 2px; font-size: 12px; }
 .grammar-ja { display: block; margin-top: 7px; color: var(--ink); font: 800 12px/1.35 var(--font-sans); }
 .grammar-card small { display: block; margin-top: 4px; color: var(--muted); font: 600 9px/1.4 var(--font-sans); }
 
@@ -1084,7 +1086,7 @@ main { display: block; }
 }
 .drawer-quick-actions button.active { border-color: var(--pink); background: var(--pink-pale); color: #8d3552; }
 .drawer-quick-actions button:disabled { cursor: default; opacity: .72; }
-.part-filter { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.part-filter { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
 .part-filter button {
   min-width: 0;
   padding: 6px 2px;
@@ -1273,7 +1275,7 @@ body.hide-morph .form-structure { display: none; }
   .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .form-card.wide { grid-column: 1 / -1; }
   .vocab-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .grammar-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grammar-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .object-decision-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .letter-extras { grid-template-columns: .72fr 1.28fr; }
   .borrowed-letter-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }

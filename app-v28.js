@@ -16,10 +16,12 @@
   const partFilter = document.getElementById("partFilter");
 
   const STORAGE_KEY = "tamil-verb-engine-v2";
+  const STORAGE_SCHEMA_VERSION = 3;
   const STEP_TO_VIEW = ["read", "examples", "forms", "practice", "practice"];
   const VIEW_LABELS = { read: "読む", examples: "例文", forms: "形", practice: "練習" };
 
   const stored = loadStored();
+  const needsV30SettingsMigration = Number(stored.schemaVersion || 0) < STORAGE_SCHEMA_VERSION;
   const hashState = parseHash();
   const state = {
     chapterIndex: hashState.chapter ?? stored.chapterIndex ?? 0,
@@ -28,7 +30,7 @@
     progress: stored.progress ?? {},
     quizzes: stored.quizzes ?? {},
     settings: {
-      kana: stored.settings?.kana ?? true,
+      kana: needsV30SettingsMigration ? true : (stored.settings?.kana ?? true),
       literal: stored.settings?.literal ?? true,
       morph: stored.settings?.morph ?? true
     },
@@ -46,7 +48,9 @@
       continuous: false,
       speaking: false,
       utterance: null,
-      raw: false
+      raw: false,
+      voice: null,
+      voiceNoticeShown: false
     },
     printScope: null
   };
@@ -72,11 +76,11 @@
   function updateBookLabels() {
     const count = book.chapters.length;
     const progressLabel = document.getElementById("progressLabel");
-    if (progressLabel) progressLabel.textContent = state.referenceOpen ? `PART 0 / 全${count}章` : `第${book.chapters[state.chapterIndex].number}章 / ${count}章`;
+    if (progressLabel) progressLabel.textContent = state.referenceOpen ? `PART 0 / 全${count}課` : `第${book.chapters[state.chapterIndex].number}課 / ${count}課`;
     const drawerTitle = document.querySelector(".drawer-head h2");
-    if (drawerTitle) drawerTitle.textContent = `${book.meta.edition}・全${count}章`;
+    if (drawerTitle) drawerTitle.textContent = `${book.meta.edition}・全${count}課`;
     const printBookButton = document.getElementById("printBookButton");
-    if (printBookButton) printBookButton.textContent = `PART 0＋全${count}章を印刷`;
+    if (printBookButton) printBookButton.textContent = `PART 0＋全${count}課を印刷`;
   }
 
   function bindShellEvents() {
@@ -104,7 +108,7 @@
     resumeChapterButton.addEventListener("click", () => {
       const nextIndex = book.chapters.findIndex(chapter => !getChapterProgress(chapter.id).check);
       if (nextIndex < 0) {
-        showToast(`全${book.chapters.length}章、完了しています`);
+        showToast(`全${book.chapters.length}課、完了しています`);
         return;
       }
       navigateChapter(nextIndex);
@@ -236,8 +240,8 @@
       renderChapterFooter(chapter)
     ].join("");
 
-    document.title = `${chapter.number === 0 ? "PART 0" : `第${chapter.number}章`} ${chapter.navTitle}｜${book.meta.title}`;
-    document.getElementById("progressLabel").textContent = chapter.number === 0 ? `PART 0 / 全${book.chapters.length}章` : `第${chapter.number}章 / ${book.chapters.length}章`;
+    document.title = `${chapter.number === 0 ? "PART 0" : `第${chapter.number}課`} ${chapter.navTitle}｜${book.meta.title}`;
+    document.getElementById("progressLabel").textContent = chapter.number === 0 ? `PART 0 / 全${book.chapters.length}課` : `第${chapter.number}課 / ${book.chapters.length}課`;
     document.getElementById("progressFill").style.width = chapter.number === 0 ? "0%" : `${(chapter.number / book.chapters.length) * 100}%`;
 
     updateBottomNavLabels(chapter);
@@ -279,7 +283,7 @@
     const part = chapterPart(chapter);
     return `
       <header class="chapter-hero">
-        <span class="chapter-number">${chapter.number === 0 ? "PART 0 · QUICK REFERENCE" : `${part.code} · CHAPTER ${pad(chapter.number)}`}</span>
+        <span class="chapter-number">${chapter.number === 0 ? "PART 0 · QUICK REFERENCE" : `${part.code} · LESSON ${pad(chapter.number)}`}</span>
         <h1>${chapter.title}<span class="tamil-title" lang="ta">${chapter.tamilTitle}</span></h1>
         <p class="chapter-deck">${chapter.deck}</p>
         <div class="chapter-target">${chapter.targets.map(target => `<span>${target}</span>`).join("")}</div>
@@ -290,7 +294,7 @@
     const labels = chapter.number === 0 ? ["格", "聞く", "文字", "確認", "完了"] : ["読む", "聞く", formStepLabel(chapter), "練習", "確認"];
     const names = ["read", "listen", "forms", "practice", "check"];
     const progress = getChapterProgress(chapter.id);
-    return `<div class="step-strip" aria-label="章の学習手順">
+    return `<div class="step-strip" aria-label="課の学習手順">
       ${labels.map((label, index) => `
         <button type="button" class="step-button ${progress[names[index]] ? "done" : ""}" data-go-view="${STEP_TO_VIEW[index]}" data-step="${pad(index + 1)}" ${names[index] === "listen" ? "data-listen=\"true\"" : ""} aria-label="${label}へ移動">${label}</button>`).join("")}
     </div>`;
@@ -319,11 +323,11 @@
 
   function renderCaseQuickMap(map) {
     return `<div class="case-map-wrap"><table class="case-map">
-      <thead><tr><th>役割</th><th>書く形</th><th>口語音</th><th>例</th><th>選ぶ問い</th></tr></thead>
+      <thead><tr><th>役割</th><th>TN-SSTの形</th><th>発音層</th><th>例</th><th>選ぶ問い</th></tr></thead>
       <tbody>${map.rows.map(row => `<tr>
         <th>${escapeHtml(row.role)}</th>
-        <td class="morph-code">${escapeHtml(row.written)}</td>
-        <td><span class="spoken-code">${escapeHtml(row.spoken)}</span><br><span class="kana-line">${escapeHtml(row.kana)}</span></td>
+        <td class="morph-code">${escapeHtml(row.targetForm ?? row.written)}</td>
+        <td><span class="spoken-code">${escapeHtml(row.pronunciation ?? row.spoken)}</span><br><span class="kana-line">${escapeHtml(row.kana)}</span></td>
         <td><span class="case-example-ta" lang="ta">${escapeHtml(row.exampleTa)}</span><span class="case-example-roman">${escapeHtml(row.exampleRoman)}</span></td>
         <td>${escapeHtml(row.cue)}</td>
       </tr>`).join("")}</tbody>
@@ -375,16 +379,22 @@
   function renderExample(example, featured, id) {
     const resolvedId = example.id || id;
     const playableId = findExample(resolvedId) ? resolvedId : null;
-    const dialogueClass = example.ta.includes("—") ? " dialogue" : "";
+    const targetTamil = example.targetTamil || example.ta;
+    const pronunciationRoman = example.pronunciationRoman || example.spokenRoman;
+    const structuredRoman = example.structuredRoman || example.morph || example.roman;
+    const katakana = example.katakana || example.spokenKana || example.kana;
+    const meaningJa = example.meaningJa || example.ja;
+    const literalJapanese = example.literalJapanese ?? example.literal;
+    const dialogueClass = targetTamil.includes("—") ? " dialogue" : "";
     return `
-      <article class="${featured ? "example-feature" : "example-row"}${dialogueClass}${playableId ? " is-playable" : ""}" data-example-id="${escapeHtml(resolvedId || "")}" ${playableId ? `data-play-id="${escapeHtml(playableId)}" role="button" tabindex="0" aria-label="${escapeAttr(example.ta)}を再生"` : ""}>
+      <article class="${featured ? "example-feature" : "example-row"}${dialogueClass}${playableId ? " is-playable" : ""}" data-example-id="${escapeHtml(resolvedId || "")}" ${playableId ? `data-play-id="${escapeHtml(playableId)}" role="button" tabindex="0" aria-label="${escapeAttr(targetTamil)}を再生"` : ""}>
         ${playableId ? `<span class="play-button" aria-hidden="true">▶</span>` : ""}
-        <div class="tamil-line" lang="ta">${example.ta}</div>
-        <div class="reading-line spoken-reading"><span class="reading-tag">口語</span><span class="roman-line plain">${example.spokenRoman || example.roman}</span></div>
-        <div class="reading-line structure-reading"><span class="reading-tag">構造</span><span class="roman-line morph">${example.morph || example.roman}</span></div>
-        <div class="reading-line kana-reading"><span class="reading-tag">カナ</span><span class="kana-line">${example.spokenKana || example.kana}</span></div>
-        <div class="meaning-line">${example.ja}</div>
-        ${example.literal ? `<div class="literal-line">${example.literal}</div>` : ""}
+        <div class="tamil-line" lang="ta">${targetTamil}</div>
+        <div class="reading-line structure-reading"><span class="reading-tag">構造</span><span class="roman-line morph">${structuredRoman}</span></div>
+        <div class="reading-line kana-reading"><span class="reading-tag">カナ</span><span class="kana-line">${katakana}</span></div>
+        <div class="reading-line spoken-reading"><span class="reading-tag">発音</span><span class="roman-line plain">${pronunciationRoman}</span></div>
+        <div class="meaning-line">${meaningJa}</div>
+        ${literalJapanese ? `<div class="literal-line">${literalJapanese}</div>` : ""}
       </article>`;
   }
 
@@ -451,7 +461,7 @@
 
   function renderGrammarAtlas(chapter, config) {
     const patterns = config.patterns || [];
-    const groups = [...new Set(patterns.map(item => item.group || "この章の型"))];
+    const groups = [...new Set(patterns.map(item => item.group || "この課の型"))];
     return `
       ${renderSectionHeading("GRAMMAR ATLAS", config.title)}
       <p class="prose">${enrichTamil(config.intro)}</p>
@@ -460,9 +470,9 @@
       ${groups.map(group => `
         <section class="grammar-section">
           <h3>${escapeHtml(group)}</h3>
-          <div class="grammar-grid">${patterns.filter(item => (item.group || "この章の型") === group).map(renderGrammarCard).join("")}</div>
+          <div class="grammar-grid">${patterns.filter(item => (item.group || "この課の型") === group).map(renderGrammarCard).join("")}</div>
         </section>`).join("")}
-      ${config.checkpoint ? renderNote({ tone: "blue", title: "この章の文法チェックポイント", body: config.checkpoint }) : ""}`;
+      ${config.checkpoint ? renderNote({ tone: "blue", title: "この課の文法チェックポイント", body: config.checkpoint }) : ""}`;
   }
 
   function renderSoundMap(map) {
@@ -490,20 +500,21 @@
 
   function renderGrammarCard(item) {
     return `<article class="grammar-card">
-      <button class="word-audio" type="button" data-tts="${escapeAttr(item.ttsText || item.ta)}" data-label="${escapeAttr(item.ja)}" aria-label="${escapeAttr(item.ta)}を再生">▶</button>
+      <button class="word-audio" type="button" data-tts="${escapeAttr(item.ttsText || item.targetTamil || item.ta)}" data-label="${escapeAttr(item.meaningJa || item.ja)}" aria-label="${escapeAttr(item.targetTamil || item.ta)}を再生">▶</button>
       <span class="grammar-kind">${escapeHtml(item.kind || "型")}</span>
-      <strong lang="ta">${item.ta}</strong>
-      <span class="grammar-roman spoken-code"><small>口語</small>${item.spokenRoman || item.roman}</span>
-      <span class="grammar-structure morph-code"><small>構造</small>${item.roman}</span>
-      <span class="kana-line"><small>カナ</small>${item.spokenKana || item.kana}</span>
-      <span class="grammar-ja">${item.ja}</span>
+      <strong lang="ta">${item.targetTamil || item.ta}</strong>
+      <span class="grammar-structure morph-code"><small>構造</small>${item.structuredRoman || item.roman}</span>
+      <span class="kana-line"><small>カナ</small>${item.katakana || item.spokenKana || item.kana}</span>
+      <span class="grammar-roman spoken-code"><small>発音</small>${item.pronunciationRoman || item.spokenRoman || item.roman}</span>
+      <span class="grammar-strict"><small>綴り</small>${item.orthographicRoman || item.roman}</span>
+      <span class="grammar-ja">${item.meaningJa || item.ja}</span>
       ${item.note ? `<small>${enrichTamil(item.note)}</small>` : ""}
     </article>`;
   }
 
   function renderVocabularyAtlas(chapter, config) {
     const vocabulary = config.vocabulary || [];
-    const groups = [...new Set(vocabulary.map(item => item.group || "この章の語彙"))];
+    const groups = [...new Set(vocabulary.map(item => item.group || "この課の語彙"))];
     return `
       ${renderSectionHeading("TRAVEL LEXICON", config.title)}
       <p class="prose">${enrichTamil(config.intro)}</p>
@@ -511,9 +522,9 @@
       ${groups.map(group => `
         <section class="vocab-section">
           <h3>${escapeHtml(group)}</h3>
-          <div class="vocab-grid">${vocabulary.filter(item => (item.group || "この章の語彙") === group).map(renderVocabularyCard).join("")}</div>
+          <div class="vocab-grid">${vocabulary.filter(item => (item.group || "この課の語彙") === group).map(renderVocabularyCard).join("")}</div>
         </section>`).join("")}
-      ${config.mission ? renderNote({ tone: "blue", title: "この章の旅行ミッション", body: config.mission }) : ""}`;
+      ${config.mission ? renderNote({ tone: "blue", title: "この課のミッション", body: config.mission }) : ""}`;
   }
 
   function renderVocabularyCard(item) {
@@ -596,7 +607,7 @@
         <div><h2>1問1診断</h2><p>誤答はすべて既出の実在形。どの特徴を取り違えたかを一つずつ確認します。</p></div>
       </div>
       ${chapter.quiz.map((question, index) => renderQuizQuestion(chapter, question, index, quiz, printMode)).join("")}
-      ${printMode ? "" : `<button class="quiz-finish" type="button" data-finish-quiz ${answered < chapter.quiz.length ? "disabled" : ""}>採点して章を完了</button>`}`;
+      ${printMode ? "" : `<button class="quiz-finish" type="button" data-finish-quiz ${answered < chapter.quiz.length ? "disabled" : ""}>採点して課を完了</button>`}`;
   }
 
   function renderQuizQuestion(chapter, question, index, quiz, printMode) {
@@ -628,22 +639,22 @@
 
   function renderChapterFooter(chapter) {
     if (chapter.number === 0) {
-      return `<nav class="chapter-footer-nav" aria-label="前後の章">
-        <button type="button" disabled>← 前の章</button>
-        <button type="button" data-go-chapter="0">第1章へ →</button>
+      return `<nav class="chapter-footer-nav" aria-label="前後の課">
+        <button type="button" disabled>← 前の課</button>
+        <button type="button" data-go-chapter="0">第1課へ →</button>
       </nav>`;
     }
     if (chapter.number === 1) {
-      return `<nav class="chapter-footer-nav" aria-label="前後の章">
+      return `<nav class="chapter-footer-nav" aria-label="前後の課">
         <button type="button" data-open-reference="true">← PART 0</button>
-        <button type="button" data-go-chapter="1">次の章 →</button>
+        <button type="button" data-go-chapter="1">次の課 →</button>
       </nav>`;
     }
     const previous = chapter.number - 2;
     const next = chapter.number;
-    return `<nav class="chapter-footer-nav" aria-label="前後の章">
-      <button type="button" data-go-chapter="${previous}" ${previous < 0 ? "disabled" : ""}>← 前の章</button>
-      <button type="button" data-go-chapter="${next}" ${next >= book.chapters.length ? "disabled" : ""}>次の章 →</button>
+    return `<nav class="chapter-footer-nav" aria-label="前後の課">
+      <button type="button" data-go-chapter="${previous}" ${previous < 0 ? "disabled" : ""}>← 前の課</button>
+      <button type="button" data-go-chapter="${next}" ${next >= book.chapters.length ? "disabled" : ""}>次の課 →</button>
     </nav>`;
   }
 
@@ -660,8 +671,8 @@
       const patterns = chapter.formConfig?.patterns || [];
       const searchable = [
         chapter.number, pad(chapter.number), chapter.navTitle, chapter.title, chapter.tamilTitle, chapter.deck, ...chapter.targets,
-        ...vocabulary.flatMap(item => [item.ta, item.roman, item.spokenRoman, item.kana, item.spokenKana, item.ja, item.group, item.note]),
-        ...patterns.flatMap(item => [item.ta, item.roman, item.spokenRoman, item.kana, item.spokenKana, item.ja, item.group, item.kind, item.note])
+        ...vocabulary.flatMap(item => [item.targetTamil, item.orthographicRoman, item.structuredRoman, item.pronunciationRoman, item.katakana, item.meaningJa, item.ta, item.roman, item.group, item.note]),
+        ...patterns.flatMap(item => [item.targetTamil, item.orthographicRoman, item.structuredRoman, item.pronunciationRoman, item.katakana, item.meaningJa, item.ta, item.roman, item.group, item.kind, item.note])
       ].join(" ").toLocaleLowerCase();
       return searchable.includes(query);
     });
@@ -669,7 +680,7 @@
     const referenceSearchable = reference ? [
       reference.navTitle, reference.title, reference.tamilTitle, reference.deck, ...reference.targets,
       ...(reference.readSections ?? []).flatMap(section => [section.heading, ...(section.paragraphs ?? [])]),
-      ...(reference.examples ?? []).flatMap(item => [item.ta, item.roman, item.morph, item.kana, item.ja])
+      ...(reference.examples ?? []).flatMap(item => [item.targetTamil, item.orthographicRoman, item.structuredRoman, item.pronunciationRoman, item.katakana, item.meaningJa])
     ].join(" ").toLocaleLowerCase() : "";
     const referenceVisible = Boolean(reference)
       && (!query || referenceSearchable.includes(query));
@@ -679,7 +690,7 @@
       <div class="nav-part-label"><span>PART 0</span>文字と名詞格</div>
       <button class="chapter-nav-button reference-nav-button ${state.referenceOpen ? "active" : ""}" type="button" data-open-reference="true" aria-current="${state.referenceOpen ? "page" : "false"}" aria-label="PART 0 ${escapeAttr(reference.navTitle)}">
         <span class="nav-num">00</span>
-        <span class="nav-copy"><strong>${reference.navTitle}</strong><small>-ai / -e / Ø · 文字音声表</small><span class="nav-mini-track" aria-hidden="true"><span style="width:${referenceSteps * 20}%"></span></span></span>
+        <span class="nav-copy"><strong>${reference.navTitle}</strong><small>格の標示選択 · 文字音声表</small><span class="nav-mini-track" aria-hidden="true"><span style="width:${referenceSteps * 20}%"></span></span></span>
         <span class="nav-status"><small>早見</small><span class="nav-check">↗</span></span>
       </button>` : "";
 
@@ -691,7 +702,7 @@
       const partHeading = part.code !== previousPart ? `<div class="nav-part-label"><span>${part.code}</span>${part.title}</div>` : "";
       previousPart = part.code;
       const active = !state.referenceOpen && index === state.chapterIndex;
-      return `${partHeading}<button class="chapter-nav-button ${active ? "active" : ""} ${complete ? "complete" : ""}" type="button" data-chapter="${index}" aria-current="${active ? "page" : "false"}" aria-label="第${chapter.number}章 ${escapeAttr(chapter.navTitle)}、${complete ? "完了" : `${completedSteps}/5ステップ`}">
+      return `${partHeading}<button class="chapter-nav-button ${active ? "active" : ""} ${complete ? "complete" : ""}" type="button" data-chapter="${index}" aria-current="${active ? "page" : "false"}" aria-label="第${chapter.number}課 ${escapeAttr(chapter.navTitle)}、${complete ? "完了" : `${completedSteps}/5ステップ`}">
         <span class="nav-num">${pad(chapter.number)}</span>
         <span class="nav-copy"><strong>${chapter.navTitle}</strong><small>${chapter.targets.slice(0, 2).join(" · ")}</small><span class="nav-mini-track" aria-hidden="true"><span style="width:${completedSteps * 20}%"></span></span></span>
         <span class="nav-status"><small>${completedSteps}/5</small><span class="nav-check">${complete ? "✓" : "○"}</span></span>
@@ -710,13 +721,13 @@
       return total + steps.filter(step => progress[step]).length;
     }, 0);
     const totalSteps = book.chapters.length * steps.length;
-    document.getElementById("drawerProgressText").textContent = `${completedChapters} / ${book.chapters.length}章 完了`;
+    document.getElementById("drawerProgressText").textContent = `${completedChapters} / ${book.chapters.length}課 完了`;
     document.getElementById("drawerProgressDetail").textContent = `学習ステップ ${completedSteps} / ${totalSteps}`;
     document.getElementById("drawerProgressFill").style.width = `${(completedChapters / book.chapters.length) * 100}%`;
 
     const nextIndex = book.chapters.findIndex(chapter => !getChapterProgress(chapter.id).check);
     resumeChapterButton.disabled = nextIndex < 0;
-    resumeChapterButton.textContent = nextIndex < 0 ? "✓ 全章完了" : completedSteps === 0 ? "▶ 第1章から始める" : `▶ 第${book.chapters[nextIndex].number}章へ`;
+    resumeChapterButton.textContent = nextIndex < 0 ? "✓ 全課完了" : completedSteps === 0 ? "▶ 第1課から始める" : `▶ 第${book.chapters[nextIndex].number}課へ`;
 
     incompleteFilterButton.classList.toggle("active", state.navFilter.incompleteOnly);
     incompleteFilterButton.setAttribute("aria-pressed", String(state.navFilter.incompleteOnly));
@@ -773,7 +784,7 @@
     saveStored();
     render();
     const score = calculateScore(chapter, quiz);
-    showToast(`${chapter.number === 0 ? "PART 0" : `第${chapter.number}章`} 完了：${score}/${chapter.quiz.length}`);
+    showToast(`${chapter.number === 0 ? "PART 0" : `第${chapter.number}課`} 完了：${score}/${chapter.quiz.length}`);
   }
 
   function calculateScore(chapter, quiz) {
@@ -832,7 +843,7 @@
   }
 
   function resetProgress() {
-    const confirmed = window.confirm(`${book.chapters.length}章分の学習記録と採点結果をリセットしますか？教材データは消えません。`);
+    const confirmed = window.confirm(`${book.chapters.length}課分の学習記録と採点結果をリセットしますか？教材データは消えません。`);
     if (!confirmed) return;
     state.progress = {};
     state.quizzes = {};
@@ -883,6 +894,17 @@
     state.audio.voice = voices.find(voice => /^ta-IN$/i.test(voice.lang)) || voices.find(voice => /^ta([_-]|$)/i.test(voice.lang)) || null;
   }
 
+  function notifyMissingTamilVoice() {
+    if (state.audio.voice || state.audio.voiceNoticeShown) return;
+    state.audio.voiceNoticeShown = true;
+    showToast("端末にタミル語音声が見つかりません。既定音声で試します");
+  }
+
+  function isTamilTtsText(value) {
+    const text = String(value ?? "").normalize("NFC");
+    return Boolean(text) && /^[\u0B80-\u0BFF\s.,?!…;:()'’]+$/u.test(text);
+  }
+
   function playExampleById(id, queue, continuous) {
     if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
       showToast("このブラウザは音声読み上げに対応していません");
@@ -903,9 +925,17 @@
 
   function speakExample(example, preserveRepeat = false) {
     stopAudio(false, true, preserveRepeat);
-    openAudioDock(example.ta, example.ja);
+    const targetTamil = example.targetTamil || example.ta;
+    const meaningJa = example.meaningJa || example.ja;
+    const ttsText = example.ttsText || targetTamil;
+    if (!isTamilTtsText(ttsText)) {
+      showToast("音声用テキストにタミル文字以外が含まれています");
+      return;
+    }
+    notifyMissingTamilVoice();
+    openAudioDock(targetTamil, meaningJa);
     highlightExample(example.id);
-    const utterance = new SpeechSynthesisUtterance(example.ttsText || example.ta);
+    const utterance = new SpeechSynthesisUtterance(ttsText);
     utterance.lang = "ta-IN";
     utterance.rate = state.audio.rate;
     utterance.pitch = 1;
@@ -926,6 +956,11 @@
       showToast("このブラウザは音声読み上げに対応していません");
       return;
     }
+    if (!isTamilTtsText(tamil)) {
+      showToast("音声用テキストにタミル文字以外が含まれています");
+      return;
+    }
+    notifyMissingTamilVoice();
     stopAudio(false, true);
     state.audio.raw = true;
     state.audio.continuous = false;
@@ -1062,13 +1097,7 @@
 
   function chapterPart(chapter) {
     if (chapter.number === 0) return { code: "PART 0", title: "文字と名詞格" };
-    if (chapter.number <= 4) return { code: "PART I", title: "私の動詞エンジン" };
-    if (chapter.number <= 8) return { code: "PART II", title: "あなたと話す" };
-    if (chapter.number <= 12) return { code: "PART III", title: "人と世界を語る" };
-    if (chapter.number <= 16) return { code: "PART IV", title: "動作を伸ばす" };
-    if (chapter.number <= 18) return { code: "PART V", title: "文を伸ばす" };
-    if (chapter.number <= 28) return { code: "PART VI", title: "旅行科" };
-    return { code: "PART VII", title: "文法補完科" };
+    return { code: "PART I", title: "名詞と代名詞の土台" };
   }
 
   function updateHash() {
@@ -1101,6 +1130,7 @@
   function saveStored() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        schemaVersion: STORAGE_SCHEMA_VERSION,
         chapterIndex: state.chapterIndex,
         view: state.view,
         progress: state.progress,
