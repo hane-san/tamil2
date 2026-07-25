@@ -3,6 +3,8 @@ name: Apply v3.4 pedagogy revision
 on:
   pull_request:
     types: [synchronize, reopened]
+    paths:
+      - '.v34payload.ready'
 
 permissions:
   contents: write
@@ -61,7 +63,7 @@ jobs:
         run: |
           set -euo pipefail
           rm -rf node_modules
-          rm -f .v34payload.part-*
+          rm -f .v34payload.part-* .v34payload.ready
           rm -f .github/workflows/snapshot-v34.yml
           rm -f .github/workflows/apply-v34-pedagogy.yml
           git config user.name "github-actions[bot]"
