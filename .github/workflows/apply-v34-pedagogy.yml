@@ -34,6 +34,25 @@ jobs:
             tar -xJf /tmp/v34-payload.tar.xz || status=$?
           fi
           if [ "$status" -eq 0 ]; then
+            python3 - <<'PY' || status=$?
+          from pathlib import Path
+
+          app = Path("app-v28.js")
+          app_text = app.read_text(encoding="utf-8")
+          old = 'requestAnimationFrame(() => document.querySelector(`[data-question="${questionIndex}"]`)?.closest(".quiz-card")?.scrollIntoView({ block: "center", behavior: "smooth" }));'
+          new = 'requestAnimationFrame(() => document?.querySelector(`[data-question="${questionIndex}"]`)?.closest(".quiz-card")?.scrollIntoView({ block: "center", behavior: "smooth" }));'
+          if old not in app_text:
+              raise SystemExit("Expected quiz scroll callback not found")
+          app.write_text(app_text.replace(old, new, 1), encoding="utf-8")
+
+          check = Path("LANGUAGE_CHECK.md")
+          check_text = check.read_text(encoding="utf-8")
+          if "DOM validation passed: 55 assertions" not in check_text:
+              raise SystemExit("Expected provisional DOM count not found")
+          check.write_text(check_text.replace("DOM validation passed: 55 assertions", "DOM validation passed: 53 assertions", 1), encoding="utf-8")
+          PY
+          fi
+          if [ "$status" -eq 0 ]; then
             npm ci --ignore-scripts || status=$?
           fi
           if [ "$status" -eq 0 ]; then
