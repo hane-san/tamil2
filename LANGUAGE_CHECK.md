@@ -1,8 +1,8 @@
-# 言語検証記録 v3.2-rc.1
+# 言語検証記録 v3.3-rc.1
 
-更新日：2026-07-25
+更新日：2026-07-26
 
-対象：PART 0、第1課〜第6課
+対象：PART 0、第1課〜第8課
 
 状態：構造・転写・データ検査済み／個別発音のネイティブ音声監査待ち
 
@@ -246,16 +246,18 @@ reṇṭu puttakam irukku.
 | 第4課 | 10 | 10 | 5 |
 | 第5課 | 10 | 10 | 5 |
 | 第6課 | 11 | 10 | 5 |
+| 第7課 | 10 | 10 | 5 |
+| 第8課 | 12 | 10 | 5 |
 
-全公開スキーマ項目：130。各課に3文の短い読み取りを一つ収録する。
+全公開スキーマ項目：172。各課に3文の短い読み取りを一つ収録する。
 
 `node tests/validate-v30.mjs` の結果：
 
 ```text
-v3.2 validation passed: 5225 assertions
+v3.3 validation passed: 6867 assertions
 - 66 golden transliteration cases
-- 130 public data entries linted
-- PART 0 + lessons 1–6 only
+- 172 public data entries linted
+- PART 0 + lessons 1–8 only
 ```
 
 検査内容：
@@ -289,17 +291,17 @@ v3.2 validation passed: 5225 assertions
 - Enter／Space対応
 - 通常／ゆっくり、1回／2回、前／次、停止、連続再生
 - TTS不在通知
-- PART 0＋第1〜6課だけをナビ・印刷対象にする
-- 全6課に3文の短い読み取りを表示する
+- PART 0＋第1〜8課だけをナビ・印刷対象にする
+- 全8課に3文の短い読み取りを表示する
 - 旧URL、アイコン、ローカル保存キーを維持
 
 `tests/dom-v30.cjs` のDOM操作テスト結果：
 
 ```text
-DOM validation passed: 40 assertions
+DOM validation passed: 46 assertions
 - legacy kana setting migrated without deleting progress
 - card, glyph, keyboard, continuous, and letter audio are single-fire
-- PART 0 + 6 lessons, short readings, and 216-character table render
+- PART 0 + 8 lessons, short readings, and 216-character table render
 ```
 
 未完了：
@@ -350,4 +352,28 @@ DOM validation passed: 40 assertions
 
 ## 17. リリース判定
 
-構造、固定文字転写、公開範囲、データ移行、機械検査はリリース可能。個別発音とカナの全件ネイティブ音声監査が残るため、版は `v3.2-rc.1` とする。
+構造、固定文字転写、公開範囲、データ移行、機械検査はリリース可能。個別発音とカナの全件ネイティブ音声監査が残るため、版は `v3.3-rc.1` とする。
+
+## 18. 動詞の設計図
+
+第7課では、動詞を「意味の核・TAM／時制幹・人称語尾」の三層で読む。ただしこれは分析骨格であり、未知動詞を自動活用する生成規則ではない。
+
+| 動詞 | 現在 | 過去 | 未来 |
+|---|---|---|---|
+| 見る | `பாக்கறேன்` | `பாத்தேன்` | `பாப்பேன்` |
+| 行く | `போறேன்` | `போனேன்` | `போவேன்` |
+| 飲む | `குடிக்கறேன்` | `குடிச்சேன்` | `குடிப்பேன்` |
+
+口語表面形を正本にし、書記形は `counterparts` へ置く。`structuredRoman` からハイフンを除いた文字列が固定転写と一致することを検査する。
+
+## 19. 一人称の現在・過去・未来
+
+第8課では人物を一人称に固定し、時間語とTAMだけを動かす。
+
+- `இன்னிக்கு`：今日
+- `நேத்து`：昨日
+- `நாளைக்கு`：明日
+- `-ேன்`：一人称単数
+- `-ோம்`：一人称複数
+
+単純現在は進行中・習慣・予定を文脈に応じて表す。一人称未来は予定・意志・約束として自然に使われる。`நாங்க` は聞き手を含まない私たち、`நாம` は聞き手を含む私たちで、語尾だけでは包括性を決めない。
