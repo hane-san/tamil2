@@ -1,0 +1,19 @@
+{
+  "name": "口語タミル語の教科書",
+  "short_name": "口語タミル語",
+  "description": "地域横断型の標準口語タミル語を、文字・名詞・代名詞・所有・場所表現から学ぶ教材",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fffaf0",
+  "theme_color": "#0d736f",
+  "icons": [
+    {
+      "src": "app-icon.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
