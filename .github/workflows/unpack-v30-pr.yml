@@ -23,7 +23,7 @@ jobs:
         run: |
           set -euo pipefail
           cat .deploy-v30.part-* | base64 --decode > .deploy-v30.rebuilt.tar.gz
-          echo "31317b797f341c406bf8556f2acb1d600db97de89736c4314ee49f3f2112419f  .deploy-v30.rebuilt.tar.gz" | sha256sum --check
+          echo "ef97e2ffa5eb0515b7a1834996521398ce4fcf3d1b8d2d74294543cf447578f1  .deploy-v30.rebuilt.tar.gz" | sha256sum --check
           tar -tzf .deploy-v30.rebuilt.tar.gz >/dev/null
           tar -xzf .deploy-v30.rebuilt.tar.gz
           rm -f .deploy-v30.rebuilt.tar.gz .deploy-v30.tar.gz .deploy-v30.part-*
