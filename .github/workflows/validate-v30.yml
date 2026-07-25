@@ -24,25 +24,33 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
-      - name: Run data validation
-        run: npm run test:data
+      - name: Run data validation and capture output
+        id: data_test
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          npm run test:data 2>&1 | tee data-test-output.log
 
       - name: Run DOM validation and capture output
         id: dom_test
+        if: always()
         continue-on-error: true
         shell: bash
         run: |
           set -o pipefail
           npm run test:dom 2>&1 | tee dom-test-output.log
 
-      - name: Upload DOM test output
+      - name: Upload validation output
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: dom-test-output
-          path: dom-test-output.log
+          name: v3-test-output
+          path: |
+            data-test-output.log
+            dom-test-output.log
           if-no-files-found: error
 
-      - name: Enforce DOM validation result
-        if: steps.dom_test.outcome == 'failure'
+      - name: Enforce validation results
+        if: steps.data_test.outcome == 'failure' || steps.dom_test.outcome == 'failure'
         run: exit 1
