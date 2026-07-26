@@ -82,7 +82,7 @@ async function main() {
   const { document, Event, KeyboardEvent } = dom.window;
 
   assert(document.title.includes("第1課"), "initial title must identify lesson 1");
-  assert(document.getElementById("progressLabel").textContent.includes("第1課 / 10課"), "progress label must show 10-lesson scope");
+  assert(document.getElementById("progressLabel").textContent.includes("第1課 / 12課"), "progress label must show 12-lesson scope");
   assert(!document.body.classList.contains("hide-kana"), "v3 migration must restore kana visibility");
   assert(document.getElementById("toggleKana").checked, "kana toggle must be checked after migration");
 
@@ -139,10 +139,10 @@ async function main() {
 
   document.getElementById("menuButton").dispatchEvent(new Event("click", { bubbles: true }));
   const publicLessonButtons = document.querySelectorAll("#chapterNav button[data-chapter]");
-  assert(publicLessonButtons.length === 10, "drawer must expose exactly ten public lessons");
+  assert(publicLessonButtons.length === 12, "drawer must expose exactly twelve public lessons");
 
-  const shortReadingCue = { 3: "இது ரவியோட கார்", 4: "வீட்டுல இருக்கேன்", 5: "இந்த கோவில் பற்றி", 6: "என்கிட்ட டிக்கெட் இருக்கு", 7: "நான் படம் பாக்கறேன்", 8: "நான் நேத்து படம் பாத்தேன்", 9: "நான் நேத்து படம் பாக்கல", 10: "நான் சாப்பிட போறேன்" };
-  for (const lessonNumber of [3, 4, 5, 6, 7, 8, 9, 10]) {
+  const shortReadingCue = { 3: "இது ரவியோட கார்", 4: "வீட்டுல இருக்கேன்", 5: "இந்த கோவில் பற்றி", 6: "என்கிட்ட டிக்கெட் இருக்கு", 7: "நான் படம் பாக்கறேன்", 8: "நான் நேத்து படம் பாத்தேன்", 9: "நான் நேத்து படம் பாக்கல", 10: "நான் சாப்பிட போறேன்", 11: "கடைக்கு போய் தண்ணி வாங்கினேன்", 12: "நான் டிக்கெட் வாங்கி வெச்சேன்" };
+  for (const lessonNumber of [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) {
     document.querySelector(`#chapterNav button[data-chapter="${lessonNumber - 1}"]`).dispatchEvent(new Event("click", { bubbles: true }));
     assert(document.title.includes(`第${lessonNumber}課`), `lesson ${lessonNumber} navigation must work`);
     assert(document.querySelector(".view-read .reading-section:last-child").textContent.includes(shortReadingCue[lessonNumber]), `lesson ${lessonNumber} must render its short reading`);
@@ -176,7 +176,7 @@ async function main() {
     console.log(`DOM validation passed: ${assertions} assertions`);
     console.log("- legacy kana setting migrated without deleting progress");
     console.log("- card, glyph, keyboard, continuous, and letter audio are single-fire");
-    console.log("- PART 0 + 10 lessons, beginner explanations, critical quizzes, short readings, and 216-character table render");
+    console.log("- PART 0 + 12 lessons, beginner explanations, critical quizzes, short readings, and 216-character table render");
   }
 
   dom.window.close();
