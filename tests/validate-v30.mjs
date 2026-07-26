@@ -23,9 +23,11 @@ const runtimeFiles = [
   "lesson10-v35.js",
   "lesson11-v36.js",
   "lesson12-v36.js",
+  "lesson13-v37.js",
+  "lesson14-v37.js",
   "reading-v31.js",
   "pedagogy-v34.js",
-  "curriculum-v36.js"
+  "curriculum-v37.js"
 ];
 
 for (const file of runtimeFiles) {
@@ -83,8 +85,8 @@ for (const [tamil, expected] of golden) {
 }
 
 assert(golden.length >= 50, `golden count is ${golden.length}; expected at least 50`);
-assert(book.chapters.length === 12, `public chapter count is ${book.chapters.length}; expected 12`);
-assert(book.chapters.map(chapter => chapter.number).join(",") === "1,2,3,4,5,6,7,8,9,10,11,12", "public chapters must be lessons 1–12 in order");
+assert(book.chapters.length === 14, `public chapter count is ${book.chapters.length}; expected 14`);
+assert(book.chapters.map(chapter => chapter.number).join(",") === "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "public chapters must be lessons 1–14 in order");
 assert(reference.examples.length >= 8 && reference.examples.length <= 12, "PART 0 must have 8–12 examples");
 
 for (const chapter of book.chapters) {
@@ -211,14 +213,16 @@ const app = fs.readFileSync(path.join(root, "app-v28.js"), "utf8");
 assert(app.includes("needsV30SettingsMigration ? true"), "legacy hidden-kana setting migration is missing");
 assert(app.includes("voiceNoticeShown"), "missing Tamil voice notification guard is missing");
 assert(app.includes("isTamilTtsText"), "runtime TTS layer guard is missing");
+assert(app.includes('VISIBLE_PROGRESS_STEPS = ["read", "listen", "forms", "check"]'), "practice/check UI merge is missing");
+assert(!app.includes('formStepLabel(chapter), "練習", "確認"'), "duplicate practice/check steps remain visible");
 
 if (failures.length) {
-  console.error(`v3.6 validation failed: ${failures.length} issue(s), ${assertions} assertions`);
+  console.error(`v3.7 validation failed: ${failures.length} issue(s), ${assertions} assertions`);
   failures.forEach(failure => console.error(`- ${failure}`));
   process.exitCode = 1;
 } else {
-  console.log(`v3.6 validation passed: ${assertions} assertions`);
+  console.log(`v3.7 validation passed: ${assertions} assertions`);
   console.log(`- ${golden.length} golden transliteration cases`);
   console.log(`- ${entries.length} public data entries linted`);
-  console.log("- PART 0 + lessons 1–12 only");
+  console.log("- PART 0 + lessons 1–14 only");
 }
