@@ -1,6 +1,6 @@
 {
   "name": "spoken-tamil-textbook",
-  "version": "3.6.0-rc.1",
+  "version": "3.7.0-rc.1",
   "private": true,
   "scripts": {
     "test": "npm run test:data && npm run test:dom",

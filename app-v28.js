@@ -17,7 +17,8 @@
 
   const STORAGE_KEY = "tamil-verb-engine-v2";
   const STORAGE_SCHEMA_VERSION = 3;
-  const STEP_TO_VIEW = ["read", "examples", "forms", "practice", "practice"];
+  const STEP_TO_VIEW = ["read", "examples", "forms", "practice"];
+  const VISIBLE_PROGRESS_STEPS = ["read", "listen", "forms", "check"];
   const VIEW_LABELS = { read: "読む", examples: "例文", forms: "形", practice: "練習" };
 
   const stored = loadStored();
@@ -271,7 +272,7 @@
 
   function updateBottomNavLabels(chapter) {
     const labels = chapter.number === 0
-      ? { read: "格", examples: "例", forms: "文字", practice: "確認" }
+      ? { read: "格", examples: "例", forms: "文字", practice: "練習" }
       : { read: "読む", examples: "例文", forms: formStepLabel(chapter), practice: "練習" };
     const order = { read: "01", examples: "02", forms: "03", practice: "04" };
     bottomNav.querySelectorAll("button[data-view]").forEach(button => {
@@ -291,8 +292,8 @@
   }
 
   function renderStepStrip(chapter) {
-    const labels = chapter.number === 0 ? ["格", "聞く", "文字", "確認", "完了"] : ["読む", "聞く", formStepLabel(chapter), "練習", "確認"];
-    const names = ["read", "listen", "forms", "practice", "check"];
+    const labels = chapter.number === 0 ? ["格", "聞く", "文字", "練習"] : ["読む", "聞く", formStepLabel(chapter), "練習"];
+    const names = VISIBLE_PROGRESS_STEPS;
     const progress = getChapterProgress(chapter.id);
     return `<div class="step-strip" aria-label="課の学習手順">
       ${labels.map((label, index) => `
@@ -615,10 +616,10 @@
     return `
       <div class="quiz-intro">
         <div class="quiz-score-ring">${printMode ? "解答" : quiz.finished ? `${score}/${chapter.quiz.length}` : `${answered}/${chapter.quiz.length}`}</div>
-        <div><h2>この課の5つの急所</h2><p>分解 → 意味 → 実用場面 → 混同防止 → 総合復習の順で、本当に持ち帰る点だけを確認します。</p></div>
+        <div><h2>この課の練習：5つの急所</h2><p>分解 → 意味 → 実用場面 → 混同防止 → 総合復習の順で、問題を解きながら急所を定着させます。</p></div>
       </div>
       ${chapter.quiz.map((question, index) => renderQuizQuestion(chapter, question, index, quiz, printMode)).join("")}
-      ${printMode ? "" : `<button class="quiz-finish" type="button" data-finish-quiz ${answered < chapter.quiz.length ? "disabled" : ""}>採点して課を完了</button>`}`;
+      ${printMode ? "" : `<button class="quiz-finish" type="button" data-finish-quiz ${answered < chapter.quiz.length ? "disabled" : ""}>練習を完了して採点</button>`}`;
   }
 
   function renderQuizQuestion(chapter, question, index, quiz, printMode) {
@@ -696,27 +697,27 @@
     const referenceVisible = Boolean(reference)
       && (!query || referenceSearchable.includes(query));
     const referenceProgress = reference ? getChapterProgress(reference.id) : null;
-    const referenceSteps = referenceProgress ? ["read", "listen", "forms", "practice", "check"].filter(step => referenceProgress[step]).length : 0;
+    const referenceSteps = referenceProgress ? VISIBLE_PROGRESS_STEPS.filter(step => referenceProgress[step]).length : 0;
     const referenceMarkup = referenceVisible ? `
       <div class="nav-part-label"><span>PART 0</span>文字と名詞格</div>
       <button class="chapter-nav-button reference-nav-button ${state.referenceOpen ? "active" : ""}" type="button" data-open-reference="true" aria-current="${state.referenceOpen ? "page" : "false"}" aria-label="PART 0 ${escapeAttr(reference.navTitle)}">
         <span class="nav-num">00</span>
-        <span class="nav-copy"><strong>${reference.navTitle}</strong><small>格の標示選択 · 文字音声表</small><span class="nav-mini-track" aria-hidden="true"><span style="width:${referenceSteps * 20}%"></span></span></span>
+        <span class="nav-copy"><strong>${reference.navTitle}</strong><small>格の標示選択 · 文字音声表</small><span class="nav-mini-track" aria-hidden="true"><span style="width:${referenceSteps * 25}%"></span></span></span>
         <span class="nav-status"><small>早見</small><span class="nav-check">↗</span></span>
       </button>` : "";
 
     chapterNav.innerHTML = referenceMarkup + visibleChapters.map(({ chapter, index }) => {
       const progress = getChapterProgress(chapter.id);
       const complete = progress.check;
-      const completedSteps = ["read", "listen", "forms", "practice", "check"].filter(step => progress[step]).length;
+      const completedSteps = VISIBLE_PROGRESS_STEPS.filter(step => progress[step]).length;
       const part = chapterPart(chapter);
       const partHeading = part.code !== previousPart ? `<div class="nav-part-label"><span>${part.code}</span>${part.title}</div>` : "";
       previousPart = part.code;
       const active = !state.referenceOpen && index === state.chapterIndex;
-      return `${partHeading}<button class="chapter-nav-button ${active ? "active" : ""} ${complete ? "complete" : ""}" type="button" data-chapter="${index}" aria-current="${active ? "page" : "false"}" aria-label="第${chapter.number}課 ${escapeAttr(chapter.navTitle)}、${complete ? "完了" : `${completedSteps}/5ステップ`}">
+      return `${partHeading}<button class="chapter-nav-button ${active ? "active" : ""} ${complete ? "complete" : ""}" type="button" data-chapter="${index}" aria-current="${active ? "page" : "false"}" aria-label="第${chapter.number}課 ${escapeAttr(chapter.navTitle)}、${complete ? "完了" : `${completedSteps}/4ステップ`}">
         <span class="nav-num">${pad(chapter.number)}</span>
-        <span class="nav-copy"><strong>${chapter.navTitle}</strong><small>${chapter.targets.slice(0, 2).join(" · ")}</small><span class="nav-mini-track" aria-hidden="true"><span style="width:${completedSteps * 20}%"></span></span></span>
-        <span class="nav-status"><small>${completedSteps}/5</small><span class="nav-check">${complete ? "✓" : "○"}</span></span>
+        <span class="nav-copy"><strong>${chapter.navTitle}</strong><small>${chapter.targets.slice(0, 2).join(" · ")}</small><span class="nav-mini-track" aria-hidden="true"><span style="width:${completedSteps * 25}%"></span></span></span>
+        <span class="nav-status"><small>${completedSteps}/4</small><span class="nav-check">${complete ? "✓" : "○"}</span></span>
       </button>`;
     }).join("");
     const empty = document.getElementById("chapterNavEmpty");
@@ -725,7 +726,7 @@
   }
 
   function updateDrawerControls() {
-    const steps = ["read", "listen", "forms", "practice", "check"];
+    const steps = VISIBLE_PROGRESS_STEPS;
     const completedChapters = book.chapters.filter(chapter => getChapterProgress(chapter.id).check).length;
     const completedSteps = book.chapters.reduce((total, chapter) => {
       const progress = getChapterProgress(chapter.id);
