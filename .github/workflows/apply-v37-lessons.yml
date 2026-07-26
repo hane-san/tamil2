@@ -1,0 +1,82 @@
+name: Apply v3.7 lessons 13 and 14
+
+on:
+  pull_request:
+    types: [synchronize, reopened]
+    paths:
+      - '.v37payload.ready'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'release/v3.7-rc.1'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out release branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Rebuild and verify release payload
+        run: |
+          cat .v37payload.part-* > /tmp/v37-release.b64
+          base64 -d /tmp/v37-release.b64 > /tmp/v37-release.tar.gz
+          echo '0d6138abc1bb209ae190e4865528723596f9b8fe8c038769ba6679c3e6b3b53c  /tmp/v37-release.tar.gz' | sha256sum -c -
+          tar -xzf /tmp/v37-release.tar.gz
+          python3 apply-v37.py
+          rm -f apply-v37.py
+
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Run full validation
+        run: npm test | tee /tmp/v37-test.log
+
+      - name: Remove transfer and temporary workflow files
+        run: |
+          rm -rf node_modules
+          rm -f .v37payload.part-* .v37payload.ready .v37snapshot.trigger
+          rm -f .github/workflows/snapshot-v37.yml .github/workflows/apply-v37-lessons.yml
+
+      - name: Verify final changed paths
+        run: |
+          git add -A
+          git diff --cached --check
+          git diff --cached --name-only origin/main...HEAD >/dev/null || true
+          git diff --cached --name-only | sort > /tmp/actual-paths.txt
+          cat > /tmp/expected-paths.txt <<'EOF'
+          APPROVED_RULES.md
+          LANGUAGE_CHECK.md
+          README.md
+          app-v28.js
+          curriculum-v37.js
+          index.html
+          lesson13-v37.js
+          lesson14-v37.js
+          manifest-v37.webmanifest
+          package-lock.json
+          package.json
+          styles-v28.css
+          sw.js
+          tests/dom-v30.cjs
+          tests/validate-v30.mjs
+          EOF
+          sort -o /tmp/expected-paths.txt /tmp/expected-paths.txt
+          diff -u /tmp/expected-paths.txt /tmp/actual-paths.txt
+
+      - name: Upload validation log
+        uses: actions/upload-artifact@v4
+        with:
+          name: v37-test-log
+          path: /tmp/v37-test.log
+          if-no-files-found: error
+
+      - name: Commit verified release
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Add lessons 13 and 14 and unify practice flow'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
