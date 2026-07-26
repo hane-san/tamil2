@@ -1,18 +1,22 @@
 name: Audit v4.0 snapshot
 
 on:
-  push:
-    branches:
-      - audit/v4.0-beginner-clarity
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.audit-snapshot.ready'
 
 permissions:
   contents: read
 
 jobs:
   snapshot:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'audit/v4.0-beginner-clarity'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Create source snapshot
         run: |
           rm -rf .git node_modules
