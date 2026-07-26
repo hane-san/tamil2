@@ -13,9 +13,18 @@
 70340 total
 base64-bytes 70340
 base64-decode ok
-19ed0052ae0fe8ee1427421aa3ff38b07e8514ea3cf93f1c2cd656770e22ca3d  /tmp/v39-release.tar.gz
-
-gzip: stdin: invalid compressed data--crc error
-tar: Child returned status 1
-tar: Error is not recoverable: exiting now
-tar-list failed
+23836e5a6efc2406276569e9cccc0bdac9445cd99d96a8a42928ae17ef26914b  /tmp/v39-release.tar.gz
+tar-list ok
+APPROVED_RULES.md
+LANGUAGE_CHECK.md
+README.md
+curriculum-v39.js
+index.html
+lesson17-v39.js
+lesson18-v39.js
+manifest-v39.webmanifest
+package-lock.json
+package.json
+sw.js
+tests/dom-v30.cjs
+tests/validate-v30.mjs
