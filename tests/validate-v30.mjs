@@ -33,7 +33,8 @@ const runtimeFiles = [
   "lesson20-v40.js",
   "reading-v31.js",
   "pedagogy-v34.js",
-  "curriculum-v40.js"
+  "clarity-v41.js",
+  "curriculum-v41.js"
 ];
 
 for (const file of runtimeFiles) {
@@ -43,6 +44,7 @@ for (const file of runtimeFiles) {
 const { transliterateTamil, stripMorphBoundaries } = context.window.TAMIL_V30;
 const reference = context.window.TAMIL_REFERENCE;
 const book = context.window.TAMIL_BOOK;
+const clarity = context.window.TAMIL_CLARITY_V41;
 const failures = [];
 let assertions = 0;
 
@@ -94,12 +96,27 @@ assert(golden.length >= 50, `golden count is ${golden.length}; expected at least
 assert(book.chapters.length === 20, `public chapter count is ${book.chapters.length}; expected 20`);
 assert(book.chapters.map(chapter => chapter.number).join(",") === "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20", "public chapters must be lessons 1–20 in order");
 assert(reference.examples.length >= 8 && reference.examples.length <= 12, "PART 0 must have 8–12 examples");
+assert(clarity?.version === "4.1-rc.1", "v4.1 beginner clarity config must load");
+assert(Object.keys(clarity.lessonAnchors || {}).length === 20, "every lesson must have a beginner anchor");
 
 for (const chapter of book.chapters) {
   assert(chapter.examples.length >= 8 && chapter.examples.length <= 12, `${chapter.id}: examples must be 8–12`);
   assert(chapter.quiz.length === 5, `${chapter.id}: revised quiz must contain five critical questions`);
   assert(chapter.criticalPoints?.length === 3, `${chapter.id}: expected three critical points`);
   assert(chapter.readSections.length >= 6, `${chapter.id}: revised explanation must contain five teaching blocks plus a short reading`);
+  assert(Boolean(clarity.lessonAnchors?.[chapter.number]), `${chapter.id}: beginner anchor missing`);
+  assert((clarity.lessonTerms?.[chapter.number] || []).length >= 1, `${chapter.id}: beginner term guide missing`);
+  for (const term of clarity.lessonTerms?.[chapter.number] || []) {
+    assert(Boolean(clarity.terms?.[term]), `${chapter.id}: undefined beginner term ${term}`);
+  }
+  const contrastGroup = clarity.contrastGroups?.[chapter.number];
+  if (contrastGroup) {
+    assert(contrastGroup.items.length >= 3 && contrastGroup.items.length <= 5, `${chapter.id}: contrast board must contain 3–5 items`);
+    for (const [id, label] of contrastGroup.items) {
+      assert(Boolean(label), `${chapter.id}: contrast label missing for ${id}`);
+      assert(chapter.examples.some(example => example.id === id), `${chapter.id}: contrast example ${id} does not resolve`);
+    }
+  }
   chapter.readSections.forEach((section, index) => {
     assert(Boolean(section.heading), `${chapter.id} section ${index + 1}: heading missing`);
     assert(Array.isArray(section.paragraphs) && section.paragraphs.length > 0, `${chapter.id} section ${index + 1}: paragraphs missing`);
@@ -221,13 +238,20 @@ assert(app.includes("voiceNoticeShown"), "missing Tamil voice notification guard
 assert(app.includes("isTamilTtsText"), "runtime TTS layer guard is missing");
 assert(app.includes('VISIBLE_PROGRESS_STEPS = ["read", "listen", "forms", "check"]'), "practice/check UI merge is missing");
 assert(!app.includes('formStepLabel(chapter), "練習", "確認"'), "duplicate practice/check steps remain visible");
+assert(app.includes("getQuizOptionOrder"), "stable quiz option ordering is missing");
+assert(app.includes("answer-position:"), "balanced answer-position seed is missing");
+assert(app.includes("data-visual-option"), "visual quiz position metadata is missing");
+assert(app.includes("renderBeginnerAnchor"), "beginner anchor renderer is missing");
+assert(app.includes("renderReadingParagraph"), "mobile sentence splitting is missing");
+assert(styles.includes(".beginner-glossary"), "beginner glossary styles are missing");
+assert(styles.includes(".contrast-board"), "contrast board styles are missing");
 
 if (failures.length) {
-  console.error(`v4.0 validation failed: ${failures.length} issue(s), ${assertions} assertions`);
+  console.error(`v4.1 validation failed: ${failures.length} issue(s), ${assertions} assertions`);
   failures.forEach(failure => console.error(`- ${failure}`));
   process.exitCode = 1;
 } else {
-  console.log(`v4.0 validation passed: ${assertions} assertions`);
+  console.log(`v4.1 validation passed: ${assertions} assertions`);
   console.log(`- ${golden.length} golden transliteration cases`);
   console.log(`- ${entries.length} public data entries linted`);
   console.log("- PART 0 + lessons 1–20 only");

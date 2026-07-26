@@ -104,6 +104,10 @@ async function main() {
   assert(![...document.querySelectorAll(".step-strip .step-button")].some(button => button.textContent.trim() === "確認"), "duplicate check step must not render");
   assert(document.querySelector(".roman-guide").textContent.includes("構造ローマ字"), "beginner roman guide must render");
   assert(document.querySelector(".view-read .roman-inline").textContent.includes("("), "parenthetical structured roman must render in explanations");
+  assert(document.querySelector(".beginner-anchor").textContent.includes("迷ったらここへ戻る"), "beginner anchor must render");
+  assert(document.querySelector(".beginner-glossary").textContent.includes("文法用語を日常語で確認"), "beginner glossary must render");
+  assert(document.querySelectorAll(".reading-sentence-stack").length >= 1, "long explanations must split into mobile sentence blocks");
+  assert(document.querySelector("button[data-view='examples']").textContent.includes("聞く"), "second learning tab must be labelled listen");
 
   const beforeCardClick = dom.window.__spokenUtterances.length;
   hero.querySelector(".tamil-line").dispatchEvent(new Event("click", { bubbles: true }));
@@ -153,6 +157,26 @@ async function main() {
     assert(document.querySelectorAll(".view-examples .example-feature, .view-examples .example-row").length === expectedExampleCount, `lesson ${lessonNumber} must render ${expectedExampleCount} examples`);
     document.getElementById("menuButton").dispatchEvent(new Event("click", { bubbles: true }));
   }
+  const answerPositionCounts = [0, 0, 0, 0];
+  for (let lessonNumber = 1; lessonNumber <= 20; lessonNumber += 1) {
+    document.querySelector(`#chapterNav button[data-chapter="${lessonNumber - 1}"]`).dispatchEvent(new Event("click", { bubbles: true }));
+    document.querySelector("button[data-view='practice']").dispatchEvent(new Event("click", { bubbles: true }));
+    const chapter = dom.window.TAMIL_BOOK.chapters[lessonNumber - 1];
+    const cards = [...document.querySelectorAll(".quiz-card")];
+    assert(cards.length === 5, `lesson ${lessonNumber} must expose five shuffled questions`);
+    cards.forEach((card, questionIndex) => {
+      const buttons = [...card.querySelectorAll(".quiz-option")];
+      const correctCanonical = chapter.quiz[questionIndex].answer;
+      const visualPosition = buttons.findIndex(button => Number(button.dataset.quizOption) === correctCanonical);
+      assert(visualPosition >= 0, `lesson ${lessonNumber} quiz ${questionIndex + 1}: correct canonical option missing`);
+      answerPositionCounts[visualPosition] += 1;
+    });
+  }
+  assert(answerPositionCounts.join(",") === "25,25,25,25", `correct answer positions must be balanced; got ${answerPositionCounts.join(",")}`);
+
+  document.querySelector(`#chapterNav button[data-chapter="6"]`).dispatchEvent(new Event("click", { bubbles: true }));
+  assert(document.querySelectorAll(".contrast-card").length === 3, "lesson 7 must show a three-way tense contrast board");
+
   document.querySelector("#chapterNav [data-open-reference]").dispatchEvent(new Event("click", { bubbles: true }));
   assert(document.title.includes("PART 0"), "PART 0 navigation must work");
 

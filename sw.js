@@ -1,4 +1,4 @@
-const CACHE_NAME = "tamil2-tn-sst-v40-rc1-20260726";
+const CACHE_NAME = "tamil2-tn-sst-v41-rc1-20260726";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -26,11 +26,12 @@ const APP_FILES = [
   "./lesson19-v40.js",
   "./lesson20-v40.js",
   "./pedagogy-v34.js",
+  "./clarity-v41.js",
   "./reading-v31.js",
-  "./curriculum-v40.js",
+  "./curriculum-v41.js",
   "./app-v28.js",
   "./app-icon.png",
-  "./manifest-v40.webmanifest"
+  "./manifest-v41.webmanifest"
 ];
 
 self.addEventListener("install", event => {

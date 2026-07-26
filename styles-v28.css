@@ -1431,3 +1431,188 @@ body.hide-morph .form-structure { display: none; }
   .critical-points { padding: 15px; }
   .reading-takeaway > strong { font-size: 13px; }
 }
+
+/* v4.1 beginner clarity layer */
+.beginner-anchor {
+  margin: 14px 0;
+  padding: 15px 16px;
+  border: 1px solid rgba(13, 115, 111, 0.22);
+  border-left: 5px solid var(--teal, #0d736f);
+  border-radius: 14px;
+  background: rgba(13, 115, 111, 0.07);
+  display: grid;
+  gap: 5px;
+}
+
+.beginner-anchor > span {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--teal, #0d736f);
+}
+
+.beginner-anchor > strong {
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.beginner-glossary {
+  margin: 14px 0 18px;
+  border: 1px solid rgba(39, 52, 61, 0.14);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  overflow: hidden;
+}
+
+.beginner-glossary summary {
+  cursor: pointer;
+  padding: 13px 15px;
+  display: grid;
+  gap: 3px;
+  list-style: none;
+}
+
+.beginner-glossary summary::-webkit-details-marker { display: none; }
+.beginner-glossary summary::after {
+  content: "＋";
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  justify-self: end;
+  font-weight: 800;
+  color: var(--teal, #0d736f);
+}
+.beginner-glossary[open] summary::after { content: "−"; }
+.beginner-glossary summary span {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--teal, #0d736f);
+}
+.beginner-glossary summary strong { font-size: 14px; }
+.beginner-glossary ul {
+  margin: 0;
+  padding: 0 15px 15px;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.beginner-glossary li {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 250, 240, 0.92);
+  display: grid;
+  gap: 2px;
+}
+.beginner-glossary li strong { font-size: 13px; line-height: 1.55; }
+.beginner-glossary li small { font-size: 11px; color: #6f6258; }
+
+.beginner-term {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.3em;
+  padding: 0 0.14em;
+  border-radius: 5px;
+  background: rgba(244, 180, 0, 0.12);
+}
+.beginner-term > span { font-weight: 750; }
+.beginner-term > small {
+  font-size: 0.74em;
+  color: #75685d;
+  white-space: nowrap;
+}
+.beginner-term > small::before { content: "（"; }
+.beginner-term > small::after { content: "）"; }
+
+.contrast-board {
+  margin: 18px 0 24px;
+  padding: 15px;
+  border: 1px solid rgba(13, 115, 111, 0.18);
+  border-radius: 16px;
+  background: rgba(13, 115, 111, 0.045);
+}
+.contrast-board-head {
+  display: grid;
+  gap: 3px;
+  margin-bottom: 11px;
+}
+.contrast-board-head span {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--teal, #0d736f);
+}
+.contrast-board-head strong { font-size: 15px; }
+.contrast-grid {
+  display: grid;
+  gap: 9px;
+}
+.contrast-card {
+  padding: 12px 13px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(39, 52, 61, 0.08);
+  display: grid;
+  grid-template-columns: minmax(72px, auto) 1fr;
+  gap: 3px 10px;
+  align-items: baseline;
+}
+.contrast-label {
+  grid-row: 1 / span 3;
+  align-self: start;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: rgba(244, 180, 0, 0.16);
+  font-size: 10px;
+  font-weight: 800;
+  text-align: center;
+}
+.contrast-card strong[lang="ta"] {
+  font-size: 21px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.contrast-roman {
+  font-size: 12px;
+  color: #5f6a6a;
+  overflow-wrap: anywhere;
+}
+.contrast-ja {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.reading-sentence-stack {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0;
+}
+.prose .reading-sentence-stack .reading-sentence {
+  margin: 0;
+  padding: 10px 12px;
+  border-left: 3px solid rgba(13, 115, 111, 0.24);
+  border-radius: 0 9px 9px 0;
+  background: rgba(255, 255, 255, 0.62);
+  line-height: 1.75;
+}
+.reading-section .ta-inline { overflow-wrap: anywhere; }
+.reading-section .roman-inline {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.quiz-option { text-align: left; }
+
+@media (max-width: 420px) {
+  .contrast-card {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .contrast-label {
+    grid-row: auto;
+    justify-self: start;
+  }
+  .contrast-card strong[lang="ta"] { font-size: 20px; }
+  .beginner-term { display: inline; }
+  .beginner-term > small { margin-left: 0.25em; }
+}

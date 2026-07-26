@@ -343,7 +343,7 @@ v4.0 validation passed: 17214 assertions
 DOM validation passed: 91 assertions
 - legacy kana setting migrated without deleting progress
 - card, glyph, keyboard, continuous, and letter audio are single-fire
-- PART 0 + 18 lessons, four-step practice UI, beginner explanations, critical quizzes, short readings, and 216-character table render
+- PART 0 + 20 lessons, four-step practice UI, beginner explanations, critical quizzes, short readings, and 216-character table render
 ```
 
 未完了：
@@ -535,3 +535,44 @@ DOM validation passed: 91 assertions
 - `வர்றப்போ / முன்னாடி / அப்புறம் / வரை` を時間関係として登録した。
 - `வரலனா` は検証済みの否定条件として登録し、未確認の一般変換規則にはしない。
 - 日本語の「〜たら」「〜のため」だけで機能を決めず、タミル語の節末形と最後の主節から読む。
+
+
+## v4.1 初学者向け整流監査
+
+### 変更しないもの
+
+- 全20課の `targetTamil / ttsText / orthographicRoman / structuredRoman / pronunciationRoman / katakana / meaningJa / morphemes`
+- 課順、例文数、5種類の問題焦点、診断タグ
+- 保存キー `tamil-verb-engine-v2` と教材上の選択肢番号
+
+### 変更したもの
+
+- 各課に一行の初心者アンカーを追加
+- 各課に平易な日本語を先に置く用語言い換えを追加
+- 第7〜20課に既存例文IDを参照する比較ボードを追加
+- 複数文を含む解説段落を、スマートフォンでは一文ずつの小ブロックとして表示
+- 画面上の第二段階を「聞く」へ統一
+- 問題の表示順を課・設問から安定して決め、正解位置を全100問で25・25・25・25へ分散
+
+回答は表示位置ではなく教材上の選択肢番号を保存するため、保存済み回答・採点・診断タグの移行は不要。
+
+### 補講差分
+
+旧38章から現行20課にない学習価値の高い文法は、A〜Hの8補講へ整理した。全人称の過去・未来、指示疑問系列、数量、比較拡張、焦点・不特定、経験・変化、使役・自他、自己利益・相互・行為者なしを二課ずつ制作する。旅行場面章は文法補講から分離する。
+
+### 機械検査
+
+GitHub Actionsで依存関係をロック通り導入し、次の検査結果を得た。
+
+```text
+v4.1 validation passed: 17430 assertions
+- 66 golden transliteration cases
+- 418 public data entries linted
+- PART 0 + lessons 1–20 only
+
+DOM validation passed: 217 assertions
+- legacy kana setting migrated without deleting progress
+- card, glyph, keyboard, continuous, and letter audio are single-fire
+- all 100 quiz answers are displayed in a balanced 25 / 25 / 25 / 25 distribution
+- PART 0 + 20 lessons, beginner anchors, terminology guides, contrast boards, short readings, and 216-character table render
+```

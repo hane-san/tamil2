@@ -1,8 +1,0 @@
-
-> spoken-tamil-textbook@4.1.0-rc.1 test
-> npm run test:data && npm run test:dom
-
-
-> spoken-tamil-textbook@4.1.0-rc.1 test:data
-> node tests/validate-v30.mjs
-
