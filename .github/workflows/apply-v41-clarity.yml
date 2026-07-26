@@ -5,7 +5,7 @@ on:
     branches:
       - release/v4.1-rc.1
     paths:
-      - '.v41payload.ready'
+      - '.v41patch.ready'
 
 permissions:
   contents: write
@@ -20,12 +20,14 @@ jobs:
           ref: release/v4.1-rc.1
           fetch-depth: 0
 
-      - name: Rebuild and verify release payload
+      - name: Rebuild, verify, and apply patch
         run: |
-          cat .v41payload.part-* > /tmp/v41-release.b64
-          base64 -d /tmp/v41-release.b64 > /tmp/v41-release.tar.gz
-          echo '7c18427aad5e7eb0301ee22484859046e63d5a4a8f20df60cd3623661e1a970f  /tmp/v41-release.tar.gz' | sha256sum -c -
-          tar -xzf /tmp/v41-release.tar.gz
+          cat .v41patch.part-* > /tmp/v41.patch.b64
+          base64 -d /tmp/v41.patch.b64 > /tmp/v41.patch.gz
+          echo 'fec4e48f126acb3312994ee910e321362211187fa515b8a151fa96c8ac31c7fc  /tmp/v41.patch.gz' | sha256sum -c -
+          gzip -dc /tmp/v41.patch.gz > /tmp/v41.patch
+          git apply --check /tmp/v41.patch
+          git apply /tmp/v41.patch
 
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
@@ -65,7 +67,7 @@ jobs:
       - name: Remove temporary transfer files
         run: |
           rm -rf node_modules
-          rm -f .v41payload.part-* .v41payload.ready
+          rm -f .v41patch.part-* .v41patch.ready
           rm -f .github/workflows/apply-v41-clarity.yml
 
       - name: Verify final release paths
