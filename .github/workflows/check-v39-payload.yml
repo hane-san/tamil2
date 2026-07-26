@@ -1,0 +1,46 @@
+name: Check v3.9 payload
+
+on:
+  pull_request:
+    types: [synchronize, reopened]
+    paths:
+      - '.v39check.ready'
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'release/v3.9-rc.1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Write payload report
+        run: |
+          {
+            wc -c .v39payload.part-*
+            cat .v39payload.part-* > /tmp/v39-release.b64
+            echo "base64-bytes $(wc -c < /tmp/v39-release.b64)"
+            if base64 -d /tmp/v39-release.b64 > /tmp/v39-release.tar.gz; then
+              echo 'base64-decode ok'
+              sha256sum /tmp/v39-release.tar.gz
+              if tar -tzf /tmp/v39-release.tar.gz >/tmp/v39-tar-list.txt; then
+                echo 'tar-list ok'
+                cat /tmp/v39-tar-list.txt
+              else
+                echo 'tar-list failed'
+              fi
+            else
+              echo 'base64-decode failed'
+            fi
+          } > .v39check.txt 2>&1
+          cat .v39check.txt
+      - name: Commit report
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .v39check.txt
+          git commit -m 'Record v3.9 payload check'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
