@@ -37,10 +37,10 @@ jobs:
 
       - name: Save exact validation output
         run: |
-          cp /tmp/v41-test.log .v41test.log
+          cp /tmp/v41-test.log .v41test.txt
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .v41test.log
+          git add .v41test.txt
           git commit -m 'Capture v4.1 validation output'
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
           exit 1
@@ -48,7 +48,7 @@ jobs:
       - name: Remove temporary transfer files
         run: |
           rm -rf node_modules
-          rm -f .v41patch.part-* .v41patch.ready .v41status.txt .v41pr.txt .v41test.log
+          rm -f .v41patch.part-* .v41patch.ready .v41status.txt .v41pr.txt .v41test.txt
           rm -f .github/workflows/apply-v41-clarity.yml
 
       - name: Verify final release paths
