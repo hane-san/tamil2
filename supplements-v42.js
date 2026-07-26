@@ -58,7 +58,7 @@
       legacyRefs: ["grammar-v28.js:35", "G35-01..G35-08", "35-01..35-12"],
       sourceLessons: ["lesson16-v38.js"],
       excludedScope: ["基本比較の単純再掲", "比較範囲のない最上級の機械生成"],
-      status: "planned"
+      status: "drafting"
     },
     {
       code: "E",
@@ -111,7 +111,7 @@
   ].map(freezeSupplement);
 
   window.TAMIL_SUPPLEMENT_CATALOG_V42 = Object.freeze({
-    version: "4.2.0-dev",
+    version: "4.3.0-dev",
     public: false,
     numberingPolicy: "supplement-codes-not-lessons-21-to-28",
     legacyTravelPolicy: "scene-review-packs-after-supplements",
