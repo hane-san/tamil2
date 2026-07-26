@@ -43,7 +43,7 @@ jobs:
         run: |
           git add -A
           git diff --cached --check
-          git diff --cached --name-only | sort > /tmp/actual-paths.txt
+          git diff --cached --name-only origin/main | sort > /tmp/actual-paths.txt
           cat > /tmp/expected-paths.txt <<'EOF'
           APPROVED_RULES.md
           LANGUAGE_CHECK.md
