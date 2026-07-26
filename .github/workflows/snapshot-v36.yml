@@ -1,9 +1,8 @@
 name: Snapshot v3.6 working tree
 
 on:
-  push:
-    branches:
-      - release/v3.6-rc.1
+  pull_request:
+    types: [synchronize, reopened]
     paths:
       - '.v36snapshot.trigger'
 
@@ -12,10 +11,13 @@ permissions:
 
 jobs:
   snapshot:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'release/v3.6-rc.1'
     runs-on: ubuntu-latest
     steps:
       - name: Check out release branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Build source snapshot
         run: |
           tar --exclude=.git --exclude=node_modules --exclude=.v36snapshot.trigger -czf /tmp/tamil2-v36-source.tar.gz .
