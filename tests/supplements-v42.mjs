@@ -10,13 +10,16 @@ vm.createContext(context);
 
 const runtimeFiles = [
   "tamil-core-v30.js",
+  "lesson01-v30.js",
   "lesson02-v30.js",
   "lesson08-v33.js",
   "lesson14-v37.js",
   "lesson15-v38.js",
+  "lesson16-v38.js",
   "supplements-v42.js",
   "supplementA-v42.js",
-  "supplementB-v42.js"
+  "supplementB-v42.js",
+  "supplementC-v43.js"
 ];
 for (const file of runtimeFiles) {
   vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), context, { filename: file });
@@ -25,6 +28,7 @@ for (const file of runtimeFiles) {
 const catalog = context.window.TAMIL_SUPPLEMENT_CATALOG_V42;
 const supplementA = (context.window.TAMIL_SUPPLEMENTS_V42 || []).find(item => item.code === "A");
 const supplementB = (context.window.TAMIL_SUPPLEMENTS_V42 || []).find(item => item.code === "B");
+const supplementC = (context.window.TAMIL_SUPPLEMENTS_V42 || []).find(item => item.code === "C");
 const lessonExamples = new Map(
   (context.window.TAMIL_LESSONS_V30 || []).flatMap(lesson => lesson.examples || []).map(example => [example.id, example])
 );
@@ -63,7 +67,7 @@ for (const supplement of supplements) {
   assert(Array.isArray(supplement.excludedScope) && supplement.excludedScope.length > 0, `${supplement.code}: excluded scope missing`);
   assert(["drafting", "planned"].includes(supplement.status), `${supplement.code}: invalid status ${supplement.status}`);
 }
-assert(supplements.filter(item => item.status === "drafting").map(item => item.code).join("") === "AB", "only A and B should be drafting in v4.2");
+assert(supplements.filter(item => item.status === "drafting").map(item => item.code).join("") === "ABC", "A, B and C should be drafting");
 
 assert(Boolean(supplementA), "supplement A data must load");
 assert(supplementA.id === "supplement-a-v42", "supplement A id mismatch");
@@ -97,7 +101,23 @@ assert(supplementB.examples[11] === lessonExamples.get("l15-12"), "l15-12 must b
 const expectedNewBIds = ["sb-01", "sb-03", "sb-04", "sb-05", "sb-06", "sb-09", "sb-10", "sb-11"];
 assert(supplementB.examples.filter(item => item.id.startsWith("sb-")).map(item => item.id).join(",") === expectedNewBIds.join(","), "supplement B new example order mismatch");
 
-for (const supplement of [supplementA, supplementB]) {
+assert(Boolean(supplementC), "supplement C data must load");
+assert(supplementC.id === "supplement-c-v43", "supplement C id mismatch");
+assert(supplementC.prerequisites.join(",") === "1,16", "supplement C prerequisites must be lessons 1 and 16");
+assert(supplementC.returnToLessons.join(",") === "1,16", "supplement C return links must be lessons 1 and 16");
+assert(supplementC.examples.length === 12, `supplement C has ${supplementC.examples.length} examples; expected 12`);
+assert(supplementC.formConfig.patterns.length === 8, `supplement C has ${supplementC.formConfig.patterns.length} patterns; expected 8`);
+assert(supplementC.readSections.length === 6, `supplement C has ${supplementC.readSections.length} reading sections; expected 6`);
+assert(supplementC.quiz.length === 5, `supplement C has ${supplementC.quiz.length} quiz questions; expected 5`);
+assert(supplementC.criticalPoints.length === 3, "supplement C must have three critical points");
+assert(supplementC.examples[0] === lessonExamples.get("l1-09"), "l1-09 must be reused by reference, not copied");
+assert(supplementC.examples[1] === lessonExamples.get("l16-01"), "l16-01 must be reused by reference, not copied");
+assert(supplementC.examples[11] === lessonExamples.get("l16-08"), "l16-08 must be reused by reference, not copied");
+
+const expectedNewCIds = ["sc-03", "sc-04", "sc-05", "sc-06", "sc-07", "sc-08", "sc-09", "sc-10", "sc-11"];
+assert(supplementC.examples.filter(item => item.id.startsWith("sc-")).map(item => item.id).join(",") === expectedNewCIds.join(","), "supplement C new example order mismatch");
+
+for (const supplement of [supplementA, supplementB, supplementC]) {
   assert(new Set(supplement.examples.map(item => item.id)).size === supplement.examples.length, `supplement ${supplement.code} example ids must be unique`);
   assert(new Set(supplement.formConfig.patterns.map(item => item.id)).size === supplement.formConfig.patterns.length, `supplement ${supplement.code} pattern ids must be unique`);
 }
@@ -122,8 +142,11 @@ for (const item of [...supplementA.examples.slice(2), ...supplementA.formConfig.
 for (const item of [...supplementB.examples.filter(item => item.id.startsWith("sb-")), ...supplementB.formConfig.patterns]) {
   validateEntry(item, "supplement B", "TAMIL-INTEGRATED-v2.0-rc.1");
 }
+for (const item of [...supplementC.examples.filter(item => item.id.startsWith("sc-")), ...supplementC.formConfig.patterns]) {
+  validateEntry(item, "supplement C", "CORE-CURRICULUM-v1.1");
+}
 
-for (const supplement of [supplementA, supplementB]) {
+for (const supplement of [supplementA, supplementB, supplementC]) {
   for (const section of supplement.readSections) {
     assert(Boolean(section.takeaway), `supplement ${supplement.code} ${section.heading}: takeaway missing`);
     assert(Array.isArray(section.paragraphs) && section.paragraphs.length > 0, `supplement ${supplement.code} ${section.heading}: paragraphs missing`);
@@ -137,9 +160,12 @@ assert(miniReadingA.ids.every(id => supplementA.examples.some(example => example
 const miniReadingB = supplementB.readSections.find(section => section.miniReading)?.miniReading;
 assert(miniReadingB?.ids.join(",") === "sb-04,sb-05,sb-10", "supplement B short reading ids mismatch");
 assert(miniReadingB.ids.every(id => supplementB.examples.some(example => example.id === id)), "supplement B short reading id does not resolve");
+const miniReadingC = supplementC.readSections.find(section => section.miniReading)?.miniReading;
+assert(miniReadingC?.ids.join(",") === "sc-05,sc-07,sc-08", "supplement C short reading ids mismatch");
+assert(miniReadingC.ids.every(id => supplementC.examples.some(example => example.id === id)), "supplement C short reading id does not resolve");
 
 const expectedFocus = ["形態分解", "機能選択", "実用場面", "混同防止", "総合復習"];
-for (const supplement of [supplementA, supplementB]) {
+for (const supplement of [supplementA, supplementB, supplementC]) {
   supplement.quiz.forEach((question, index) => {
     assert(question.focus === expectedFocus[index], `supplement ${supplement.code} quiz ${index + 1}: focus mismatch`);
     assert(question.options.length === 4, `supplement ${supplement.code} quiz ${index + 1}: expected four options`);
@@ -154,15 +180,17 @@ const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
 assert(!indexHtml.includes('src="supplements-v42.js"'), "draft supplement catalog must not load in public index");
 assert(!indexHtml.includes('src="supplementA-v42.js"'), "draft supplement A must not load in public index");
 assert(!indexHtml.includes('src="supplementB-v42.js"'), "draft supplement B must not load in public index");
+assert(!indexHtml.includes('src="supplementC-v43.js"'), "draft supplement C must not load in public index");
 
 if (failures.length) {
   console.error("Supplement validation failed:");
   failures.forEach(failure => console.error(`- ${failure}`));
   process.exitCode = 1;
 } else {
-  console.log(`v4.2 supplement validation passed: ${assertions} assertions`);
+  console.log(`supplement validation passed: ${assertions} assertions`);
   console.log("- A–H catalogued without changing lesson numbering");
   console.log("- supplement A: 10 examples, 10 form rows, 6 reading sections, 5 diagnostic questions");
   console.log("- supplement B: 12 examples, 6 series rows, 6 reading sections, 5 diagnostic questions");
-  console.log("- lessons 2, 8, 14, and 15 reused by reference; draft files remain outside the public index");
+  console.log("- supplement C: 12 examples, 8 form rows, 6 reading sections, 5 diagnostic questions");
+  console.log("- lessons 1, 2, 8, 14, 15, and 16 reused by reference; draft files remain outside the public index");
 }
