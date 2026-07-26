@@ -32,74 +32,19 @@ jobs:
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
 
-      - name: Run complete validation
+      - name: Capture complete validation diagnostic
         run: |
-          set -o pipefail
-          npm test 2>&1 | tee /tmp/v41-test.log
-
-      - name: Record exact validation totals
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-
-          log = Path('/tmp/v41-test.log').read_text(encoding='utf-8')
-          counts = re.findall(r'validation passed: ([0-9,]+) assertions', log)
-          if len(counts) < 2:
-              raise SystemExit('validation totals not found in:\n' + log[-1500:])
-          data_count, dom_count = counts[0], counts[-1]
-
-          readme = Path('README.md')
-          text = readme.read_text(encoding='utf-8')
-          text = text.replace('- データ・転写・教材構造：CI実測値を `LANGUAGE_CHECK.md` に記録', f'- データ・転写・教材構造：{data_count} assertions 合格')
-          text = text.replace('- DOM・設定移行・音声イベント・20課描画・正解位置分散：CI実測値を `LANGUAGE_CHECK.md` に記録', f'- DOM・設定移行・音声イベント・20課描画・正解位置分散：{dom_count} assertions 合格')
-          readme.write_text(text, encoding='utf-8')
-
-          check = Path('LANGUAGE_CHECK.md')
-          text = check.read_text(encoding='utf-8')
-          marker = 'ローカルのデータ検査は成功。DOM検査と正解位置分散の最終値は、依存関係をロック通り導入できるGitHub Actionsの恒久CIで確定し、公開前に本節へ実測値を追記する。'
-          replacement = f'''GitHub Actionsで依存関係をロック通り導入し、次の検査結果を得た。\n\n```text\nv4.1 validation passed: {data_count} assertions\n- 66 golden transliteration cases\n- 418 public data entries linted\n- PART 0 + lessons 1–20 only\n\nDOM validation passed: {dom_count} assertions\n- legacy kana setting migrated without deleting progress\n- card, glyph, keyboard, continuous, and letter audio are single-fire\n- all 100 quiz answers are displayed in a balanced 25 / 25 / 25 / 25 distribution\n- PART 0 + 20 lessons, beginner anchors, terminology guides, contrast boards, short readings, and 216-character table render\n```'''
-          if marker in text:
-              text = text.replace(marker, replacement)
-          else:
-              text += '\n\n' + replacement + '\n'
-          check.write_text(text, encoding='utf-8')
-          PY
-
-      - name: Remove temporary transfer files
-        run: |
-          rm -rf node_modules
-          rm -f .v41patch.part-* .v41patch.ready .v41status.txt .v41pr.txt .v41test.txt
-          rm -f .github/workflows/apply-v41-clarity.yml
-
-      - name: Verify final release paths
-        run: |
-          git add -A
-          git diff --cached --check origin/main
-          git diff --cached --name-only origin/main -- | sort > /tmp/actual.txt
-          cat > /tmp/expected.txt <<'EOF'
-          APPROVED_RULES.md
-          BEGINNER_CLARITY_AUDIT.md
-          LANGUAGE_CHECK.md
-          README.md
-          app-v28.js
-          clarity-v41.js
-          curriculum-v41.js
-          index.html
-          manifest-v41.webmanifest
-          package-lock.json
-          package.json
-          styles-v28.css
-          sw.js
-          tests/dom-v30.cjs
-          tests/validate-v30.mjs
-          EOF
-          sort -o /tmp/expected.txt /tmp/expected.txt
-          diff -u /tmp/expected.txt /tmp/actual.txt
-
-      - name: Commit verified v4.1 release
-        run: |
+          set +e
+          npm test > /tmp/v41-test.txt 2>&1
+          status=$?
+          set -e
+          {
+            echo "exit_status=$status"
+            cat /tmp/v41-test.txt
+          } > .v41diagnostic.txt
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'Improve beginner clarity across all twenty lessons'
+          git add .v41diagnostic.txt
+          git commit -m 'Capture complete v4.1 validation diagnostic'
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          exit 1
