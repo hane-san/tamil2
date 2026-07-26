@@ -46,7 +46,7 @@
       legacyRefs: ["grammar-v28.js:32", "grammar-v28.js:34"],
       sourceLessons: ["lesson01-v30.js", "lesson16-v38.js"],
       excludedScope: ["数字一覧だけの暗記課", "数詞後の複数を一律化"],
-      status: "planned"
+      status: "drafting"
     },
     {
       code: "D",
