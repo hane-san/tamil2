@@ -204,7 +204,7 @@ reṇṭu puttakam irukku.
 - 阻害音重子音は `ッ`。
 - カナからTamil表記を逆生成しない。
 
-現在の公開130項目はすべて `confidence.pronunciation:C` を含む。これは、発音層とカナが規格・文法資料・既存教材との照合を通っている一方、指定プロフィールのネイティブ録音を用いた全件監査が未完了だからである。
+現在の公開286項目はすべて `confidence.pronunciation:C` を含む。これは、発音層とカナが規格・文法資料・既存教材との照合を通っている一方、指定プロフィールのネイティブ録音を用いた全件監査が未完了だからである。
 
 優先して音声監査する項目：
 
@@ -276,16 +276,18 @@ reṇṭu puttakam irukku.
 | 第10課 | 10 | 8 | 5 |
 | 第11課 | 10 | 8 | 5 |
 | 第12課 | 10 | 8 | 5 |
+| 第13課 | 11 | 8 | 5 |
+| 第14課 | 12 | 10 | 5 |
 
-全公開スキーマ項目：245。各課に3文の短い読み取りを一つ収録する。
+全公開スキーマ項目：286。各課に3文の短い読み取りを一つ収録する。
 
 `node tests/validate-v30.mjs` の結果：
 
 ```text
-v3.6 validation passed: 10166 assertions
+v3.7 validation passed: 11844 assertions
 - 66 golden transliteration cases
-- 245 public data entries linted
-- PART 0 + lessons 1–12 only
+- 286 public data entries linted
+- PART 0 + lessons 1–14 only
 ```
 
 検査内容：
@@ -322,9 +324,9 @@ v3.6 validation passed: 10166 assertions
 - Enter／Space対応
 - 通常／ゆっくり、1回／2回、前／次、停止、連続再生
 - TTS不在通知
-- PART 0＋第1〜12課だけをナビ・印刷対象にする
-- 全12課に3文の短い読み取りを表示する
-- 全12課に「持ち帰る3点」と初心者向け6段階解説を表示する
+- PART 0＋第1〜14課だけをナビ・印刷対象にする
+- 全14課に3文の短い読み取りを表示する
+- 全14課に「持ち帰る3点」と初心者向け6段階解説を表示する
 - 解説中のTamil語句へ括弧付き構造ローマ字を表示する
 - 問題を5つの急所に固定し、解答後に理由と持ち帰る一行を表示する
 - 旧URL、アイコン、ローカル保存キーを維持
@@ -332,10 +334,10 @@ v3.6 validation passed: 10166 assertions
 `tests/dom-v30.cjs` のDOM操作テスト結果：
 
 ```text
-DOM validation passed: 65 assertions
+DOM validation passed: 73 assertions
 - legacy kana setting migrated without deleting progress
 - card, glyph, keyboard, continuous, and letter audio are single-fire
-- PART 0 + 12 lessons, beginner explanations, critical quizzes, short readings, and 216-character table render
+- PART 0 + 14 lessons, four-step practice UI, beginner explanations, critical quizzes, short readings, and 216-character table render
 ```
 
 未完了：
@@ -386,7 +388,7 @@ DOM validation passed: 65 assertions
 
 ## 18. リリース判定
 
-構造、固定文字転写、公開範囲、データ移行、機械検査はリリース可能。個別発音とカナの全件ネイティブ音声監査が残るため、版は `v3.6-rc.1` とする。
+構造、固定文字転写、公開範囲、データ移行、機械検査はリリース可能。個別発音とカナの全件ネイティブ音声監査が残るため、版は `v3.7-rc.1` とする。
 
 ## 19. 動詞の設計図
 
