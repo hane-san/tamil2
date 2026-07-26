@@ -1,0 +1,77 @@
+name: Apply v3.6 lessons 11 and 12
+
+on:
+  pull_request:
+    types: [synchronize, reopened]
+    paths:
+      - '.v36payload.ready'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'release/v3.6-rc.1'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out release branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Rebuild and verify release payload
+        run: |
+          cat .v36payload.part-* > /tmp/v36-release.b64
+          base64 -d /tmp/v36-release.b64 > /tmp/v36-release.tar.gz
+          echo 'a7b9391af74f40e9a99b1b711768a0f073a140845d45365ce3f601c20da2da27  /tmp/v36-release.tar.gz' | sha256sum -c -
+          tar -xzf /tmp/v36-release.tar.gz
+
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Run full validation
+        run: npm test | tee /tmp/v36-test.log
+
+      - name: Remove transfer and temporary workflow files
+        run: |
+          rm -rf node_modules
+          rm -f .v36payload.part-* .v36payload.ready .v36snapshot.trigger
+          rm -f .github/workflows/snapshot-v36.yml .github/workflows/apply-v36-lessons.yml
+
+      - name: Verify final changed paths
+        run: |
+          git add -A
+          git diff --cached --check
+          git diff --cached --name-only | sort > /tmp/actual-paths.txt
+          cat > /tmp/expected-paths.txt <<'EOF'
+          APPROVED_RULES.md
+          LANGUAGE_CHECK.md
+          README.md
+          curriculum-v36.js
+          index.html
+          lesson11-v36.js
+          lesson12-v36.js
+          manifest-v36.webmanifest
+          package-lock.json
+          package.json
+          sw.js
+          tests/dom-v30.cjs
+          tests/validate-v30.mjs
+          EOF
+          sort -o /tmp/expected-paths.txt /tmp/expected-paths.txt
+          diff -u /tmp/expected-paths.txt /tmp/actual-paths.txt
+
+      - name: Upload validation log
+        uses: actions/upload-artifact@v4
+        with:
+          name: v36-test-log
+          path: /tmp/v36-test.log
+          if-no-files-found: error
+
+      - name: Commit verified release
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Add lessons 11 and 12 with v3.4 pedagogy'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
