@@ -19,16 +19,20 @@ const runtimeFiles = [
   "supplements-v42.js",
   "supplementA-v42.js",
   "supplementB-v42.js",
-  "supplementC-v43.js"
+  "supplementC-v43.js",
+  "supplementD-v43.js"
 ];
 for (const file of runtimeFiles) {
   vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), context, { filename: file });
 }
 
 const catalog = context.window.TAMIL_SUPPLEMENT_CATALOG_V42;
-const supplementA = (context.window.TAMIL_SUPPLEMENTS_V42 || []).find(item => item.code === "A");
-const supplementB = (context.window.TAMIL_SUPPLEMENTS_V42 || []).find(item => item.code === "B");
-const supplementC = (context.window.TAMIL_SUPPLEMENTS_V42 || []).find(item => item.code === "C");
+const loaded = context.window.TAMIL_SUPPLEMENTS_V42 || [];
+const byCode = code => loaded.find(item => item.code === code);
+const supplementA = byCode("A");
+const supplementB = byCode("B");
+const supplementC = byCode("C");
+const supplementD = byCode("D");
 const lessonExamples = new Map(
   (context.window.TAMIL_LESSONS_V30 || []).flatMap(lesson => lesson.examples || []).map(example => [example.id, example])
 );
@@ -40,7 +44,7 @@ function assert(condition, message) {
   if (!condition) failures.push(message);
 }
 
-assert(catalog?.version === "4.2.0-dev", "supplement catalog version must be 4.2.0-dev");
+assert(catalog?.version === "4.3.0-dev", "supplement catalog version must be 4.3.0-dev");
 assert(catalog?.public === false, "incomplete supplements must not be public");
 assert(catalog?.numberingPolicy === "supplement-codes-not-lessons-21-to-28", "supplements must remain outside lesson numbering");
 assert(catalog?.legacyTravelPolicy === "scene-review-packs-after-supplements", "legacy travel chapters must remain scene review material");
@@ -49,10 +53,10 @@ assert(catalog?.progressPolicy === "keep-core-and-supplement-progress-separate",
 const supplements = catalog?.supplements || [];
 assert(supplements.length === 8, `supplement count is ${supplements.length}; expected 8`);
 assert(supplements.map(item => item.code).join("") === "ABCDEFGH", "supplement codes must be A–H in order");
-assert(supplements.filter(item => item.release === "v4.2").map(item => item.code).join("") === "AB", "v4.2 must contain supplements A and B");
-assert(supplements.filter(item => item.release === "v4.3").map(item => item.code).join("") === "CD", "v4.3 must contain supplements C and D");
-assert(supplements.filter(item => item.release === "v4.4").map(item => item.code).join("") === "EF", "v4.4 must contain supplements E and F");
-assert(supplements.filter(item => item.release === "v4.5").map(item => item.code).join("") === "GH", "v4.5 must contain supplements G and H");
+assert(supplements.filter(item => item.release === "v4.2").map(item => item.code).join("") === "AB", "v4.2 must contain A and B");
+assert(supplements.filter(item => item.release === "v4.3").map(item => item.code).join("") === "CD", "v4.3 must contain C and D");
+assert(supplements.filter(item => item.release === "v4.4").map(item => item.code).join("") === "EF", "v4.4 must contain E and F");
+assert(supplements.filter(item => item.release === "v4.5").map(item => item.code).join("") === "GH", "v4.5 must contain G and H");
 
 for (const supplement of supplements) {
   assert(/^[A-H]$/.test(supplement.code), `${supplement.code}: invalid supplement code`);
@@ -61,66 +65,20 @@ for (const supplement of supplements) {
   assert(Array.isArray(supplement.prerequisites) && supplement.prerequisites.length > 0, `${supplement.code}: prerequisites missing`);
   assert(Array.isArray(supplement.returnToLessons) && supplement.returnToLessons.length > 0, `${supplement.code}: return links missing`);
   assert(supplement.prerequisites.every(number => Number.isInteger(number) && number >= 1 && number <= 20), `${supplement.code}: prerequisite outside lessons 1–20`);
-  assert(supplement.returnToLessons.every(number => supplement.prerequisites.includes(number)), `${supplement.code}: return link must resolve to a prerequisite lesson`);
+  assert(supplement.returnToLessons.every(number => supplement.prerequisites.includes(number)), `${supplement.code}: return link must be a prerequisite`);
   assert(Array.isArray(supplement.legacyRefs) && supplement.legacyRefs.length > 0, `${supplement.code}: legacy provenance missing`);
   assert(Array.isArray(supplement.sourceLessons) && supplement.sourceLessons.length > 0, `${supplement.code}: current source lessons missing`);
   assert(Array.isArray(supplement.excludedScope) && supplement.excludedScope.length > 0, `${supplement.code}: excluded scope missing`);
   assert(["drafting", "planned"].includes(supplement.status), `${supplement.code}: invalid status ${supplement.status}`);
 }
-assert(supplements.filter(item => item.status === "drafting").map(item => item.code).join("") === "ABC", "A, B and C should be drafting");
+assert(supplements.filter(item => item.status === "drafting").map(item => item.code).join("") === "ABCD", "A–D should be drafting");
 
-assert(Boolean(supplementA), "supplement A data must load");
-assert(supplementA.id === "supplement-a-v42", "supplement A id mismatch");
-assert(supplementA.prerequisites.join(",") === "8,14", "supplement A prerequisites must be lessons 8 and 14");
-assert(supplementA.returnToLessons.join(",") === "8,14", "supplement A return links must be lessons 8 and 14");
-assert(supplementA.examples.length === 10, `supplement A has ${supplementA.examples.length} examples; expected 10`);
-assert(supplementA.formConfig.patterns.length === 10, `supplement A has ${supplementA.formConfig.patterns.length} patterns; expected 10`);
-assert(supplementA.readSections.length === 6, `supplement A has ${supplementA.readSections.length} reading sections; expected 6`);
-assert(supplementA.quiz.length === 5, `supplement A has ${supplementA.quiz.length} quiz questions; expected 5`);
-assert(supplementA.criticalPoints.length === 3, "supplement A must have three critical points");
-assert(supplementA.examples[0] === lessonExamples.get("l8-08"), "l8-08 must be reused by reference, not copied");
-assert(supplementA.examples[1] === lessonExamples.get("l8-09"), "l8-09 must be reused by reference, not copied");
-
-const expectedNewAIds = ["sa-03", "sa-04", "sa-05", "sa-06", "sa-07", "sa-08", "sa-09", "sa-10"];
-assert(supplementA.examples.slice(2).map(item => item.id).join(",") === expectedNewAIds.join(","), "supplement A new example order mismatch");
-
-assert(Boolean(supplementB), "supplement B data must load");
-assert(supplementB.id === "supplement-b-v42", "supplement B id mismatch");
-assert(supplementB.prerequisites.join(",") === "2,15", "supplement B prerequisites must be lessons 2 and 15");
-assert(supplementB.returnToLessons.join(",") === "2,15", "supplement B return links must be lessons 2 and 15");
-assert(supplementB.examples.length === 12, `supplement B has ${supplementB.examples.length} examples; expected 12`);
-assert(supplementB.formConfig.patterns.length === 6, `supplement B has ${supplementB.formConfig.patterns.length} patterns; expected 6`);
-assert(supplementB.readSections.length === 6, `supplement B has ${supplementB.readSections.length} reading sections; expected 6`);
-assert(supplementB.quiz.length === 5, `supplement B has ${supplementB.quiz.length} quiz questions; expected 5`);
-assert(supplementB.criticalPoints.length === 3, "supplement B must have three critical points");
-assert(supplementB.examples[1] === lessonExamples.get("l2-09"), "l2-09 must be reused by reference, not copied");
-assert(supplementB.examples[6] === lessonExamples.get("l2-11"), "l2-11 must be reused by reference, not copied");
-assert(supplementB.examples[7] === lessonExamples.get("l15-11"), "l15-11 must be reused by reference, not copied");
-assert(supplementB.examples[11] === lessonExamples.get("l15-12"), "l15-12 must be reused by reference, not copied");
-
-const expectedNewBIds = ["sb-01", "sb-03", "sb-04", "sb-05", "sb-06", "sb-09", "sb-10", "sb-11"];
-assert(supplementB.examples.filter(item => item.id.startsWith("sb-")).map(item => item.id).join(",") === expectedNewBIds.join(","), "supplement B new example order mismatch");
-
-assert(Boolean(supplementC), "supplement C data must load");
-assert(supplementC.id === "supplement-c-v43", "supplement C id mismatch");
-assert(supplementC.prerequisites.join(",") === "1,16", "supplement C prerequisites must be lessons 1 and 16");
-assert(supplementC.returnToLessons.join(",") === "1,16", "supplement C return links must be lessons 1 and 16");
-assert(supplementC.examples.length === 12, `supplement C has ${supplementC.examples.length} examples; expected 12`);
-assert(supplementC.formConfig.patterns.length === 8, `supplement C has ${supplementC.formConfig.patterns.length} patterns; expected 8`);
-assert(supplementC.readSections.length === 6, `supplement C has ${supplementC.readSections.length} reading sections; expected 6`);
-assert(supplementC.quiz.length === 5, `supplement C has ${supplementC.quiz.length} quiz questions; expected 5`);
-assert(supplementC.criticalPoints.length === 3, "supplement C must have three critical points");
-assert(supplementC.examples[0] === lessonExamples.get("l1-09"), "l1-09 must be reused by reference, not copied");
-assert(supplementC.examples[1] === lessonExamples.get("l16-01"), "l16-01 must be reused by reference, not copied");
-assert(supplementC.examples[11] === lessonExamples.get("l16-08"), "l16-08 must be reused by reference, not copied");
-
-const expectedNewCIds = ["sc-03", "sc-04", "sc-05", "sc-06", "sc-07", "sc-08", "sc-09", "sc-10", "sc-11"];
-assert(supplementC.examples.filter(item => item.id.startsWith("sc-")).map(item => item.id).join(",") === expectedNewCIds.join(","), "supplement C new example order mismatch");
-
-for (const supplement of [supplementA, supplementB, supplementC]) {
-  assert(new Set(supplement.examples.map(item => item.id)).size === supplement.examples.length, `supplement ${supplement.code} example ids must be unique`);
-  assert(new Set(supplement.formConfig.patterns.map(item => item.id)).size === supplement.formConfig.patterns.length, `supplement ${supplement.code} pattern ids must be unique`);
-}
+const expected = {
+  A: { id: "supplement-a-v42", prereq: "8,14", examples: 10, patterns: 10, reused: [[0, "l8-08"], [1, "l8-09"]], newIds: ["sa-03", "sa-04", "sa-05", "sa-06", "sa-07", "sa-08", "sa-09", "sa-10"], source: "PREDICATE-ENGINE-v1.1", mini: "sa-05,sa-08,sa-10" },
+  B: { id: "supplement-b-v42", prereq: "2,15", examples: 12, patterns: 6, reused: [[1, "l2-09"], [6, "l2-11"], [7, "l15-11"], [11, "l15-12"]], newIds: ["sb-01", "sb-03", "sb-04", "sb-05", "sb-06", "sb-09", "sb-10", "sb-11"], source: "TAMIL-INTEGRATED-v2.0-rc.1", mini: "sb-04,sb-05,sb-10" },
+  C: { id: "supplement-c-v43", prereq: "1,16", examples: 12, patterns: 8, reused: [[0, "l1-09"], [1, "l16-01"], [11, "l16-08"]], newIds: ["sc-03", "sc-04", "sc-05", "sc-06", "sc-07", "sc-08", "sc-09", "sc-10", "sc-11"], source: "CORE-CURRICULUM-v1.1", mini: "sc-05,sc-07,sc-08" },
+  D: { id: "supplement-d-v43", prereq: "16", examples: 12, patterns: 8, reused: [[0, "l16-03"], [1, "l16-10"]], newIds: ["sd-03", "sd-04", "sd-05", "sd-06", "sd-07", "sd-08", "sd-09", "sd-10", "sd-11", "sd-12"], source: "PENN-PLC-TAMIL", mini: "sd-03,sd-10,l16-10" }
+};
 
 const confidenceAxes = ["form", "morphology", "pronunciation", "registerNaturalness"];
 function validateEntry(item, label, requiredSource) {
@@ -136,51 +94,53 @@ function validateEntry(item, label, requiredSource) {
   }
 }
 
-for (const item of [...supplementA.examples.slice(2), ...supplementA.formConfig.patterns]) {
-  validateEntry(item, "supplement A", "PREDICATE-ENGINE-v1.1");
-}
-for (const item of [...supplementB.examples.filter(item => item.id.startsWith("sb-")), ...supplementB.formConfig.patterns]) {
-  validateEntry(item, "supplement B", "TAMIL-INTEGRATED-v2.0-rc.1");
-}
-for (const item of [...supplementC.examples.filter(item => item.id.startsWith("sc-")), ...supplementC.formConfig.patterns]) {
-  validateEntry(item, "supplement C", "CORE-CURRICULUM-v1.1");
-}
-
-for (const supplement of [supplementA, supplementB, supplementC]) {
-  for (const section of supplement.readSections) {
-    assert(Boolean(section.takeaway), `supplement ${supplement.code} ${section.heading}: takeaway missing`);
-    assert(Array.isArray(section.paragraphs) && section.paragraphs.length > 0, `supplement ${supplement.code} ${section.heading}: paragraphs missing`);
-    assert([section.takeaway, ...section.paragraphs].join(" ").includes("roman-inline"), `supplement ${supplement.code} ${section.heading}: structured roman guide missing`);
+for (const code of ["A", "B", "C", "D"]) {
+  const supplement = byCode(code);
+  const spec = expected[code];
+  assert(Boolean(supplement), `supplement ${code} data must load`);
+  assert(supplement.id === spec.id, `supplement ${code} id mismatch`);
+  assert(supplement.prerequisites.join(",") === spec.prereq, `supplement ${code} prerequisites mismatch`);
+  assert(supplement.returnToLessons.join(",") === spec.prereq, `supplement ${code} return links mismatch`);
+  assert(supplement.examples.length === spec.examples, `supplement ${code} example count mismatch`);
+  assert(supplement.formConfig.patterns.length === spec.patterns, `supplement ${code} pattern count mismatch`);
+  assert(supplement.readSections.length === 6, `supplement ${code} must have six reading sections`);
+  assert(supplement.quiz.length === 5, `supplement ${code} must have five quiz questions`);
+  assert(supplement.criticalPoints.length === 3, `supplement ${code} must have three critical points`);
+  assert(new Set(supplement.examples.map(item => item.id)).size === supplement.examples.length, `supplement ${code} example ids must be unique`);
+  assert(new Set(supplement.formConfig.patterns.map(item => item.id)).size === supplement.formConfig.patterns.length, `supplement ${code} pattern ids must be unique`);
+  for (const [index, lessonId] of spec.reused) {
+    assert(supplement.examples[index] === lessonExamples.get(lessonId), `${lessonId} must be reused by reference in supplement ${code}`);
   }
+  const actualNewIds = supplement.examples.filter(item => item.id.startsWith(`s${code.toLowerCase()}-`)).map(item => item.id);
+  assert(actualNewIds.join(",") === spec.newIds.join(","), `supplement ${code} new example order mismatch`);
+  const newEntries = supplement.examples.filter(item => item.id.startsWith(`s${code.toLowerCase()}-`));
+  for (const item of [...newEntries, ...supplement.formConfig.patterns]) validateEntry(item, `supplement ${code}`, spec.source);
+  for (const section of supplement.readSections) {
+    assert(Boolean(section.takeaway), `supplement ${code} ${section.heading}: takeaway missing`);
+    assert(Array.isArray(section.paragraphs) && section.paragraphs.length > 0, `supplement ${code} ${section.heading}: paragraphs missing`);
+    assert([section.takeaway, ...section.paragraphs].join(" ").includes("roman-inline"), `supplement ${code} ${section.heading}: structured roman guide missing`);
+  }
+  const mini = supplement.readSections.find(section => section.miniReading)?.miniReading;
+  assert(mini?.ids.join(",") === spec.mini, `supplement ${code} short reading ids mismatch`);
+  assert(mini.ids.every(id => supplement.examples.some(example => example.id === id)), `supplement ${code} short reading id does not resolve`);
 }
-
-const miniReadingA = supplementA.readSections.find(section => section.miniReading)?.miniReading;
-assert(miniReadingA?.ids.join(",") === "sa-05,sa-08,sa-10", "supplement A short reading ids mismatch");
-assert(miniReadingA.ids.every(id => supplementA.examples.some(example => example.id === id)), "supplement A short reading id does not resolve");
-const miniReadingB = supplementB.readSections.find(section => section.miniReading)?.miniReading;
-assert(miniReadingB?.ids.join(",") === "sb-04,sb-05,sb-10", "supplement B short reading ids mismatch");
-assert(miniReadingB.ids.every(id => supplementB.examples.some(example => example.id === id)), "supplement B short reading id does not resolve");
-const miniReadingC = supplementC.readSections.find(section => section.miniReading)?.miniReading;
-assert(miniReadingC?.ids.join(",") === "sc-05,sc-07,sc-08", "supplement C short reading ids mismatch");
-assert(miniReadingC.ids.every(id => supplementC.examples.some(example => example.id === id)), "supplement C short reading id does not resolve");
 
 const expectedFocus = ["形態分解", "機能選択", "実用場面", "混同防止", "総合復習"];
-for (const supplement of [supplementA, supplementB, supplementC]) {
+for (const supplement of [supplementA, supplementB, supplementC, supplementD]) {
   supplement.quiz.forEach((question, index) => {
     assert(question.focus === expectedFocus[index], `supplement ${supplement.code} quiz ${index + 1}: focus mismatch`);
     assert(question.options.length === 4, `supplement ${supplement.code} quiz ${index + 1}: expected four options`);
     assert(new Set(question.options).size === 4, `supplement ${supplement.code} quiz ${index + 1}: duplicate option`);
     assert(question.tags.length === 4, `supplement ${supplement.code} quiz ${index + 1}: diagnostic tags mismatch`);
-    assert(question.answer === 0, `supplement ${supplement.code} quiz ${index + 1}: canonical answer must remain index 0 before display shuffling`);
+    assert(question.answer === 0, `supplement ${supplement.code} quiz ${index + 1}: canonical answer must remain index 0`);
     assert(Boolean(question.rule), `supplement ${supplement.code} quiz ${index + 1}: carry-home rule missing`);
   });
 }
 
 const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
-assert(!indexHtml.includes('src="supplements-v42.js"'), "draft supplement catalog must not load in public index");
-assert(!indexHtml.includes('src="supplementA-v42.js"'), "draft supplement A must not load in public index");
-assert(!indexHtml.includes('src="supplementB-v42.js"'), "draft supplement B must not load in public index");
-assert(!indexHtml.includes('src="supplementC-v43.js"'), "draft supplement C must not load in public index");
+for (const file of ["supplements-v42.js", "supplementA-v42.js", "supplementB-v42.js", "supplementC-v43.js", "supplementD-v43.js"]) {
+  assert(!indexHtml.includes(`src="${file}"`), `draft ${file} must not load in public index`);
+}
 
 if (failures.length) {
   console.error("Supplement validation failed:");
@@ -189,8 +149,6 @@ if (failures.length) {
 } else {
   console.log(`supplement validation passed: ${assertions} assertions`);
   console.log("- A–H catalogued without changing lesson numbering");
-  console.log("- supplement A: 10 examples, 10 form rows, 6 reading sections, 5 diagnostic questions");
-  console.log("- supplement B: 12 examples, 6 series rows, 6 reading sections, 5 diagnostic questions");
-  console.log("- supplement C: 12 examples, 8 form rows, 6 reading sections, 5 diagnostic questions");
-  console.log("- lessons 1, 2, 8, 14, 15, and 16 reused by reference; draft files remain outside the public index");
+  console.log("- supplements A–D: explicit examples, form rows, six reading sections and five diagnostic questions");
+  console.log("- lessons 1, 2, 8, 14, 15 and 16 reused by reference; draft files remain outside the public index");
 }
