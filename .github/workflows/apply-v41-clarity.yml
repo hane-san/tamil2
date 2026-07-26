@@ -1,9 +1,8 @@
 name: Apply v4.1 beginner clarity
 
 on:
-  push:
-    branches:
-      - release/v4.1-rc.1
+  pull_request:
+    types: [synchronize, reopened]
     paths:
       - '.v41patch.ready'
 
@@ -12,12 +11,13 @@ permissions:
 
 jobs:
   apply:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'release/v4.1-rc.1'
     runs-on: ubuntu-latest
     steps:
       - name: Check out release branch
         uses: actions/checkout@v4
         with:
-          ref: release/v4.1-rc.1
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
       - name: Rebuild, verify, and apply patch
@@ -67,7 +67,7 @@ jobs:
       - name: Remove temporary transfer files
         run: |
           rm -rf node_modules
-          rm -f .v41patch.part-* .v41patch.ready
+          rm -f .v41patch.part-* .v41patch.ready .v41status.txt .v41pr.txt
           rm -f .github/workflows/apply-v41-clarity.yml
 
       - name: Verify final release paths
@@ -100,4 +100,4 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'Improve beginner clarity across all twenty lessons'
-          git push origin HEAD:release/v4.1-rc.1
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
