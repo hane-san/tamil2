@@ -3,6 +3,7 @@
 
   const book = window.TAMIL_BOOK;
   const reference = window.TAMIL_REFERENCE;
+  const clarity = window.TAMIL_CLARITY_V41 || { terms: {}, lessonAnchors: {}, lessonTerms: {}, contrastGroups: {} };
   const lesson = document.getElementById("lesson");
   const chapterNav = document.getElementById("chapterNav");
   const chapterDrawer = document.getElementById("chapterDrawer");
@@ -19,7 +20,7 @@
   const STORAGE_SCHEMA_VERSION = 3;
   const STEP_TO_VIEW = ["read", "examples", "forms", "practice"];
   const VISIBLE_PROGRESS_STEPS = ["read", "listen", "forms", "check"];
-  const VIEW_LABELS = { read: "読む", examples: "例文", forms: "形", practice: "練習" };
+  const VIEW_LABELS = { read: "読む", examples: "聞く", forms: "形", practice: "練習" };
 
   const stored = loadStored();
   const needsV30SettingsMigration = Number(stored.schemaVersion || 0) < STORAGE_SCHEMA_VERSION;
@@ -273,7 +274,7 @@
   function updateBottomNavLabels(chapter) {
     const labels = chapter.number === 0
       ? { read: "格", examples: "例", forms: "文字", practice: "練習" }
-      : { read: "読む", examples: "例文", forms: formStepLabel(chapter), practice: "練習" };
+      : { read: "読む", examples: "聞く", forms: formStepLabel(chapter), practice: "練習" };
     const order = { read: "01", examples: "02", forms: "03", practice: "04" };
     bottomNav.querySelectorAll("button[data-view]").forEach(button => {
       button.innerHTML = `<span>${order[button.dataset.view]}</span>${labels[button.dataset.view]}`;
@@ -306,31 +307,78 @@
       ${renderSectionHeading("START HERE", "まず、この一文を分解する")}
       ${renderExample(chapter.heroExample, true, `hero-${chapter.number}`)}
       <aside class="roman-guide"><strong>読み方メモ</strong>解説の括弧内は構造ローマ字です。例：<span lang="ta">வீட்டுக்கு</span> <span class="roman-inline">(vīṭṭ-ukku)</span>。カナや発音ローマ字とは役割を分けています。</aside>
+      ${renderBeginnerAnchor(chapter)}
+      ${renderBeginnerTerms(chapter)}
       ${renderCriticalPoints(chapter)}
+      ${renderContrastGroup(chapter)}
       <div class="prose">
         ${chapter.readSections.map(section => renderReadingSection(section)).join("")}
       </div>`;
+  }
+
+  function renderBeginnerAnchor(chapter) {
+    const anchor = clarity.lessonAnchors?.[chapter.number];
+    if (!anchor) return "";
+    return `<aside class="beginner-anchor"><span>迷ったらここへ戻る</span><strong>${clarifyBeginnerTerms(anchor)}</strong></aside>`;
+  }
+
+  function renderBeginnerTerms(chapter) {
+    const keys = clarity.lessonTerms?.[chapter.number] || [];
+    const items = keys.map(key => clarity.terms?.[key] ? `<li><strong>${escapeHtml(clarity.terms[key])}</strong><small>${escapeHtml(key)}</small></li>` : "").filter(Boolean);
+    if (!items.length) return "";
+    return `<details class="beginner-glossary">
+      <summary><span>ことばの言い換え</span><strong>文法用語を日常語で確認</strong></summary>
+      <ul>${items.join("")}</ul>
+    </details>`;
   }
 
   function renderCriticalPoints(chapter) {
     if (!chapter.criticalPoints?.length) return "";
     return `<section class="critical-points" aria-label="この課の急所">
       <div class="critical-points-head"><span>3 KEY POINTS</span><strong>この課で持ち帰る3点</strong></div>
-      <ol>${chapter.criticalPoints.map(point => `<li>${enrichTamil(point)}</li>`).join("")}</ol>
+      <ol>${chapter.criticalPoints.map(point => `<li>${clarifyBeginnerTerms(enrichTamil(point))}</li>`).join("")}</ol>
+    </section>`;
+  }
+
+  function renderContrastGroup(chapter) {
+    const group = clarity.contrastGroups?.[chapter.number];
+    if (!group?.items?.length) return "";
+    const cards = group.items.map(([id, label]) => {
+      const example = chapter.examples.find(item => item.id === id);
+      if (!example) return "";
+      return `<article class="contrast-card">
+        <span class="contrast-label">${escapeHtml(label)}</span>
+        <strong lang="ta">${escapeHtml(example.targetTamil || example.ta)}</strong>
+        <span class="contrast-roman morph">${escapeHtml(example.structuredRoman || example.morph || example.roman)}</span>
+        <span class="contrast-ja">${escapeHtml(example.meaningJa || example.ja)}</span>
+      </article>`;
+    }).filter(Boolean);
+    if (!cards.length) return "";
+    return `<section class="contrast-board" aria-label="形の比較">
+      <div class="contrast-board-head"><span>COMPARE</span><strong>${escapeHtml(group.title)}</strong></div>
+      <div class="contrast-grid">${cards.join("")}</div>
     </section>`;
   }
 
   function renderReadingSection(section) {
     return `
       <section class="reading-section">
-        ${renderSectionHeading(section.kicker, section.heading)}
-        ${section.takeaway ? `<div class="reading-takeaway"><span>この段落の結論</span><strong>${enrichTamil(section.takeaway)}</strong></div>` : ""}
-        ${section.paragraphs.map(paragraph => `<p>${enrichTamil(paragraph)}</p>`).join("")}
+        ${renderSectionHeading(section.kicker, clarifyBeginnerTerms(section.heading))}
+        ${section.takeaway ? `<div class="reading-takeaway"><span>この段落の結論</span><strong>${clarifyBeginnerTerms(enrichTamil(section.takeaway))}</strong></div>` : ""}
+        ${section.paragraphs.map(renderReadingParagraph).join("")}
         ${section.caseMap ? renderCaseQuickMap(section.caseMap) : ""}
         ${section.objectMap ? renderObjectDecisionMap(section.objectMap) : ""}
         ${section.formula ? renderFormula(section.formula) : ""}
         ${section.note ? renderNote(section.note) : ""}
       </section>`;
+  }
+
+  function renderReadingParagraph(paragraph) {
+    const source = String(paragraph ?? "");
+    if (source.includes("<br")) return `<p>${enrichTamil(source)}</p>`;
+    const sentences = source.split("。").map(item => item.trim()).filter(Boolean).map(item => `${item}。`);
+    if (sentences.length <= 1) return `<p>${enrichTamil(source)}</p>`;
+    return `<div class="reading-sentence-stack">${sentences.map(sentence => `<p class="reading-sentence">${enrichTamil(sentence)}</p>`).join("")}</div>`;
   }
 
   function renderCaseQuickMap(map) {
@@ -627,18 +675,65 @@
     const locked = selected != null || printMode;
     const effectiveSelected = printMode ? question.answer : selected;
     const selectedTag = selected != null && selected !== question.answer ? question.tags[selected] : null;
+    const optionOrder = getQuizOptionOrder(chapter, question, index);
     return `<article class="quiz-card">
       <div class="quiz-meta"><span class="quiz-number">QUESTION ${pad(index + 1)}</span>${question.focus ? `<span class="quiz-focus">${escapeHtml(question.focus)}</span>` : ""}</div>
-      <h3>${enrichTamil(question.q)}</h3>
+      <h3>${clarifyBeginnerTerms(enrichTamil(question.q))}</h3>
       <div class="quiz-options">
-        ${question.options.map((option, optionIndex) => {
+        ${optionOrder.map((optionIndex, visualIndex) => {
+          const option = question.options[optionIndex];
           const isSelected = optionIndex === effectiveSelected;
           const status = isSelected ? (optionIndex === question.answer ? "correct" : "wrong") : "";
-          return `<button class="quiz-option ${isSelected ? `selected ${status}` : ""}" type="button" data-question="${index}" data-quiz-option="${optionIndex}" ${locked ? "disabled" : ""}>${option}</button>`;
+          return `<button class="quiz-option ${isSelected ? `selected ${status}` : ""}" type="button" data-question="${index}" data-quiz-option="${optionIndex}" data-visual-option="${visualIndex}" ${locked ? "disabled" : ""}>${option}</button>`;
         }).join("")}
       </div>
-      ${locked ? `<div class="quiz-feedback"><strong>${effectiveSelected === question.answer ? "✓ 正解" : `診断：${selectedTag || "再確認"}`}</strong><p>${enrichTamil(question.feedback)}</p>${question.rule ? `<div class="quiz-rule"><span>持ち帰る一行</span>${enrichTamil(question.rule)}</div>` : ""}</div>` : ""}
+      ${locked ? `<div class="quiz-feedback"><strong>${effectiveSelected === question.answer ? "✓ 正解" : `診断：${selectedTag || "再確認"}`}</strong><p>${clarifyBeginnerTerms(enrichTamil(question.feedback))}</p>${question.rule ? `<div class="quiz-rule"><span>持ち帰る一行</span>${clarifyBeginnerTerms(enrichTamil(question.rule))}</div>` : ""}</div>` : ""}
     </article>`;
+  }
+
+  function getQuizOptionOrder(chapter, question, questionIndex) {
+    const indices = question.options.map((_, index) => index);
+    if (indices.length !== 4 || !indices.includes(question.answer)) return indices;
+    const globalIndex = chapter.number > 0 ? (chapter.number - 1) * 5 + questionIndex : questionIndex;
+    const permutations = [
+      [0, 1, 2, 3], [0, 1, 3, 2], [0, 2, 1, 3], [0, 2, 3, 1], [0, 3, 1, 2], [0, 3, 2, 1],
+      [1, 0, 2, 3], [1, 0, 3, 2], [1, 2, 0, 3], [1, 2, 3, 0], [1, 3, 0, 2], [1, 3, 2, 0],
+      [2, 0, 1, 3], [2, 0, 3, 1], [2, 1, 0, 3], [2, 1, 3, 0], [2, 3, 0, 1], [2, 3, 1, 0],
+      [3, 0, 1, 2], [3, 0, 2, 1], [3, 1, 0, 2], [3, 1, 2, 0], [3, 2, 0, 1], [3, 2, 1, 0]
+    ];
+    const block = Math.floor(globalIndex / 4);
+    const slot = globalIndex % 4;
+    const positionPermutation = permutations[stableHash(`answer-position:${block}`) % permutations.length];
+    const answerPosition = positionPermutation[slot];
+    const others = indices.filter(index => index !== question.answer);
+    const shift = stableHash(`${chapter.id}:${questionIndex}:options`) % others.length;
+    const rotated = [...others.slice(shift), ...others.slice(0, shift)];
+    const order = [];
+    let cursor = 0;
+    for (let position = 0; position < indices.length; position += 1) {
+      order.push(position === answerPosition ? question.answer : rotated[cursor++]);
+    }
+    return order;
+  }
+
+  function stableHash(value) {
+    let hash = 2166136261;
+    for (const character of String(value)) {
+      hash ^= character.codePointAt(0);
+      hash = Math.imul(hash, 16777619);
+    }
+    return hash >>> 0;
+  }
+
+  function clarifyBeginnerTerms(html) {
+    let output = String(html ?? "");
+    for (const [technical, plain] of Object.entries(clarity.terms || {})) {
+      const index = output.indexOf(technical);
+      if (index < 0) continue;
+      const replacement = `<span class="beginner-term"><span>${escapeHtml(plain)}</span><small>${escapeHtml(technical)}</small></span>`;
+      output = `${output.slice(0, index)}${replacement}${output.slice(index + technical.length)}`;
+    }
+    return output;
   }
 
   function renderSectionHeading(kicker, heading) {
