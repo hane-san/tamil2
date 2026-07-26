@@ -26,8 +26,20 @@ jobs:
           base64 -d /tmp/v37-release.b64 > /tmp/v37-release.tar.gz
           echo '0d6138abc1bb209ae190e4865528723596f9b8fe8c038769ba6679c3e6b3b53c  /tmp/v37-release.tar.gz' | sha256sum -c -
           tar -xzf /tmp/v37-release.tar.gz
-          python3 apply-v37.py
+          set +e
+          python3 apply-v37.py 2>&1 | tee /tmp/v37-apply.log
+          status=${PIPESTATUS[0]}
+          set -e
           rm -f apply-v37.py
+          exit $status
+
+      - name: Upload patch diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v37-apply-log
+          path: /tmp/v37-apply.log
+          if-no-files-found: warn
 
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
@@ -45,7 +57,6 @@ jobs:
         run: |
           git add -A
           git diff --cached --check
-          git diff --cached --name-only origin/main...HEAD >/dev/null || true
           git diff --cached --name-only | sort > /tmp/actual-paths.txt
           cat > /tmp/expected-paths.txt <<'EOF'
           APPROVED_RULES.md
