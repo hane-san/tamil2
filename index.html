@@ -6,11 +6,11 @@
   <meta name="theme-color" content="#0d736f">
   <meta name="color-scheme" content="light">
   <title>口語タミル語の教科書</title>
-  <meta name="description" content="地域横断型の標準口語タミル語を、文字・名詞・格・述語・動詞・否定・不定詞・動作連結・相・可能・必要・人称一致・命令・疑問・名詞句・比較を音と形態分解で学ぶスマートフォン教材。">
-  <meta name="app-version" content="3.8-rc.1">
+  <meta name="description" content="地域横断型の標準口語タミル語を、文字・名詞・格・述語・動詞・否定・不定詞・動作連結・相・可能・必要・人称一致・命令・疑問・名詞句・比較・連体修飾・名詞化を音と形態分解で学ぶスマートフォン教材。">
+  <meta name="app-version" content="3.9-rc.1">
   <link rel="icon" type="image/png" href="app-icon.png">
   <link rel="apple-touch-icon" href="app-icon.png">
-  <link rel="manifest" href="manifest-v38.webmanifest">
+  <link rel="manifest" href="manifest-v39.webmanifest">
   <link rel="stylesheet" href="styles-v28.css">
 </head>
 <body>
@@ -28,7 +28,7 @@
       <button class="icon-button settings-button" id="settingsButton" type="button" aria-label="表示設定を開く" aria-expanded="false" aria-controls="settingsPanel">Aa</button>
     </div>
     <div class="chapter-progress" aria-label="全体の進捗">
-      <span id="progressLabel">第1課 / 16課</span>
+      <span id="progressLabel">第1課 / 18課</span>
       <span class="progress-track"><span id="progressFill"></span></span>
     </div>
   </header>
@@ -37,7 +37,7 @@
     <div class="drawer-head">
       <div>
         <span class="eyebrow">CONTENTS</span>
-        <h2>統合規格対応版 v3.8-rc.1・全16課</h2>
+        <h2>統合規格対応版 v3.9-rc.1・全18課</h2>
       </div>
       <button class="close-button" id="drawerClose" type="button" aria-label="課一覧を閉じる">×</button>
     </div>
@@ -47,7 +47,7 @@
         <input id="chapterSearch" type="search" inputmode="search" autocomplete="off" placeholder="課名・文法・タミル語で検索">
       </label>
       <div class="drawer-progress-card">
-        <div><strong id="drawerProgressText">0 / 16課 完了</strong><small id="drawerProgressDetail">学習ステップ 0 / 64</small></div>
+        <div><strong id="drawerProgressText">0 / 18課 完了</strong><small id="drawerProgressDetail">学習ステップ 0 / 72</small></div>
         <span class="drawer-progress-track" aria-hidden="true"><span id="drawerProgressFill"></span></span>
       </div>
       <div class="drawer-quick-actions">
@@ -62,7 +62,7 @@
     <nav id="chapterNav" aria-label="課一覧"></nav>
     <p class="chapter-nav-empty" id="chapterNavEmpty" hidden>条件に合う課がありません。検索語か絞り込みを変えてください。</p>
     <div class="drawer-note">
-      <strong>現在の承認範囲：PART 0＋第1〜16課</strong>
+      <strong>現在の承認範囲：PART 0＋第1〜18課</strong>
       <p>旧38章は履歴として保持し、最新規格で再検証するまで公開教材の正本には使いません。</p>
     </div>
   </aside>
@@ -93,7 +93,7 @@
     </label>
     <div class="settings-actions">
       <button class="soft-button" id="printChapterButton" type="button">この課を印刷</button>
-      <button class="soft-button" id="printBookButton" type="button">PART 0＋全16課を印刷</button>
+      <button class="soft-button" id="printBookButton" type="button">PART 0＋全18課を印刷</button>
       <button class="text-button danger-text" id="resetProgressButton" type="button">学習記録をリセット</button>
     </div>
   </section>
@@ -147,9 +147,11 @@
   <script src="lesson14-v37.js"></script>
   <script src="lesson15-v38.js"></script>
   <script src="lesson16-v38.js"></script>
+  <script src="lesson17-v39.js"></script>
+  <script src="lesson18-v39.js"></script>
   <script src="reading-v31.js"></script>
   <script src="pedagogy-v34.js"></script>
-  <script src="curriculum-v38.js"></script>
+  <script src="curriculum-v39.js"></script>
   <script src="app-v28.js"></script>
 </body>
 </html>
