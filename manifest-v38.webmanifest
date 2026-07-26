@@ -1,0 +1,19 @@
+{
+  "name": "口語タミル語の教科書",
+  "short_name": "口語タミル語",
+  "description": "地域横断型の標準口語タミル語を、文字・格・述語・動詞・否定・不定詞・動作連結・相・可能・必要・人称一致・命令・疑問・名詞句・比較から学ぶ教材",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fffaf0",
+  "theme_color": "#0d736f",
+  "icons": [
+    {
+      "src": "app-icon.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
