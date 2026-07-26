@@ -58,7 +58,8 @@ jobs:
         run: |
           rm -rf node_modules
           rm -f .v39payload.part-* .v39payload.ready .v39apply.log
-          rm -f .github/workflows/apply-v39-lessons.yml
+          rm -f .v39check.ready .v39check.txt
+          rm -f .github/workflows/apply-v39-lessons.yml .github/workflows/check-v39-payload.yml
 
       - name: Verify final changed paths
         run: |
