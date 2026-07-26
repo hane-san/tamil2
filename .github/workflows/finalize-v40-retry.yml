@@ -1,0 +1,79 @@
+name: Retry complete 20-lesson release
+
+on:
+  pull_request:
+    types: [synchronize, reopened]
+    paths:
+      - '.v40retry'
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'release/v4.0-rc.1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Reuse the verified release patch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import textwrap
+          source = Path('.github/workflows/finalize-v40.yml').read_text(encoding='utf-8')
+          marker = "          python3 - <<'PY'\n"
+          start = source.index(marker) + len(marker)
+          end = source.index("\n          PY", start)
+          script = textwrap.dedent(source[start:end])
+          exec(compile(script, 'v40-release-patch.py', 'exec'), {})
+          PY
+
+      - name: Install and validate complete textbook
+        run: |
+          npm ci --no-audit --no-fund
+          npm test | tee /tmp/v40-test.log
+
+      - name: Record exact validation totals
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          log = Path('/tmp/v40-test.log').read_text(encoding='utf-8')
+          data = re.search(r'v4\.0 validation passed: ([0-9,]+) assertions', log)
+          entries = re.search(r'- ([0-9,]+) public data entries linted', log)
+          dom = re.search(r'DOM validation passed: ([0-9,]+) assertions', log)
+          if not all([data, entries, dom]):
+              raise SystemExit('could not parse validation totals\n' + log)
+          data_n, entries_n, dom_n = data.group(1), entries.group(1), dom.group(1)
+          p = Path('README.md'); s = p.read_text(encoding='utf-8')
+          block = f'''- データ・転写・教材構造：**{data_n} assertions**\n- 厳密転写ゴールデンケース：**66件**\n- 公開教材データ：**{entries_n}項目**\n- DOM・設定移行・音声イベント・全20課描画：**{dom_n} assertions**\n- 公開範囲：**PART 0＋第1〜20課**\n'''
+          s = s.replace('<!-- V40_TEST_RESULTS -->', block)
+          p.write_text(s, encoding='utf-8')
+          p = Path('LANGUAGE_CHECK.md'); s = p.read_text(encoding='utf-8')
+          s = re.sub(r'全公開スキーマ項目：[0-9,]+。', f'全公開スキーマ項目：{entries_n}。', s, count=1)
+          s = re.sub(r'v3\.9 validation passed: [0-9,]+ assertions', f'v4.0 validation passed: {data_n} assertions', s, count=1)
+          s = re.sub(r'- [0-9,]+ public data entries linted', f'- {entries_n} public data entries linted', s, count=1)
+          s = re.sub(r'DOM validation passed: [0-9,]+ assertions', f'DOM validation passed: {dom_n} assertions', s, count=1)
+          p.write_text(s, encoding='utf-8')
+          print(f'data={data_n} entries={entries_n} dom={dom_n}')
+          PY
+
+      - name: Clean and commit verified release
+        run: |
+          rm -rf node_modules
+          rm -f .v40ready .v40retry
+          rm -f .github/workflows/finalize-v40.yml .github/workflows/finalize-v40-retry.yml
+          git add -A
+          git diff --cached --check origin/main
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Complete the 20-lesson TN-SST textbook'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
