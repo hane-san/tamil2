@@ -1,0 +1,21 @@
+ 6000 .v39payload.part-00
+ 6000 .v39payload.part-01
+ 6000 .v39payload.part-02
+ 6000 .v39payload.part-03
+ 6000 .v39payload.part-04
+ 6000 .v39payload.part-05
+ 6000 .v39payload.part-06
+ 6000 .v39payload.part-07
+ 6000 .v39payload.part-08
+ 6000 .v39payload.part-09
+ 6000 .v39payload.part-10
+ 4340 .v39payload.part-11
+70340 total
+base64-bytes 70340
+base64-decode ok
+19ed0052ae0fe8ee1427421aa3ff38b07e8514ea3cf93f1c2cd656770e22ca3d  /tmp/v39-release.tar.gz
+
+gzip: stdin: invalid compressed data--crc error
+tar: Child returned status 1
+tar: Error is not recoverable: exiting now
+tar-list failed
