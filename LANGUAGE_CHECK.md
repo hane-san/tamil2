@@ -330,7 +330,7 @@ v3.5 validation passed: 8680 assertions
 `tests/dom-v30.cjs` のDOM操作テスト結果：
 
 ```text
-DOM validation passed: 53 assertions
+DOM validation passed: 59 assertions
 - legacy kana setting migrated without deleting progress
 - card, glyph, keyboard, continuous, and letter audio are single-fire
 - PART 0 + 10 lessons, beginner explanations, critical quizzes, short readings, and 216-character table render
