@@ -280,16 +280,18 @@ reṇṭu puttakam irukku.
 | 第14課 | 12 | 10 | 5 |
 | 第15課 | 12 | 10 | 5 |
 | 第16課 | 12 | 10 | 5 |
+| 第17課 | 12 | 10 | 5 |
+| 第18課 | 12 | 10 | 5 |
 
-全公開スキーマ項目：330。各課に3文の短い読み取りを一つ収録する。
+全公開スキーマ項目：374。各課に3文の短い読み取りを一つ収録する。
 
 `node tests/validate-v30.mjs` の結果：
 
 ```text
-v3.8 validation passed: 13634 assertions
+v3.9 validation passed: 15,424 assertions
 - 66 golden transliteration cases
-- 330 public data entries linted
-- PART 0 + lessons 1–16 only
+- 374 public data entries linted
+- PART 0 + lessons 1–18 only
 ```
 
 検査内容：
@@ -326,9 +328,9 @@ v3.8 validation passed: 13634 assertions
 - Enter／Space対応
 - 通常／ゆっくり、1回／2回、前／次、停止、連続再生
 - TTS不在通知
-- PART 0＋第1〜16課だけをナビ・印刷対象にする
-- 全16課に3文の短い読み取りを表示する
-- 全16課に「持ち帰る3点」と初心者向け6段階解説を表示する
+- PART 0＋第1〜18課だけをナビ・印刷対象にする
+- 全18課に3文の短い読み取りを表示する
+- 全18課に「持ち帰る3点」と初心者向け6段階解説を表示する
 - 解説中のTamil語句へ括弧付き構造ローマ字を表示する
 - 問題を5つの急所に固定し、解答後に理由と持ち帰る一行を表示する
 - 旧URL、アイコン、ローカル保存キーを維持
@@ -336,10 +338,10 @@ v3.8 validation passed: 13634 assertions
 `tests/dom-v30.cjs` のDOM操作テスト結果：
 
 ```text
-DOM validation passed: 79 assertions
+DOM validation passed: 85 assertions
 - legacy kana setting migrated without deleting progress
 - card, glyph, keyboard, continuous, and letter audio are single-fire
-- PART 0 + 16 lessons, four-step practice UI, beginner explanations, critical quizzes, short readings, and 216-character table render
+- PART 0 + 18 lessons, four-step practice UI, beginner explanations, critical quizzes, short readings, and 216-character table render
 ```
 
 未完了：
@@ -390,7 +392,7 @@ DOM validation passed: 79 assertions
 
 ## 18. リリース判定
 
-構造、固定文字転写、公開範囲、データ移行、機械検査はリリース可能。個別発音とカナの全件ネイティブ音声監査が残るため、版は `v3.8-rc.1` とする。
+構造、固定文字転写、公開範囲、データ移行、機械検査はリリース可能。個別発音とカナの全件ネイティブ音声監査が残るため、版は `v3.9-rc.1` とする。
 
 ## 19. 動詞の設計図
 
@@ -497,3 +499,20 @@ DOM validation passed: 79 assertions
 - 名詞前の `நல்ல படம்` と、性質述語 `படம் நல்லா இருக்கு` を分けた。
 - 比較は `அந்த படத்தைவிட` のように基準の対格＋`விட`を一まとまりで登録し、専用の比較級語尾を作らない。
 - 母音終わり語の比較 `வழியைவிட` は、表面形を保存した `vaḻi-y-ai-viṭa` とし、接続要素を黙って消さない。
+
+
+## 27. v3.9 第17課｜連体修飾
+
+- `பாக்கற படம் / பாத்த படம் / பாக்காத படம்` を、非過去・過去・否定の中心対比にした。
+- 連体形は人称語尾を持たず、後ろの中心名詞を待つ。`பாத்தேன்` と `பாத்த படம்` を有限／連体で分離した。
+- `வந்த நண்பர்` は中心名詞が連体節内の行為者、`வாங்கின டிக்கெட்` は対象、`தங்கற ஹோட்டல்` は場所関係として登録した。
+- 連体節を含む名詞句の対格・与格は `பாத்த படத்தை / வர்ற நண்பருக்கு` のように最後の中心名詞へ付けた。
+- 初級の主表示は口語で頻度の高い非過去・過去・否定を中心とし、未監査の未来連体形を一律生成しない。
+
+## 28. v3.9 第18課｜名詞化
+
+- `பாக்கறது / பாத்தது / பாக்காதது` を、非過去・過去・否定の名詞化として登録した。
+- `சொன்னது＋-ஐ → சொன்னதை`、`பாக்கறது＋-க்கு → பாக்கறதுக்கு` を表面形保存の構造表示で示した。
+- `தமிழ் படிக்கறது சுவாரஸ்யம்` では名詞化節全体が主語、`அவர் சொன்னதை புரிஞ்சுக்கிட்டேன்` では対格目的語、`படம் பாக்கறதுக்கு நேரம் இல்லை` では時間・用途の与格として扱った。
+- `பாத்த படம்` と `பாத்தது`、`சொன்ன விஷயம்` と `சொன்னது` を中心名詞の有無で分けた。
+- 「こと」と「もの」は文脈で分かれ得るため、日本語訳だけから別のタミル語形を自動生成しない。

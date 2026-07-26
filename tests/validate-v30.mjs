@@ -27,9 +27,11 @@ const runtimeFiles = [
   "lesson14-v37.js",
   "lesson15-v38.js",
   "lesson16-v38.js",
+  "lesson17-v39.js",
+  "lesson18-v39.js",
   "reading-v31.js",
   "pedagogy-v34.js",
-  "curriculum-v38.js"
+  "curriculum-v39.js"
 ];
 
 for (const file of runtimeFiles) {
@@ -87,8 +89,8 @@ for (const [tamil, expected] of golden) {
 }
 
 assert(golden.length >= 50, `golden count is ${golden.length}; expected at least 50`);
-assert(book.chapters.length === 16, `public chapter count is ${book.chapters.length}; expected 16`);
-assert(book.chapters.map(chapter => chapter.number).join(",") === "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16", "public chapters must be lessons 1–16 in order");
+assert(book.chapters.length === 18, `public chapter count is ${book.chapters.length}; expected 18`);
+assert(book.chapters.map(chapter => chapter.number).join(",") === "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18", "public chapters must be lessons 1–18 in order");
 assert(reference.examples.length >= 8 && reference.examples.length <= 12, "PART 0 must have 8–12 examples");
 
 for (const chapter of book.chapters) {
@@ -219,12 +221,12 @@ assert(app.includes('VISIBLE_PROGRESS_STEPS = ["read", "listen", "forms", "check
 assert(!app.includes('formStepLabel(chapter), "練習", "確認"'), "duplicate practice/check steps remain visible");
 
 if (failures.length) {
-  console.error(`v3.8 validation failed: ${failures.length} issue(s), ${assertions} assertions`);
+  console.error(`v3.9 validation failed: ${failures.length} issue(s), ${assertions} assertions`);
   failures.forEach(failure => console.error(`- ${failure}`));
   process.exitCode = 1;
 } else {
-  console.log(`v3.8 validation passed: ${assertions} assertions`);
+  console.log(`v3.9 validation passed: ${assertions} assertions`);
   console.log(`- ${golden.length} golden transliteration cases`);
   console.log(`- ${entries.length} public data entries linted`);
-  console.log("- PART 0 + lessons 1–16 only");
+  console.log("- PART 0 + lessons 1–18 only");
 }

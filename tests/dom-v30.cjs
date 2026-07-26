@@ -82,7 +82,7 @@ async function main() {
   const { document, Event, KeyboardEvent } = dom.window;
 
   assert(document.title.includes("第1課"), "initial title must identify lesson 1");
-  assert(document.getElementById("progressLabel").textContent.includes("第1課 / 16課"), "progress label must show 16-lesson scope");
+  assert(document.getElementById("progressLabel").textContent.includes("第1課 / 18課"), "progress label must show 18-lesson scope");
   assert(!document.body.classList.contains("hide-kana"), "v3 migration must restore kana visibility");
   assert(document.getElementById("toggleKana").checked, "kana toggle must be checked after migration");
 
@@ -141,15 +141,15 @@ async function main() {
 
   document.getElementById("menuButton").dispatchEvent(new Event("click", { bubbles: true }));
   const publicLessonButtons = document.querySelectorAll("#chapterNav button[data-chapter]");
-  assert(publicLessonButtons.length === 16, "drawer must expose exactly sixteen public lessons");
+  assert(publicLessonButtons.length === 18, "drawer must expose exactly eighteen public lessons");
 
-  const shortReadingCue = { 3: "இது ரவியோட கார்", 4: "வீட்டுல இருக்கேன்", 5: "இந்த கோவில் பற்றி", 6: "என்கிட்ட டிக்கெட் இருக்கு", 7: "நான் படம் பாக்கறேன்", 8: "நான் நேத்து படம் பாத்தேன்", 9: "நான் நேத்து படம் பாக்கல", 10: "நான் சாப்பிட போறேன்", 11: "கடைக்கு போய் தண்ணி வாங்கினேன்", 12: "நான் டிக்கெட் வாங்கி வெச்சேன்", 13: "எனக்கு சென்னைக்கு போக ஆசை இருக்கு", 14: "நீங்க சென்னைக்கு போறீங்க", 15: "கொஞ்சம் சொல்லுங்க", 16: "இந்த ஹோட்டல் அந்த ஹோட்டலைவிட மலிவா இருக்கு" };
-  for (const lessonNumber of [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]) {
+  const shortReadingCue = { 3: "இது ரவியோட கார்", 4: "வீட்டுல இருக்கேன்", 5: "இந்த கோவில் பற்றி", 6: "என்கிட்ட டிக்கெட் இருக்கு", 7: "நான் படம் பாக்கறேன்", 8: "நான் நேத்து படம் பாத்தேன்", 9: "நான் நேத்து படம் பாக்கல", 10: "நான் சாப்பிட போறேன்", 11: "கடைக்கு போய் தண்ணி வாங்கினேன்", 12: "நான் டிக்கெட் வாங்கி வெச்சேன்", 13: "எனக்கு சென்னைக்கு போக ஆசை இருக்கு", 14: "நீங்க சென்னைக்கு போறீங்க", 15: "கொஞ்சம் சொல்லுங்க", 16: "இந்த ஹோட்டல் அந்த ஹோட்டலைவிட மலிவா இருக்கு", 17: "நான் நேத்து பாத்த படம் நல்லா இருந்தது", 18: "தமிழ் படிக்கறது சுவாரஸ்யம்" };
+  for (const lessonNumber of [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]) {
     document.querySelector(`#chapterNav button[data-chapter="${lessonNumber - 1}"]`).dispatchEvent(new Event("click", { bubbles: true }));
     assert(document.title.includes(`第${lessonNumber}課`), `lesson ${lessonNumber} navigation must work`);
     assert(document.querySelector(".view-read .reading-section:last-child").textContent.includes(shortReadingCue[lessonNumber]), `lesson ${lessonNumber} must render its short reading`);
     document.querySelector("button[data-view='examples']").dispatchEvent(new Event("click", { bubbles: true }));
-    const expectedExampleCount = lessonNumber === 6 ? 11 : lessonNumber === 8 ? 12 : lessonNumber === 13 ? 11 : lessonNumber === 14 ? 12 : lessonNumber === 15 ? 12 : lessonNumber === 16 ? 12 : 10;
+    const expectedExampleCount = lessonNumber === 6 ? 11 : lessonNumber === 8 ? 12 : lessonNumber === 13 ? 11 : lessonNumber === 14 ? 12 : lessonNumber === 15 ? 12 : lessonNumber === 16 ? 12 : lessonNumber === 17 ? 12 : lessonNumber === 18 ? 12 : 10;
     assert(document.querySelectorAll(".view-examples .example-feature, .view-examples .example-row").length === expectedExampleCount, `lesson ${lessonNumber} must render ${expectedExampleCount} examples`);
     document.getElementById("menuButton").dispatchEvent(new Event("click", { bubbles: true }));
   }
@@ -178,7 +178,7 @@ async function main() {
     console.log(`DOM validation passed: ${assertions} assertions`);
     console.log("- legacy kana setting migrated without deleting progress");
     console.log("- card, glyph, keyboard, continuous, and letter audio are single-fire");
-    console.log("- PART 0 + 16 lessons, four-step practice UI, beginner explanations, critical quizzes, short readings, and 216-character table render");
+    console.log("- PART 0 + 18 lessons, four-step practice UI, beginner explanations, critical quizzes, short readings, and 216-character table render");
   }
 
   dom.window.close();
