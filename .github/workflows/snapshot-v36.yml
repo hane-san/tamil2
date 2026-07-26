@@ -1,0 +1,27 @@
+name: Snapshot v3.6 working tree
+
+on:
+  push:
+    branches:
+      - release/v3.6-rc.1
+    paths:
+      - '.v36snapshot.trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out release branch
+        uses: actions/checkout@v4
+      - name: Build source snapshot
+        run: |
+          tar --exclude=.git --exclude=node_modules --exclude=.v36snapshot.trigger -czf /tmp/tamil2-v36-source.tar.gz .
+      - name: Upload snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: tamil2-v36-source
+          path: /tmp/tamil2-v36-source.tar.gz
+          if-no-files-found: error
