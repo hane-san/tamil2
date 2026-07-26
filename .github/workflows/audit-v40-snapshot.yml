@@ -1,0 +1,25 @@
+name: Audit v4.0 snapshot
+
+on:
+  push:
+    branches:
+      - audit/v4.0-beginner-clarity
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create source snapshot
+        run: |
+          rm -rf .git node_modules
+          tar -czf /tmp/tamil2-v40-audit.tar.gz .
+      - name: Upload source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: tamil2-v40-audit
+          path: /tmp/tamil2-v40-audit.tar.gz
+          if-no-files-found: error
