@@ -1,8 +1,8 @@
-# 言語検証記録 v3.5-rc.1
+# 言語検証記録 v3.6-rc.1
 
 更新日：2026-07-26
 
-対象：PART 0、第1課〜第10課
+対象：PART 0、第1課〜第12課
 
 状態：構造・転写・データ検査済み／個別発音のネイティブ音声監査待ち
 
@@ -235,7 +235,7 @@ reṇṭu puttakam irukku.
 
 ## 12. 初心者向け解説と問題の監査
 
-第1〜8課の例文、`targetTamil`、TTS、転写、形態分析は変更せず、説明と復習導線を `pedagogy-v34.js` で差し替えた。第9・10課は、同じv3.4解説・急所問題スキーマで新規制作した。
+第1〜8課の例文、`targetTamil`、TTS、転写、形態分析は変更せず、説明と復習導線を `pedagogy-v34.js` で差し替えた。第9〜12課は、同じv3.4解説・急所問題スキーマで新規制作した。
 
 解説の表示順：
 
@@ -274,16 +274,18 @@ reṇṭu puttakam irukku.
 | 第8課 | 12 | 10 | 5 |
 | 第9課 | 10 | 9 | 5 |
 | 第10課 | 10 | 8 | 5 |
+| 第11課 | 10 | 8 | 5 |
+| 第12課 | 10 | 8 | 5 |
 
-全公開スキーマ項目：209。各課に3文の短い読み取りを一つ収録する。
+全公開スキーマ項目：245。各課に3文の短い読み取りを一つ収録する。
 
 `node tests/validate-v30.mjs` の結果：
 
 ```text
-v3.5 validation passed: 8680 assertions
+v3.6 validation passed: 10166 assertions
 - 66 golden transliteration cases
-- 209 public data entries linted
-- PART 0 + lessons 1–10 only
+- 245 public data entries linted
+- PART 0 + lessons 1–12 only
 ```
 
 検査内容：
@@ -320,9 +322,9 @@ v3.5 validation passed: 8680 assertions
 - Enter／Space対応
 - 通常／ゆっくり、1回／2回、前／次、停止、連続再生
 - TTS不在通知
-- PART 0＋第1〜10課だけをナビ・印刷対象にする
-- 全10課に3文の短い読み取りを表示する
-- 全10課に「持ち帰る3点」と初心者向け6段階解説を表示する
+- PART 0＋第1〜12課だけをナビ・印刷対象にする
+- 全12課に3文の短い読み取りを表示する
+- 全12課に「持ち帰る3点」と初心者向け6段階解説を表示する
 - 解説中のTamil語句へ括弧付き構造ローマ字を表示する
 - 問題を5つの急所に固定し、解答後に理由と持ち帰る一行を表示する
 - 旧URL、アイコン、ローカル保存キーを維持
@@ -330,10 +332,10 @@ v3.5 validation passed: 8680 assertions
 `tests/dom-v30.cjs` のDOM操作テスト結果：
 
 ```text
-DOM validation passed: 59 assertions
+DOM validation passed: 65 assertions
 - legacy kana setting migrated without deleting progress
 - card, glyph, keyboard, continuous, and letter audio are single-fire
-- PART 0 + 10 lessons, beginner explanations, critical quizzes, short readings, and 216-character table render
+- PART 0 + 12 lessons, beginner explanations, critical quizzes, short readings, and 216-character table render
 ```
 
 未完了：
@@ -384,7 +386,7 @@ DOM validation passed: 59 assertions
 
 ## 18. リリース判定
 
-構造、固定文字転写、公開範囲、データ移行、機械検査はリリース可能。個別発音とカナの全件ネイティブ音声監査が残るため、版は `v3.5-rc.1` とする。
+構造、固定文字転写、公開範囲、データ移行、機械検査はリリース可能。個別発音とカナの全件ネイティブ音声監査が残るため、版は `v3.6-rc.1` とする。
 
 ## 19. 動詞の設計図
 
@@ -437,3 +439,28 @@ DOM validation passed: 59 assertions
 
 `சாப்பிட / பாக்க / போக / வர / செய்ய / குடிக்க / வாங்க / படிக்க` は、単一接辞から自動生成せず、検証済みの完成形として保持する。目的文では最後の有限動詞がTAM・人称を担い、左側の不定詞は目的や後続述語への接続を担う。
 
+
+
+## 23. 副動詞と動作の連結
+
+第11課では、次の対比を正本化した。
+
+```text
+கடைக்கு போய் தண்ணி வாங்கினேன்.
+சாப்பிட்டு வீட்டுக்கு போனேன்.
+படம் பாத்து வீட்டுக்கு வந்தேன்.
+```
+
+`போய் / வந்து / சாப்பிட்டு / பாத்து / வாங்கி / குடிச்சு / செஞ்சு / ஏறி` は、未知動詞から機械生成せず、口語表面形・発音・カナを個別登録した。前の副動詞にはTAM・人物を置かず、最後の有限動詞だけが文を完成させる。基礎的な連鎖では主語共有を既定にし、日本語訳の「〜して／〜してから」は動作間の関係に応じて調整する。
+
+## 24. 進行・完了・準備済み
+
+第12課では、次の三本を中心対比にした。
+
+| 機能 | 中心形 | 判断 |
+|---|---|---|
+| 進行明示 | `பாத்துக்கிட்டு இருக்கேன்` | 今まさに続いていることを明示 |
+| 完了・既済 | `பாத்துட்டேன்` | もう見た／見終えた |
+| 準備・結果保持 | `வாங்கி வெச்சேன்` | 後で使える結果を保つ |
+
+`பாத்துட்டேன் → pāttuṭṭ-ēṉ` のように、`structuredRoman` は融合した表面文字列を保存する。より深い `பாத்து + விட்டேன்` 型の分析を表示文字列へ戻さない。単純現在・単純過去との意味差を説明し、補助動詞の字義だけで機械翻訳しない。
