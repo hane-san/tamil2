@@ -23,5 +23,21 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
-      - name: Run data, supplement, and DOM validation
-        run: npm test
+      - name: Validate public PART 0 and lessons 1–20
+        run: npm run test:data
+      - name: Validate supplement A–H structure
+        run: npm run test:supplements
+      - name: Validate supplement E
+        run: npm run test:supplement-e
+      - name: Validate supplement F
+        run: npm run test:supplement-f
+      - name: Validate supplement G
+        run: npm run test:supplement-g
+      - name: Validate supplement H
+        run: npm run test:supplement-h
+      - name: Validate isolated supplement progress model
+        run: npm run test:supplement-ui
+      - name: Validate integrated supplement preview
+        run: npm run test:supplement-app
+      - name: Validate existing DOM and audio behaviour
+        run: npm run test:dom
