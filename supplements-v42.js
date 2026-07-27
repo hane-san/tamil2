@@ -94,7 +94,7 @@
       legacyRefs: ["grammar-v28.js:38", "G38-01..G38-04", "38-01..38-04"],
       sourceLessons: ["lesson07-v33.js", "lesson11-v36.js", "lesson12-v36.js"],
       excludedScope: ["自他対応の無制限な派生規則化", "受け身との混同"],
-      status: "planned"
+      status: "drafting"
     },
     {
       code: "H",
@@ -111,7 +111,7 @@
   ].map(freezeSupplement);
 
   window.TAMIL_SUPPLEMENT_CATALOG_V42 = Object.freeze({
-    version: "4.4.0-dev",
+    version: "4.5.0-dev",
     public: false,
     numberingPolicy: "supplement-codes-not-lessons-21-to-28",
     legacyTravelPolicy: "scene-review-packs-after-supplements",
