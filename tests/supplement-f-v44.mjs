@@ -73,7 +73,7 @@ const allExplanation = [
 assert(allExplanation.includes("பாத்துட்டேன்") && allExplanation.includes("பாத்திருக்கேன்"), "simple completion and experience contrast missing");
 assert(allExplanation.includes("வெச்சேன்") && allExplanation.includes("வெச்சிருக்கேன்"), "past preparation and prepared-result contrast missing");
 assert(allExplanation.includes("திறந்திருக்கு") && allExplanation.includes("திறந்துடுச்சு"), "result state and change contrast missing");
-assert(allExplanation.includes("受け身") && allExplanation.includes("後悔"), "āyiṭuccu/pōyiṭuccu overgeneralisation warning missing");
+assert(allExplanation.includes("受け身") && allExplanation.includes("好ましい"), "āyiṭuccu/pōyiṭuccu overgeneralisation warning missing");
 
 for (const section of supplement.readSections) {
   assert(Boolean(section.takeaway), `${section.heading}: takeaway missing`);
