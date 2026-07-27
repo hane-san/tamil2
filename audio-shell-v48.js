@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  function ensureShell(id, prefix, label) {
+  function ensureShell(id, label) {
     let shell = document.getElementById(id);
     if (!shell) {
       shell = document.createElement("section");
@@ -9,8 +9,6 @@
       document.body.appendChild(shell);
     }
 
-    shell.hidden = true;
-    shell.setAttribute("aria-hidden", "true");
     shell.classList.add(id === "audioDock" ? "audio-dock" : "supplement-audio-dock");
 
     const ids = id === "audioDock"
@@ -56,17 +54,17 @@
     }
 
     const keepHidden = () => {
-      shell.hidden = true;
-      shell.classList.remove("open");
-      shell.setAttribute("aria-hidden", "true");
+      if (!shell.hidden) shell.hidden = true;
+      if (shell.classList.contains("open")) shell.classList.remove("open");
+      if (shell.getAttribute("aria-hidden") !== "true") shell.setAttribute("aria-hidden", "true");
     };
     keepHidden();
     new MutationObserver(keepHidden).observe(shell, { attributes: true, attributeFilter: ["hidden", "class", "aria-hidden"] });
     return shell;
   }
 
-  ensureShell("audioDock", "audio", "AUDIO");
-  ensureShell("supplementAudioDock", "suppAudio", "SUPPLEMENT AUDIO");
+  ensureShell("audioDock", "AUDIO");
+  ensureShell("supplementAudioDock", "SUPPLEMENT AUDIO");
 
   window.TAMIL_AUDIO_SHELL_V48 = Object.freeze({ version: "4.8" });
 })();
