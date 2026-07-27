@@ -8,7 +8,7 @@ const root = path.resolve(here, "..");
 const context = { window: {} };
 vm.createContext(context);
 
-for (const file of ["tamil-core-v30.js", "supplementF-v44.js", "supplementG-v45.js", "supplementH-v45.js"]) {
+for (const file of ["tamil-core-v30.js", "lesson12-v36.js", "supplementF-v44.js", "supplementG-v45.js", "supplementH-v45.js"]) {
   vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), context, { filename: file });
 }
 
