@@ -68,7 +68,7 @@ const allExplanation = [
 ].join(" ");
 assert(allExplanation.includes("யாரோ") && allExplanation.includes("யாராவது"), "yārō/yārāvatu contrast missing from explanations");
 assert(allExplanation.includes("疑問詞＋-உம்＋否定"), "interrogative + -um + negative rule missing");
-assert(allExplanation.includes("完全な同義ではありません"), "tāṉ/-ē non-equivalence warning missing");
+assert(allExplanation.includes("தான்") && allExplanation.includes("-ஏ"), "tāṉ and -ē must both be explained as distinct focus devices");
 
 for (const section of supplement.readSections) {
   assert(Boolean(section.takeaway), `${section.heading}: takeaway missing`);
