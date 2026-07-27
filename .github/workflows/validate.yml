@@ -27,6 +27,8 @@ jobs:
         run: npm run test:data
       - name: Validate supplement A–H structure
         run: npm run test:supplements
+      - name: Validate Japanese copy polish
+        run: npm run test:copy
       - name: Validate supplement E
         run: npm run test:supplement-e
       - name: Validate supplement F
