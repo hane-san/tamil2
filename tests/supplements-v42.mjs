@@ -23,7 +23,8 @@ const runtimeFiles = [
   "supplementC-v43.js",
   "supplementD-v43.js",
   "supplementE-v44.js",
-  "supplementF-v44.js"
+  "supplementF-v44.js",
+  "supplementG-v45.js"
 ];
 for (const file of runtimeFiles) {
   vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), context, { filename: file });
@@ -38,6 +39,7 @@ const supplementC = byCode("C");
 const supplementD = byCode("D");
 const supplementE = byCode("E");
 const supplementF = byCode("F");
+const supplementG = byCode("G");
 const lessonExamples = new Map(
   (context.window.TAMIL_LESSONS_V30 || []).flatMap(lesson => lesson.examples || []).map(example => [example.id, example])
 );
@@ -49,7 +51,7 @@ function assert(condition, message) {
   if (!condition) failures.push(message);
 }
 
-assert(catalog?.version === "4.4.0-dev", "supplement catalog version must be 4.4.0-dev");
+assert(catalog?.version === "4.5.0-dev", "supplement catalog version must be 4.5.0-dev");
 assert(catalog?.public === false, "incomplete supplements must not be public");
 assert(catalog?.numberingPolicy === "supplement-codes-not-lessons-21-to-28", "supplements must remain outside lesson numbering");
 assert(catalog?.legacyTravelPolicy === "scene-review-packs-after-supplements", "legacy travel chapters must remain scene review material");
@@ -76,7 +78,7 @@ for (const supplement of supplements) {
   assert(Array.isArray(supplement.excludedScope) && supplement.excludedScope.length > 0, `${supplement.code}: excluded scope missing`);
   assert(["drafting", "planned"].includes(supplement.status), `${supplement.code}: invalid status ${supplement.status}`);
 }
-assert(supplements.filter(item => item.status === "drafting").map(item => item.code).join("") === "ABCDEF", "A–F should be drafting");
+assert(supplements.filter(item => item.status === "drafting").map(item => item.code).join("") === "ABCDEFG", "A–G should be drafting");
 
 const expected = {
   A: { id: "supplement-a-v42", prereq: "8,14", examples: 10, patterns: 10, reused: [[0, "l8-08"], [1, "l8-09"]], newIds: ["sa-03", "sa-04", "sa-05", "sa-06", "sa-07", "sa-08", "sa-09", "sa-10"], source: "PREDICATE-ENGINE-v1.1", mini: "sa-05,sa-08,sa-10" },
@@ -84,7 +86,8 @@ const expected = {
   C: { id: "supplement-c-v43", prereq: "1,16", examples: 12, patterns: 8, reused: [[0, "l1-09"], [1, "l16-01"], [11, "l16-08"]], newIds: ["sc-03", "sc-04", "sc-05", "sc-06", "sc-07", "sc-08", "sc-09", "sc-10", "sc-11"], source: "CORE-CURRICULUM-v1.1", mini: "sc-05,sc-07,sc-08" },
   D: { id: "supplement-d-v43", prereq: "16", examples: 12, patterns: 8, reused: [[0, "l16-03"], [1, "l16-10"]], newIds: ["sd-03", "sd-04", "sd-05", "sd-06", "sd-07", "sd-08", "sd-09", "sd-10", "sd-11", "sd-12"], source: "PENN-PLC-TAMIL", mini: "sd-03,sd-10,l16-10" },
   E: { id: "supplement-e-v44", prereq: "2,16,18", examples: 12, patterns: 8, reused: [], newIds: ["se-01", "se-02", "se-03", "se-04", "se-05", "se-06", "se-07", "se-08", "se-09", "se-10", "se-11", "se-12"], source: "LANGUAGE-IN-INDIA", mini: "se-06,se-08,se-12" },
-  F: { id: "supplement-f-v44", prereq: "11,12,18", examples: 12, patterns: 8, reused: [[0, "l12-04"], [3, "l12-07"]], newIds: ["sf-02", "sf-03", "sf-05", "sf-06", "sf-07", "sf-08", "sf-09", "sf-10", "sf-11", "sf-12"], source: "SCHIFFMAN-ASPECT-1999", mini: "sf-05,sf-08,sf-12" }
+  F: { id: "supplement-f-v44", prereq: "11,12,18", examples: 12, patterns: 8, reused: [[0, "l12-04"], [3, "l12-07"]], newIds: ["sf-02", "sf-03", "sf-05", "sf-06", "sf-07", "sf-08", "sf-09", "sf-10", "sf-11", "sf-12"], source: "SCHIFFMAN-ASPECT-1999", mini: "sf-05,sf-08,sf-12" },
+  G: { id: "supplement-g-v45", prereq: "7,11,12", examples: 12, patterns: 8, reused: [], newIds: ["sg-01", "sg-02", "sg-03", "sg-04", "sg-05", "sg-06", "sg-07", "sg-08", "sg-09", "sg-10", "sg-11", "sg-12"], source: "LANGUAGE-IN-INDIA", mini: "sg-11,sg-01,sg-02" }
 };
 
 const confidenceAxes = ["form", "morphology", "pronunciation", "registerNaturalness"];
@@ -101,7 +104,7 @@ function validateEntry(item, label, requiredSource) {
   }
 }
 
-for (const code of ["A", "B", "C", "D", "E", "F"]) {
+for (const code of ["A", "B", "C", "D", "E", "F", "G"]) {
   const supplement = byCode(code);
   const spec = expected[code];
   assert(Boolean(supplement), `supplement ${code} data must load`);
@@ -133,7 +136,7 @@ for (const code of ["A", "B", "C", "D", "E", "F"]) {
 }
 
 const expectedFocus = ["形態分解", "機能選択", "実用場面", "混同防止", "総合復習"];
-for (const supplement of [supplementA, supplementB, supplementC, supplementD, supplementE, supplementF]) {
+for (const supplement of [supplementA, supplementB, supplementC, supplementD, supplementE, supplementF, supplementG]) {
   supplement.quiz.forEach((question, index) => {
     assert(question.focus === expectedFocus[index], `supplement ${supplement.code} quiz ${index + 1}: focus mismatch`);
     assert(question.options.length === 4, `supplement ${supplement.code} quiz ${index + 1}: expected four options`);
@@ -145,7 +148,7 @@ for (const supplement of [supplementA, supplementB, supplementC, supplementD, su
 }
 
 const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
-for (const file of ["supplements-v42.js", "supplementA-v42.js", "supplementB-v42.js", "supplementC-v43.js", "supplementD-v43.js", "supplementE-v44.js", "supplementF-v44.js"]) {
+for (const file of ["supplements-v42.js", "supplementA-v42.js", "supplementB-v42.js", "supplementC-v43.js", "supplementD-v43.js", "supplementE-v44.js", "supplementF-v44.js", "supplementG-v45.js"]) {
   assert(!indexHtml.includes(`src="${file}"`), `draft ${file} must not load in public index`);
 }
 
@@ -156,6 +159,6 @@ if (failures.length) {
 } else {
   console.log(`supplement validation passed: ${assertions} assertions`);
   console.log("- A–H catalogued without changing lesson numbering");
-  console.log("- supplements A–F: explicit examples, form rows, six reading sections and five diagnostic questions");
+  console.log("- supplements A–G: explicit examples, form rows, six reading sections and five diagnostic questions");
   console.log("- validated core examples remain reused by reference; draft files remain outside the public index");
 }
