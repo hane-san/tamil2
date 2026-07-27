@@ -24,7 +24,8 @@ const runtimeFiles = [
   "supplementD-v43.js",
   "supplementE-v44.js",
   "supplementF-v44.js",
-  "supplementG-v45.js"
+  "supplementG-v45.js",
+  "supplementH-v45.js"
 ];
 for (const file of runtimeFiles) {
   vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), context, { filename: file });
@@ -40,6 +41,7 @@ const supplementD = byCode("D");
 const supplementE = byCode("E");
 const supplementF = byCode("F");
 const supplementG = byCode("G");
+const supplementH = byCode("H");
 const lessonExamples = new Map(
   (context.window.TAMIL_LESSONS_V30 || []).flatMap(lesson => lesson.examples || []).map(example => [example.id, example])
 );
@@ -78,7 +80,7 @@ for (const supplement of supplements) {
   assert(Array.isArray(supplement.excludedScope) && supplement.excludedScope.length > 0, `${supplement.code}: excluded scope missing`);
   assert(["drafting", "planned"].includes(supplement.status), `${supplement.code}: invalid status ${supplement.status}`);
 }
-assert(supplements.filter(item => item.status === "drafting").map(item => item.code).join("") === "ABCDEFG", "A–G should be drafting");
+assert(supplements.filter(item => item.status === "drafting").map(item => item.code).join("") === "ABCDEFGH", "A–H should be drafting");
 
 const expected = {
   A: { id: "supplement-a-v42", prereq: "8,14", examples: 10, patterns: 10, reused: [[0, "l8-08"], [1, "l8-09"]], newIds: ["sa-03", "sa-04", "sa-05", "sa-06", "sa-07", "sa-08", "sa-09", "sa-10"], source: "PREDICATE-ENGINE-v1.1", mini: "sa-05,sa-08,sa-10" },
@@ -87,13 +89,16 @@ const expected = {
   D: { id: "supplement-d-v43", prereq: "16", examples: 12, patterns: 8, reused: [[0, "l16-03"], [1, "l16-10"]], newIds: ["sd-03", "sd-04", "sd-05", "sd-06", "sd-07", "sd-08", "sd-09", "sd-10", "sd-11", "sd-12"], source: "PENN-PLC-TAMIL", mini: "sd-03,sd-10,l16-10" },
   E: { id: "supplement-e-v44", prereq: "2,16,18", examples: 12, patterns: 8, reused: [], newIds: ["se-01", "se-02", "se-03", "se-04", "se-05", "se-06", "se-07", "se-08", "se-09", "se-10", "se-11", "se-12"], source: "LANGUAGE-IN-INDIA", mini: "se-06,se-08,se-12" },
   F: { id: "supplement-f-v44", prereq: "11,12,18", examples: 12, patterns: 8, reused: [[0, "l12-04"], [3, "l12-07"]], newIds: ["sf-02", "sf-03", "sf-05", "sf-06", "sf-07", "sf-08", "sf-09", "sf-10", "sf-11", "sf-12"], source: "SCHIFFMAN-ASPECT-1999", mini: "sf-05,sf-08,sf-12" },
-  G: { id: "supplement-g-v45", prereq: "7,11,12", examples: 12, patterns: 8, reused: [], newIds: ["sg-01", "sg-02", "sg-03", "sg-04", "sg-05", "sg-06", "sg-07", "sg-08", "sg-09", "sg-10", "sg-11", "sg-12"], source: "LANGUAGE-IN-INDIA", mini: "sg-11,sg-01,sg-02" }
+  G: { id: "supplement-g-v45", prereq: "7,11,12", examples: 12, patterns: 8, reused: [], newIds: ["sg-01", "sg-02", "sg-03", "sg-04", "sg-05", "sg-06", "sg-07", "sg-08", "sg-09", "sg-10", "sg-11", "sg-12"], source: "LANGUAGE-IN-INDIA", mini: "sg-11,sg-01,sg-02" },
+  H: { id: "supplement-h-v45", prereq: "3,12,17", examples: 12, patterns: 8, reused: [], newIds: ["sh-01", "sh-02", "sh-03", "sh-04", "sh-05", "sh-06", "sh-07", "sh-08", "sh-11", "sh-12"], source: "SCHIFFMAN-ASPECT-1999", mini: "sh-08,sf-11,sh-11" }
 };
 
+const literaryIds = new Set(["sh-11", "sh-12", "sh-form-passive-reading"]);
 const confidenceAxes = ["form", "morphology", "pronunciation", "registerNaturalness"];
 function validateEntry(item, label, requiredSource) {
   assert(item.ttsText === item.targetTamil, `${item.id}: TTS must use targetTamil only`);
-  assert(item.primaryRegister === "SST", `${item.id}: primaryRegister must be SST`);
+  const expectedRegister = literaryIds.has(item.id) ? "LT-WR" : "SST";
+  assert(item.primaryRegister === expectedRegister, `${item.id}: primaryRegister must be ${expectedRegister}`);
   assert(item.regionalProfile === "TN-GENERAL", `${item.id}: regionalProfile must be TN-GENERAL`);
   assert(item.sourceRefs.some(ref => ref.includes(requiredSource)), `${item.id}: required source ${requiredSource} missing`);
   assert(item.sourceRefs.some(ref => ref.includes("SCHIFFMAN-SPOKEN-TAMIL")), `${item.id}: spoken Tamil grammar source missing`);
@@ -104,7 +109,7 @@ function validateEntry(item, label, requiredSource) {
   }
 }
 
-for (const code of ["A", "B", "C", "D", "E", "F", "G"]) {
+for (const code of ["A", "B", "C", "D", "E", "F", "G", "H"]) {
   const supplement = byCode(code);
   const spec = expected[code];
   assert(Boolean(supplement), `supplement ${code} data must load`);
@@ -136,7 +141,7 @@ for (const code of ["A", "B", "C", "D", "E", "F", "G"]) {
 }
 
 const expectedFocus = ["形態分解", "機能選択", "実用場面", "混同防止", "総合復習"];
-for (const supplement of [supplementA, supplementB, supplementC, supplementD, supplementE, supplementF, supplementG]) {
+for (const supplement of [supplementA, supplementB, supplementC, supplementD, supplementE, supplementF, supplementG, supplementH]) {
   supplement.quiz.forEach((question, index) => {
     assert(question.focus === expectedFocus[index], `supplement ${supplement.code} quiz ${index + 1}: focus mismatch`);
     assert(question.options.length === 4, `supplement ${supplement.code} quiz ${index + 1}: expected four options`);
@@ -148,7 +153,7 @@ for (const supplement of [supplementA, supplementB, supplementC, supplementD, su
 }
 
 const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
-for (const file of ["supplements-v42.js", "supplementA-v42.js", "supplementB-v42.js", "supplementC-v43.js", "supplementD-v43.js", "supplementE-v44.js", "supplementF-v44.js", "supplementG-v45.js"]) {
+for (const file of ["supplements-v42.js", "supplementA-v42.js", "supplementB-v42.js", "supplementC-v43.js", "supplementD-v43.js", "supplementE-v44.js", "supplementF-v44.js", "supplementG-v45.js", "supplementH-v45.js"]) {
   assert(!indexHtml.includes(`src="${file}"`), `draft ${file} must not load in public index`);
 }
 
@@ -159,6 +164,6 @@ if (failures.length) {
 } else {
   console.log(`supplement validation passed: ${assertions} assertions`);
   console.log("- A–H catalogued without changing lesson numbering");
-  console.log("- supplements A–G: explicit examples, form rows, six reading sections and five diagnostic questions");
-  console.log("- validated core examples remain reused by reference; draft files remain outside the public index");
+  console.log("- supplements A–H: explicit examples, form rows, six reading sections and five diagnostic questions");
+  console.log("- validated core and supplement examples remain reused by reference; draft files remain outside the public index");
 }
