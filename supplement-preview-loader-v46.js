@@ -12,6 +12,7 @@
     "supplementG-v45.js",
     "supplementH-v45.js",
     "supplementH-clarity-v45.js",
+    "copy-polish-v47.js",
     "supplement-ui-v42.js",
     "supplement-app-v46.js"
   ];
