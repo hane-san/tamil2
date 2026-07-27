@@ -106,7 +106,7 @@
       legacyRefs: ["grammar-v28.js:38", "G38-05..G38-09", "38-05..38-12"],
       sourceLessons: ["lesson03-v31.js", "lesson12-v36.js", "lesson17-v39.js"],
       excludedScope: ["-paṭu受け身を日常会話の既定にする", "tāṉを日本語の再帰代名詞へ一律対応"],
-      status: "planned"
+      status: "drafting"
     }
   ].map(freezeSupplement);
 
