@@ -1,6 +1,6 @@
 {
   "name": "spoken-tamil-textbook",
-  "version": "4.7.0-preview",
+  "version": "4.8.0-preview",
   "private": true,
   "scripts": {
     "test": "npm run test:data && npm run test:supplements && npm run test:copy && npm run test:supplement-e && npm run test:supplement-f && npm run test:supplement-g && npm run test:supplement-h && npm run test:supplement-ui && npm run test:supplement-app && npm run test:dom",
