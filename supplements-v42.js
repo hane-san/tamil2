@@ -82,7 +82,7 @@
       legacyRefs: ["grammar-v28.js:36 example 36-08", "grammar-v28.js:38 examples 38-05,38-10..38-12"],
       sourceLessons: ["lesson11-v36.js", "lesson12-v36.js", "lesson18-v39.js"],
       excludedScope: ["名詞化そのものの再講義", "完了・経験・変化の一形式への統合"],
-      status: "planned"
+      status: "drafting"
     },
     {
       code: "G",
