@@ -1,4 +1,4 @@
-const CACHE_NAME = "tamil2-tn-sst-v46-preview-20260727";
+const CACHE_NAME = "tamil2-tn-sst-v47-preview-20260727";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -42,6 +42,7 @@ const APP_FILES = [
   "./supplementG-v45.js",
   "./supplementH-v45.js",
   "./supplementH-clarity-v45.js",
+  "./copy-polish-v47.js",
   "./supplement-ui-v42.js",
   "./supplement-app-v46.js",
   "./app-icon.png",
