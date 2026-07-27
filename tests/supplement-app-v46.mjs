@@ -89,6 +89,7 @@ card = window.document.querySelector("[data-supp-play-id]");
 card.dispatchEvent(new window.KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
 assert(spoken.length === 2, "keyboard activation must trigger exactly one additional utterance");
 
+app.stopAudio(true);
 window.document.querySelector('[data-audio-rate="0.72"]').click();
 window.document.querySelector('[data-audio-repeats="2"]').click();
 const preferences = window.TAMIL_UI_CONTROLS_V48.getAudioPreferences();
@@ -99,11 +100,12 @@ assert(window.document.querySelector('[data-audio-rate="0.72"]').getAttribute("a
 
 window.document.querySelector('[data-audio-repeats="1"]').click();
 const continuous = window.document.querySelector("[data-supp-continuous]");
+const beforeContinuous = spoken.length;
 continuous.click();
-assert(spoken.length === 3, "continuous play button must start with one utterance");
+assert(spoken.length === beforeContinuous + 1, "continuous play button must start with one utterance");
 spoken.at(-1).onend?.();
 await new Promise(resolve => setTimeout(resolve, 320));
-assert(spoken.length === 4, "continuous playback must advance after the inter-sentence gap");
+assert(spoken.length === beforeContinuous + 2, "continuous playback must advance after the inter-sentence gap");
 
 const originalUtterance = window.SpeechSynthesisUtterance;
 delete window.SpeechSynthesisUtterance;
