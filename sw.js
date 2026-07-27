@@ -1,9 +1,10 @@
-const CACHE_NAME = "tamil2-tn-sst-v47-preview-20260727";
+const CACHE_NAME = "tamil2-tn-sst-v48-preview-20260727";
 const APP_FILES = [
   "./",
   "./index.html",
   "./styles-v28.css",
   "./styles-supplements-v46.css",
+  "./styles-ui-v48.css",
   "./tamil-core-v30.js",
   "./reference-v30.js",
   "./lesson01-v30.js",
@@ -30,8 +31,9 @@ const APP_FILES = [
   "./clarity-v41.js",
   "./reading-v31.js",
   "./curriculum-v41.js",
+  "./audio-shell-v48.js",
   "./app-v28.js",
-  "./supplement-preview-loader-v46.js",
+  "./supplement-preview-loader-v48.js",
   "./supplements-v42.js",
   "./supplementA-v42.js",
   "./supplementB-v42.js",
@@ -45,6 +47,7 @@ const APP_FILES = [
   "./copy-polish-v47.js",
   "./supplement-ui-v42.js",
   "./supplement-app-v46.js",
+  "./ui-controls-v48.js",
   "./app-icon.png",
   "./manifest-v41.webmanifest"
 ];
@@ -77,7 +80,7 @@ self.addEventListener("fetch", event => {
     return;
   }
   event.respondWith(
-    caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
+    caches.match(event.request, { ignoreSearch: true }).then(cached => cached || fetch(event.request).then(response => {
       const copy = response.clone();
       caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
       return response;
