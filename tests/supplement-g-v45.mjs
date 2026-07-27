@@ -8,11 +8,12 @@ const root = path.resolve(here, "..");
 const context = { window: {} };
 vm.createContext(context);
 
-for (const file of ["tamil-core-v30.js", "supplementG-v45.js"]) {
+for (const file of ["tamil-core-v30.js", "supplements-v42.js", "supplementG-v45.js"]) {
   vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), context, { filename: file });
 }
 
 const supplement = (context.window.TAMIL_SUPPLEMENTS_V42 || []).find(item => item.code === "G");
+const catalogEntry = context.window.TAMIL_SUPPLEMENT_CATALOG_V42?.supplements.find(item => item.code === "G");
 const failures = [];
 let assertions = 0;
 
@@ -75,7 +76,7 @@ const allExplanation = [
 assert(allExplanation.includes("使役対象の格") && allExplanation.includes("一律"), "causee-case overgeneralisation warning missing");
 assert(allExplanation.includes("万能") || allExplanation.includes("機械適用"), "mechanical derivation warning missing");
 assert(allExplanation.includes("同じ語幹") && allExplanation.includes("格と参加者"), "same-stem valency explanation missing");
-assert(allExplanation.includes("受け身"), "passive-confusion warning missing");
+assert(catalogEntry?.excludedScope.includes("受け身との混同"), "passive-confusion exclusion missing from catalog");
 
 for (const section of supplement.readSections) {
   assert(Boolean(section.takeaway), `${section.heading}: takeaway missing`);
