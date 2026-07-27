@@ -1,8 +1,9 @@
-const CACHE_NAME = "tamil2-tn-sst-v41-rc1-20260726";
+const CACHE_NAME = "tamil2-tn-sst-v47-preview-20260727";
 const APP_FILES = [
   "./",
   "./index.html",
   "./styles-v28.css",
+  "./styles-supplements-v46.css",
   "./tamil-core-v30.js",
   "./reference-v30.js",
   "./lesson01-v30.js",
@@ -30,6 +31,20 @@ const APP_FILES = [
   "./reading-v31.js",
   "./curriculum-v41.js",
   "./app-v28.js",
+  "./supplement-preview-loader-v46.js",
+  "./supplements-v42.js",
+  "./supplementA-v42.js",
+  "./supplementB-v42.js",
+  "./supplementC-v43.js",
+  "./supplementD-v43.js",
+  "./supplementE-v44.js",
+  "./supplementF-v44.js",
+  "./supplementG-v45.js",
+  "./supplementH-v45.js",
+  "./supplementH-clarity-v45.js",
+  "./copy-polish-v47.js",
+  "./supplement-ui-v42.js",
+  "./supplement-app-v46.js",
   "./app-icon.png",
   "./manifest-v41.webmanifest"
 ];
