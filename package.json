@@ -3,7 +3,7 @@
   "version": "4.1.0-rc.1",
   "private": true,
   "scripts": {
-    "test": "npm run test:supplement-e && npm run test:data && npm run test:supplements && npm run test:supplement-ui && npm run test:dom",
+    "test": "npm run test:data && npm run test:supplements && npm run test:supplement-e && npm run test:supplement-ui && npm run test:dom",
     "test:data": "node tests/validate-v30.mjs",
     "test:supplements": "node tests/supplements-v42.mjs",
     "test:supplement-e": "node tests/supplement-e-v44.mjs",
