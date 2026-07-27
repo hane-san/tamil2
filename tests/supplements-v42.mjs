@@ -25,7 +25,8 @@ const runtimeFiles = [
   "supplementE-v44.js",
   "supplementF-v44.js",
   "supplementG-v45.js",
-  "supplementH-v45.js"
+  "supplementH-v45.js",
+  "supplementH-clarity-v45.js"
 ];
 for (const file of runtimeFiles) {
   vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), context, { filename: file });
@@ -153,7 +154,7 @@ for (const supplement of [supplementA, supplementB, supplementC, supplementD, su
 }
 
 const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
-for (const file of ["supplements-v42.js", "supplementA-v42.js", "supplementB-v42.js", "supplementC-v43.js", "supplementD-v43.js", "supplementE-v44.js", "supplementF-v44.js", "supplementG-v45.js", "supplementH-v45.js"]) {
+for (const file of ["supplements-v42.js", "supplementA-v42.js", "supplementB-v42.js", "supplementC-v43.js", "supplementD-v43.js", "supplementE-v44.js", "supplementF-v44.js", "supplementG-v45.js", "supplementH-v45.js", "supplementH-clarity-v45.js"]) {
   assert(!indexHtml.includes(`src="${file}"`), `draft ${file} must not load in public index`);
 }
 
