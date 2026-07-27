@@ -53,7 +53,7 @@ assert(app.isActive(), "supplement hub route must activate supplement mode");
 assert(!window.document.getElementById("supplementRoot").hidden, "supplement root must be visible");
 assert(window.document.getElementById("main").hidden, "core main must be hidden in supplement mode");
 assert(window.document.getElementById("supplementRoot").textContent.includes("補講 A") && window.document.getElementById("supplementRoot").textContent.includes("補講 H"), "hub must list A–H");
-assert(!window.document.getElementById("supplementRoot").textContent.includes("第21課"), "supplements must not be renamed lessons 21+ ");
+assert(!window.document.getElementById("supplementRoot").textContent.includes("第21課"), "supplements must not be renamed lessons 21+");
 
 app.openSupplement("H", "examples");
 window.dispatchEvent(new window.HashChangeEvent("hashchange"));
@@ -101,8 +101,13 @@ assert(css.includes("min-height:48px"), "supplement tap targets must be comforta
 assert(css.includes("env(safe-area-inset-bottom)"), "supplement bottom navigation must respect iPhone safe area");
 
 const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
+assert(indexHtml.includes('src="supplement-preview-loader-v46.js"'), "index must load the isolated supplement preview loader");
 for (const file of ["supplements-v42.js", "supplementA-v42.js", "supplementH-v45.js", "supplement-ui-v42.js", "supplement-app-v46.js"]) {
-  assert(indexHtml.includes(`src="${file}"`), `index must load ${file}`);
+  assert(!indexHtml.includes(`src="${file}"`), `index must not couple directly to ${file}`);
+}
+const loader = fs.readFileSync(path.join(root, "supplement-preview-loader-v46.js"), "utf8");
+for (const file of ["supplements-v42.js", "supplementA-v42.js", "supplementH-v45.js", "supplement-ui-v42.js", "supplement-app-v46.js"]) {
+  assert(loader.includes(`"${file}"`), `preview loader must include ${file}`);
 }
 assert(indexHtml.includes('id="supplementHubButton"'), "drawer must expose the supplement preview launcher");
 assert(indexHtml.includes('id="supplementAudioDock"'), "supplement preview must have an isolated audio dock");
@@ -115,5 +120,5 @@ if (failures.length) {
   console.log(`supplement preview integration passed: ${assertions} assertions`);
   console.log("- A–H hub, hash routing, core/supplement progress isolation and lesson bridges verified");
   console.log("- whole-card keyboard/audio, continuous playback, Tamil-only TTS and unavailable-TTS notice verified");
-  console.log("- iPhone portrait breakpoint, safe-area navigation and 12px kana floor verified");
+  console.log("- isolated loader, iPhone portrait breakpoint, safe-area navigation and 12px kana floor verified");
 }
