@@ -56,20 +56,21 @@ assert(window.document.getElementById("supplementRoot").textContent.includes("�
 assert(!window.document.getElementById("supplementRoot").textContent.includes("第21課"), "supplements must not be renamed lessons 21+");
 
 app.openSupplement("H", "examples");
-window.dispatchEvent(new window.HashChangeEvent("hashchange"));
+app.syncFromHash();
 assert(window.location.hash.includes("supp=H"), "H route must be reflected in hash");
 assert(window.document.querySelectorAll("[data-supp-play-id]").length === 12, "H examples view must render 12 playable cards");
 assert(window.document.body.textContent.includes("LT-WR・読解"), "formal passive must display an LT-WR reading badge");
 
-const firstCard = window.document.querySelector("[data-supp-play-id]");
-firstCard.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
+let card = window.document.querySelector("[data-supp-play-id]");
+card.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
 assert(spoken.length === 1, `one card click must trigger one utterance; got ${spoken.length}`);
 assert(spoken[0].lang === "ta-IN", "supplement utterance must request ta-IN");
 assert(/^[\u0B80-\u0BFF\s.,?!…;:()'’]+$/u.test(spoken[0].text), "supplement utterance must contain Tamil layer only");
 assert(window.localStorage.getItem("tamil-verb-engine-v2") === coreBefore, "supplement listening must not alter core progress storage");
 assert(Boolean(window.localStorage.getItem("tamil-supplements-v42")), "supplement progress must use its own storage key");
 
-firstCard.dispatchEvent(new window.KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+card = window.document.querySelector("[data-supp-play-id]");
+card.dispatchEvent(new window.KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
 assert(spoken.length === 2, "keyboard activation must trigger exactly one additional utterance");
 
 const continuous = window.document.querySelector("[data-supp-continuous]");
@@ -81,15 +82,16 @@ assert(spoken.length === 4, "continuous playback must advance after the inter-se
 
 const originalUtterance = window.SpeechSynthesisUtterance;
 delete window.SpeechSynthesisUtterance;
-firstCard.click();
+card = window.document.querySelector("[data-supp-play-id]");
+card.click();
 assert(window.document.getElementById("toast").textContent.includes("対応していません"), "missing TTS API must show a concise notice");
 window.SpeechSynthesisUtterance = originalUtterance;
 
 app.openSupplement("H", "read");
-window.dispatchEvent(new window.HashChangeEvent("hashchange"));
+app.syncFromHash();
 const lessonLink = window.document.querySelector('[data-go-lesson="3"]');
 lessonLink.click();
-window.dispatchEvent(new window.HashChangeEvent("hashchange"));
+app.syncFromHash();
 assert(window.location.hash.includes("ch=3"), "bridge must return to an existing core lesson");
 assert(!app.isActive(), "core lesson route must leave supplement mode");
 assert(!window.document.getElementById("main").hidden, "core main must be restored");
