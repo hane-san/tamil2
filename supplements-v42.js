@@ -70,7 +70,7 @@
       legacyRefs: ["grammar-v28.js:36", "G36-01..G36-09", "36-01..36-12"],
       sourceLessons: ["lesson02-v30.js", "lesson16-v38.js", "lesson18-v39.js"],
       excludedScope: ["-umの全用法を一つの訳へ統合", "正しい別機能形を誤文扱い"],
-      status: "planned"
+      status: "drafting"
     },
     {
       code: "F",
@@ -111,7 +111,7 @@
   ].map(freezeSupplement);
 
   window.TAMIL_SUPPLEMENT_CATALOG_V42 = Object.freeze({
-    version: "4.3.0-dev",
+    version: "4.4.0-dev",
     public: false,
     numberingPolicy: "supplement-codes-not-lessons-21-to-28",
     legacyTravelPolicy: "scene-review-packs-after-supplements",
