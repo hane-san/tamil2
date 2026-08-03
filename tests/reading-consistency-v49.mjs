@@ -106,6 +106,43 @@ for (const [word, bucket] of readings) {
   );
 }
 
+// Final -ai has one rule: it stays -ai, except when it is the accusative
+// suffix, where it is -e. The corpus used to break this both ways — வரை and
+// கடற்கரை were pronounced -e like an accusative, while நண்பரை and சொன்னதை kept
+// -ai although they are accusatives. கடற்கரை even disagreed with its own
+// oblique கடற்கரைக்கு (kaḍarkaraikku), so one lexeme carried two vowels.
+for (const item of items) {
+  const tamil = stripTrailing(item.targetTamil).split(/\s+/u);
+  const structured = stripTrailing(item.structuredRoman).split(/\s+/u);
+  const pronunciation = stripTrailing(item.pronunciationRoman).split(/\s+/u);
+  if (new Set([tamil.length, structured.length, pronunciation.length]).size !== 1) continue;
+
+  tamil.forEach((word, index) => {
+    if (!word.endsWith("ை")) return;
+    const isAccusativeSuffix = structured[index].endsWith("-ai");
+    if (isAccusativeSuffix) {
+      assert(
+        pronunciation[index].endsWith("e"),
+        `${item.id}: ${word} carries the accusative -ai, so the pronunciation should end in -e, not ${pronunciation[index]}`
+      );
+    } else {
+      assert(
+        pronunciation[index].endsWith("ai"),
+        `${item.id}: ${word} ends in a lexical -ai, so the pronunciation should keep -ai, not ${pronunciation[index]}`
+      );
+    }
+  });
+
+  // The same rule applies where an accusative sits inside a comparison form.
+  structured.forEach((segment, index) => {
+    if (!segment.includes("-ai-viṭa")) return;
+    assert(
+      pronunciation[index].includes("eviḍa"),
+      `${item.id}: ${segment} contains the accusative before விட, so the pronunciation should show -eviḍa, not ${pronunciation[index]}`
+    );
+  });
+}
+
 // The pronunciation row shows sounds. ṅ, ṉ and ṟ are letter contrasts that the
 // strict and structured rows already carry, so they must not appear here.
 for (const item of items) {

@@ -199,8 +199,8 @@
     "id": "l20-11",
     "targetTamil": "நண்பர் வர்ற வரை இங்கே காத்திருக்கலாம்.",
     "structuredRoman": "naṇpar varṟa varai iṅkē kāttirukka-lām.",
-    "pronunciationRoman": "naṇbar varra vare ingē kāttirukkalām.",
-    "katakana": "ナンバル ヴァッラ ヴァレ インゲー カーッティルッカラーム。",
+    "pronunciationRoman": "naṇbar varra varai ingē kāttirukkalām.",
+    "katakana": "ナンバル ヴァッラ ヴァライ インゲー カーッティルッカラーム。",
     "meaningJa": "友達が来るまで、ここで待ちましょう。",
     "literalJapanese": "友達＋来る＋まで＋ここで＋待ちましょう",
     "morphemes": [
@@ -241,7 +241,7 @@
   {"id":"l20-form-varrappoo","targetTamil":"வர்றப்போ","structuredRoman":"varṟa-ppō","pronunciationRoman":"varrappō","katakana":"ヴァッラッポー","meaningJa":"来るとき","literalJapanese":"来る・非過去連体＋とき","morphemes":[],"grammarNote":"同時・近い未来の時間枠。文脈で「来たら」にも近づく。","vocabulary":["வர்றப்போ"],"audioGroup":"l20-forms","featured":false,"kind":"時間","group":"節末","note":"同時・近い未来の時間枠。文脈で「来たら」にも近づく。"},
   {"id":"l20-form-munnaati","targetTamil":"முன்னாடி","structuredRoman":"muṉṉāṭi","pronunciationRoman":"munnāḍi","katakana":"ムンナーディ","meaningJa":"前に","literalJapanese":"前・時間","morphemes":[],"grammarNote":"名詞化＋与格などの後ろに置き「〜する前に」を作る。","vocabulary":["முன்னாடி"],"audioGroup":"l20-forms","featured":false,"kind":"前","group":"時間語","note":"名詞化＋与格などの後ろに置き「〜する前に」を作る。"},
   {"id":"l20-form-appuram","targetTamil":"அப்புறம்","structuredRoman":"appuṟam","pronunciationRoman":"appuram","katakana":"アップラム","meaningJa":"後で","literalJapanese":"後・時間","morphemes":[],"grammarNote":"過去連体形の後ろに置き「〜した後で」を作る。","vocabulary":["அப்புறம்"],"audioGroup":"l20-forms","featured":false,"kind":"後","group":"時間語","note":"過去連体形の後ろに置き「〜した後で」を作る。"},
-  {"id":"l20-form-varai","targetTamil":"வரை","structuredRoman":"varai","pronunciationRoman":"vare","katakana":"ヴァレ","meaningJa":"〜まで","literalJapanese":"終点","morphemes":[],"grammarNote":"節の後ろで時間の終点を示す。","vocabulary":["வரை"],"audioGroup":"l20-forms","featured":false,"kind":"終点","group":"時間語","note":"節の後ろで時間の終点を示す。"},
+  {"id":"l20-form-varai","targetTamil":"வரை","structuredRoman":"varai","pronunciationRoman":"varai","katakana":"ヴァライ","meaningJa":"〜まで","literalJapanese":"終点","morphemes":[],"grammarNote":"節の後ろで時間の終点を示す。","vocabulary":["வரை"],"audioGroup":"l20-forms","featured":false,"kind":"終点","group":"時間語","note":"節の後ろで時間の終点を示す。"},
   {"id":"l20-form-varalanaa","targetTamil":"வரலனா","structuredRoman":"vara-la-ṉā","pronunciationRoman":"varalanā","katakana":"ヴァララナー","meaningJa":"来なければ","literalJapanese":"来る＋否定＋条件","morphemes":[],"grammarNote":"口語否定に条件が続く実用形。","vocabulary":["வரலனா"],"audioGroup":"l20-forms","featured":false,"kind":"否定条件","group":"節末","note":"口語否定に条件が続く実用形。"}
 ].map(make);
 

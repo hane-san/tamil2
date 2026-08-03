@@ -128,8 +128,8 @@
       "id": "l10-04",
       "targetTamil": "நான் நண்பரை பாக்க போறேன்.",
       "structuredRoman": "nāṉ naṇpar-ai pākka pōṟ-ēṉ.",
-      "pronunciationRoman": "nān naṇbarai pākka pōrēn.",
-      "katakana": "ナーン ナンバライ パーッカ ポーレーン。",
+      "pronunciationRoman": "nān naṇbare pākka pōrēn.",
+      "katakana": "ナーン ナンバレ パーッカ ポーレーン。",
       "meaningJa": "私は友達に会いに行きます。",
       "literalJapanese": "私＋友達を＋見るために＋行く・私",
       "morphemes": [

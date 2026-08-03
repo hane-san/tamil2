@@ -399,11 +399,11 @@
 
   attach(5, {
     phrases: [
-      P({ id: "sp5-01", scene: "道をきく", targetTamil: "ஹோட்டல் வரை நடக்கலாம்.", structuredRoman: "hōṭṭal varai naṭakkalām.", pronunciationRoman: "hōṭṭal vare naḍakkalām.", katakana: "ホーッタル ヴァレ ナダッカラーム。", meaningJa: "ホテルまで歩きましょう。", literalJapanese: "ホテル＋まで＋歩こう", note: "வரை は終点。「どこまで」を一語で示します。" }),
+      P({ id: "sp5-01", scene: "道をきく", targetTamil: "ஹோட்டல் வரை நடக்கலாம்.", structuredRoman: "hōṭṭal varai naṭakkalām.", pronunciationRoman: "hōṭṭal varai naḍakkalām.", katakana: "ホーッタル ヴァライ ナダッカラーム。", meaningJa: "ホテルまで歩きましょう。", literalJapanese: "ホテル＋まで＋歩こう", note: "வரை は終点。「どこまで」を一語で示します。" }),
       P({ id: "sp5-02", scene: "食事", targetTamil: "நண்பருக்காக காபி வாங்கறேன்.", structuredRoman: "naṇpar-ukkāka kāpi vāṅkaṟ-ēṉ.", pronunciationRoman: "naṇbarukkāga kābi vāngarēn.", katakana: "ナンバルッカーガ カービ ヴァーンガレーン。", meaningJa: "友達のためにコーヒーを買います。", literalJapanese: "友達・のため＋コーヒー＋買う・私", note: "-உக்காக は「〜のために」。人にも目的にも使えます。" }),
-      P({ id: "sp5-03", scene: "ホテル", targetTamil: "கடற்கரை பக்கத்துல ஹோட்டல் இருக்கு.", structuredRoman: "kaṭaṟkarai pakkatt-ula hōṭṭal irukku.", pronunciationRoman: "kaḍarkare pakkattula hōṭṭal irukku.", katakana: "カダルカレ パッカットゥラ ホーッタル イルック。", meaningJa: "海岸の近くにホテルがあります。", literalJapanese: "海岸＋近く・場所＋ホテル＋ある", note: "பக்கத்துல は「〜の近くに」。目印から説明できます。" }),
+      P({ id: "sp5-03", scene: "ホテル", targetTamil: "கடற்கரை பக்கத்துல ஹோட்டல் இருக்கு.", structuredRoman: "kaṭaṟkarai pakkatt-ula hōṭṭal irukku.", pronunciationRoman: "kaḍarkarai pakkattula hōṭṭal irukku.", katakana: "カダルカライ パッカットゥラ ホーッタル イルック。", meaningJa: "海岸の近くにホテルがあります。", literalJapanese: "海岸＋近く・場所＋ホテル＋ある", note: "பக்கத்துல は「〜の近くに」。目印から説明できます。" }),
       P({ id: "sp5-04", scene: "人と話す", targetTamil: "இந்த கோவில் பற்றி சொல்லுங்க.", structuredRoman: "inta kōvil paṟṟi collu-ṅka.", pronunciationRoman: "inda kōvil patti sollunga.", katakana: "インダ コーヴィル パッティ ソッルンガ。", meaningJa: "この寺院について教えてください。", literalJapanese: "この＋寺院＋について＋言ってください", note: "பற்றி は「〜について」。話題を指定できます。" }),
-      P({ id: "sp5-05", scene: "空港・駅", targetTamil: "ஐந்து மணி வரை இங்கே காத்திருங்க.", structuredRoman: "aintu maṇi varai iṅkē kāttiru-ṅka.", pronunciationRoman: "aindu maṇi vare ingē kāttirunga.", katakana: "アインドゥ マニ ヴァレ インゲー カーッティルンガ。", meaningJa: "5時までここで待っていてください。", literalJapanese: "五＋時＋まで＋ここ＋待ってください", note: "வரை は時間の終点にも使えます。" }),
+      P({ id: "sp5-05", scene: "空港・駅", targetTamil: "ஐந்து மணி வரை இங்கே காத்திருங்க.", structuredRoman: "aintu maṇi varai iṅkē kāttiru-ṅka.", pronunciationRoman: "aindu maṇi varai ingē kāttirunga.", katakana: "アインドゥ マニ ヴァライ インゲー カーッティルンガ。", meaningJa: "5時までここで待っていてください。", literalJapanese: "五＋時＋まで＋ここ＋待ってください", note: "வரை は時間の終点にも使えます。" }),
       P({ id: "sp5-06", scene: "移動・オート", targetTamil: "ஹோட்டல் பக்கத்துல ஆட்டோ இருக்கு.", structuredRoman: "hōṭṭal pakkatt-ula āṭṭō irukku.", pronunciationRoman: "hōṭṭal pakkattula āṭṭō irukku.", katakana: "ホーッタル パッカットゥラ アーットー イルック。", meaningJa: "ホテルの近くにオートがあります。", literalJapanese: "ホテル＋近く・場所＋オート＋ある", note: "乗り場を説明するときの言い方です。" })
     ],
     drills: [
@@ -413,10 +413,10 @@
         scene: "道をきく",
         prompt: "「海岸まで歩きましょう」と誘います。終点を正しく示しているのはどれですか。",
         options: [
-        { targetTamil: "நாம கடற்கரை வரை நடக்கலாம்.", structuredRoman: "nāma kaṭaṟkarai varai naṭakkalām.", pronunciationRoman: "nāma kaḍarkare vare naḍakkalām.", katakana: "ナーマ カダルカレ ヴァレ ナダッカラーム。", ja: "海岸まで歩きましょう", tag: "正解" },
+        { targetTamil: "நாம கடற்கரை வரை நடக்கலாம்.", structuredRoman: "nāma kaṭaṟkarai varai naṭakkalām.", pronunciationRoman: "nāma kaḍarkarai varai naḍakkalām.", katakana: "ナーマ カダルカライ ヴァライ ナダッカラーム。", ja: "海岸まで歩きましょう", tag: "正解" },
         { targetTamil: "நாம கடற்கரைக்கு நடக்கலாம்.", structuredRoman: "nāma kaṭaṟkarai-kku naṭakkalām.", pronunciationRoman: "nāma kaḍarkaraikku naḍakkalām.", katakana: "ナーマ カダルカライック ナダッカラーム。", ja: "海岸へ歩きましょう", tag: "終点ではなく到達点" },
-        { targetTamil: "கடற்கரை பக்கத்துல ஹோட்டல் இருக்கு.", structuredRoman: "kaṭaṟkarai pakkatt-ula hōṭṭal irukku.", pronunciationRoman: "kaḍarkare pakkattula hōṭṭal irukku.", katakana: "カダルカレ パッカットゥラ ホーッタル イルック。", ja: "海岸の近くにホテルがあります", tag: "誘いになっていない" },
-        { targetTamil: "நாம கடற்கரை பற்றி பேசலாம்.", structuredRoman: "nāma kaṭaṟkarai paṟṟi pēcalām.", pronunciationRoman: "nāma kaḍarkare patti pēsalām.", katakana: "ナーマ カダルカレ パッティ ペーサラーム。", ja: "海岸について話しましょう", tag: "話題の指定になっている" }
+        { targetTamil: "கடற்கரை பக்கத்துல ஹோட்டல் இருக்கு.", structuredRoman: "kaṭaṟkarai pakkatt-ula hōṭṭal irukku.", pronunciationRoman: "kaḍarkarai pakkattula hōṭṭal irukku.", katakana: "カダルカライ パッカットゥラ ホーッタル イルック。", ja: "海岸の近くにホテルがあります", tag: "誘いになっていない" },
+        { targetTamil: "நாம கடற்கரை பற்றி பேசலாம்.", structuredRoman: "nāma kaṭaṟkarai paṟṟi pēcalām.", pronunciationRoman: "nāma kaḍarkarai patti pēsalām.", katakana: "ナーマ カダルカライ パッティ ペーサラーム。", ja: "海岸について話しましょう", tag: "話題の指定になっている" }
         ],
         answer: 0,
         feedback: "வரை は「そこまで」という終点。-க்கு は単に行き先です。",
@@ -444,7 +444,7 @@
         prompt: "ガイドに「この映画について話しましょう」と言います。どれですか。",
         options: [
         { targetTamil: "இந்த படம் பற்றி பேசலாம்.", structuredRoman: "inta paṭam paṟṟi pēcalām.", pronunciationRoman: "inda paḍam patti pēsalām.", katakana: "インダ パダム パッティ ペーサラーム。", ja: "この映画について話しましょう", tag: "正解" },
-        { targetTamil: "இந்த படம் வரை பேசலாம்.", structuredRoman: "inta paṭam varai pēcalām.", pronunciationRoman: "inda paḍam vare pēsalām.", katakana: "インダ パダム ヴァレ ペーサラーム。", ja: "この映画まで話しましょう", tag: "終点との混同" },
+        { targetTamil: "இந்த படம் வரை பேசலாம்.", structuredRoman: "inta paṭam varai pēcalām.", pronunciationRoman: "inda paḍam varai pēsalām.", katakana: "インダ パダム ヴァライ ペーサラーム。", ja: "この映画まで話しましょう", tag: "終点との混同" },
         { targetTamil: "இந்த படம் தவிர வேற டிக்கெட் இல்லை.", structuredRoman: "inta paṭam tavira vēṟa ṭikkeṭ illai.", pronunciationRoman: "inda paḍam tavira vēra ṭikkeṭ illai.", katakana: "インダ パダム タヴィラ ヴェーラ ティッケトゥ イッライ。", ja: "この映画以外に別の切符はありません", tag: "除外の読み" },
         { targetTamil: "இந்த படம் பக்கத்துல இருக்கு.", structuredRoman: "inta paṭam pakkatt-ula irukku.", pronunciationRoman: "inda paḍam pakkattula irukku.", katakana: "インダ パダム パッカットゥラ イルック。", ja: "この映画の近くにあります", tag: "位置関係の読み" }
         ],
@@ -458,9 +458,9 @@
         scene: "空港・駅",
         prompt: "同行者に「5時までここで待っていてください」と伝えます。どれですか。",
         options: [
-        { targetTamil: "ஐந்து மணி வரை இங்கே காத்திருங்க.", structuredRoman: "aintu maṇi varai iṅkē kāttiru-ṅka.", pronunciationRoman: "aindu maṇi vare ingē kāttirunga.", katakana: "アインドゥ マニ ヴァレ インゲー カーッティルンガ。", ja: "5時までここで待っていてください", tag: "正解" },
-        { targetTamil: "ஐந்து மணி வரை இங்கே வாங்க.", structuredRoman: "aintu maṇi varai iṅkē vāṅka.", pronunciationRoman: "aindu maṇi vare ingē vānga.", katakana: "アインドゥ マニ ヴァレ インゲー ヴァーンガ。", ja: "5時までここへ来てください", tag: "動作が違う" },
-        { targetTamil: "இங்கே வரை நடக்கலாம்.", structuredRoman: "iṅkē varai naṭakkalām.", pronunciationRoman: "ingē vare naḍakkalām.", katakana: "インゲー ヴァレ ナダッカラーム。", ja: "ここまで歩きましょう", tag: "時間ではなく距離" },
+        { targetTamil: "ஐந்து மணி வரை இங்கே காத்திருங்க.", structuredRoman: "aintu maṇi varai iṅkē kāttiru-ṅka.", pronunciationRoman: "aindu maṇi varai ingē kāttirunga.", katakana: "アインドゥ マニ ヴァライ インゲー カーッティルンガ。", ja: "5時までここで待っていてください", tag: "正解" },
+        { targetTamil: "ஐந்து மணி வரை இங்கே வாங்க.", structuredRoman: "aintu maṇi varai iṅkē vāṅka.", pronunciationRoman: "aindu maṇi varai ingē vānga.", katakana: "アインドゥ マニ ヴァライ インゲー ヴァーンガ。", ja: "5時までここへ来てください", tag: "動作が違う" },
+        { targetTamil: "இங்கே வரை நடக்கலாம்.", structuredRoman: "iṅkē varai naṭakkalām.", pronunciationRoman: "ingē varai naḍakkalām.", katakana: "インゲー ヴァライ ナダッカラーム。", ja: "ここまで歩きましょう", tag: "時間ではなく距離" },
         { targetTamil: "கொஞ்சம் காத்திருங்க.", structuredRoman: "koñcam kāttiru-ṅka.", pronunciationRoman: "konjam kāttirunga.", katakana: "コンジャム カーッティルンガ。", ja: "少し待ってください", tag: "終わりの時刻がない" }
         ],
         answer: 0,
@@ -475,7 +475,7 @@
         options: [
         { targetTamil: "பக்கத்துல", structuredRoman: "pakkatt-ula", pronunciationRoman: "pakkattula", katakana: "パッカットゥラ", ja: "近くに", tag: "正解" },
         { targetTamil: "பற்றி", structuredRoman: "paṟṟi", pronunciationRoman: "patti", katakana: "パッティ", ja: "について", tag: "話題の指定" },
-        { targetTamil: "வரை", structuredRoman: "varai", pronunciationRoman: "vare", katakana: "ヴァレ", ja: "まで", tag: "終点の指定" },
+        { targetTamil: "வரை", structuredRoman: "varai", pronunciationRoman: "varai", katakana: "ヴァライ", ja: "まで", tag: "終点の指定" },
         { targetTamil: "தவிர", structuredRoman: "tavira", pronunciationRoman: "tavira", katakana: "タヴィラ", ja: "以外", tag: "除外の指定" }
         ],
         answer: 0,
@@ -841,7 +841,7 @@
     phrases: [
       P({ id: "sp10-01", scene: "食事", targetTamil: "நான் சாப்பிட ஹோட்டலுக்கு போறேன்.", structuredRoman: "nāṉ cāppiṭa hōṭṭal-ukku pōṟ-ēṉ.", pronunciationRoman: "nān sāppiḍa hōṭṭalukku pōrēn.", katakana: "ナーン サーッピダ ホーッタルック ポーレーン。", meaningJa: "私は食べにホテルへ行きます。", literalJapanese: "私＋食べる・不定＋ホテル・到達＋行く・私", note: "最初の動詞は時間も人も決めず、最後の動詞へ渡します。" }),
       P({ id: "sp10-02", scene: "買い物", targetTamil: "நான் டிக்கெட் வாங்க கடைக்கு போறேன்.", structuredRoman: "nāṉ ṭikkeṭ vāṅka kaṭai-kku pōṟ-ēṉ.", pronunciationRoman: "nān ṭikkeṭ vānga kaḍaikku pōrēn.", katakana: "ナーン ティッケトゥ ヴァーンガ カダイック ポーレーン。", meaningJa: "私は切符を買いに店へ行きます。", literalJapanese: "私＋切符＋買う・不定＋店・到達＋行く・私", note: "「〜しに行く」は〈不定詞 ＋ 行き先 ＋ போ-〉。" }),
-      P({ id: "sp10-03", scene: "移動・オート", targetTamil: "நான் நண்பரை பாக்க ஆட்டோல போறேன்.", structuredRoman: "nāṉ naṇpar-ai pākka āṭṭō-la pōṟ-ēṉ.", pronunciationRoman: "nān naṇbarai pākka āṭṭōla pōrēn.", katakana: "ナーン ナンバライ パーッカ アーットーラ ポーレーン。", meaningJa: "私は友達に会いにオートで行きます。", literalJapanese: "私＋友達・を＋会う・不定＋オート・手段＋行く・私", note: "பாக்க は「見る」も「会う」も担います。" }),
+      P({ id: "sp10-03", scene: "移動・オート", targetTamil: "நான் நண்பரை பாக்க ஆட்டோல போறேன்.", structuredRoman: "nāṉ naṇpar-ai pākka āṭṭō-la pōṟ-ēṉ.", pronunciationRoman: "nān naṇbare pākka āṭṭōla pōrēn.", katakana: "ナーン ナンバレ パーッカ アーットーラ ポーレーン。", meaningJa: "私は友達に会いにオートで行きます。", literalJapanese: "私＋友達・を＋会う・不定＋オート・手段＋行く・私", note: "பாக்க は「見る」も「会う」も担います。" }),
       P({ id: "sp10-04", scene: "人と話す", targetTamil: "நான் தமிழ் படிக்க வந்தேன்.", structuredRoman: "nāṉ tamiḻ paṭikka vant-ēṉ.", pronunciationRoman: "nān tamiḻ paḍikka vandēn.", katakana: "ナーン タミル パディッカ ヴァンデーン。", meaningJa: "私はタミル語を学びに来ました。", literalJapanese: "私＋タミル語＋学ぶ・不定＋来た・私", note: "自己紹介でそのまま使えます。" }),
       P({ id: "sp10-05", scene: "ホテル", targetTamil: "நான் ஓய்வு எடுக்க ரூமுக்கு போறேன்.", structuredRoman: "nāṉ ōyvu eṭukka rūm-ukku pōṟ-ēṉ.", pronunciationRoman: "nān ōyvu eḍukka rūmukku pōrēn.", katakana: "ナーン オーイヴ エドゥッカ ルームック ポーレーン。", meaningJa: "私は休むために部屋へ行きます。", literalJapanese: "私＋休み＋取る・不定＋部屋・到達＋行く・私", note: "ஓய்வு எடு- で「休みを取る」という組み合わせです。" }),
       P({ id: "sp10-06", scene: "困ったとき", targetTamil: "என்னால இன்னிக்கு வெளியே போக முடியாது.", structuredRoman: "eṉṉ-āla iṉṉikku veḷiyē pōka muṭiyātu.", pronunciationRoman: "ennāla innikku veḷiyē pōga muḍiyādu.", katakana: "エンナーラ インニック ヴェリイェー ポーガ ムディヤードゥ。", meaningJa: "今日は外へ出られません。", literalJapanese: "私・によって＋今日＋外へ＋行く・不定＋できない", note: "முடியாது の前も不定詞です。時間も人も付けません。" })
@@ -931,7 +931,7 @@
       P({ id: "sp11-02", scene: "移動・オート", targetTamil: "பஸ்ல ஏறி சென்னைக்கு போனேன்.", structuredRoman: "pas-la ēṟi ceṉṉai-kku pōṉ-ēṉ.", pronunciationRoman: "basla ēri sennaikku pōnēn.", katakana: "バスラ エーリ センナイック ポーネーン。", meaningJa: "バスに乗ってチェンナイへ行きました。", literalJapanese: "バス・手段＋乗って＋チェンナイ・到達＋行った・私", note: "乗り物に「乗る」は ஏறு-。副動詞は ஏறி です。" }),
       P({ id: "sp11-03", scene: "ホテル", targetTamil: "ரூமுக்கு வந்து ஓய்வு எடுத்தேன்.", structuredRoman: "rūm-ukku vantu ōyvu eṭutt-ēṉ.", pronunciationRoman: "rūmukku vandu ōyvu eḍuttēn.", katakana: "ルームック ヴァンドゥ オーイヴ エドゥッテーン。", meaningJa: "部屋へ来て休みました。", literalJapanese: "部屋・到達＋来て＋休み＋取った・私", note: "動作の順番どおりに左から並べます。" }),
       P({ id: "sp11-04", scene: "空港・駅", targetTamil: "டிக்கெட் வாங்கி பஸ்ல போனேன்.", structuredRoman: "ṭikkeṭ vāṅki pas-la pōṉ-ēṉ.", pronunciationRoman: "ṭikkeṭ vāngi basla pōnēn.", katakana: "ティッケトゥ ヴァーンギ バスラ ポーネーン。", meaningJa: "切符を買ってバスで行きました。", literalJapanese: "切符＋買って＋バス・手段＋行った・私", note: "வாங்கி は「買って」。次の動作へつなぐ形です。" }),
-      P({ id: "sp11-05", scene: "人と話す", targetTamil: "நண்பரை பாத்து பேசினேன்.", structuredRoman: "naṇpar-ai pāttu pēciṉ-ēṉ.", pronunciationRoman: "naṇbarai pāttu pēsinēn.", katakana: "ナンバライ パーットゥ ペーシネーン。", meaningJa: "友達に会って話しました。", literalJapanese: "友達・を＋会って＋話した・私", note: "பாத்து は「見て・会って」。順番を示します。" }),
+      P({ id: "sp11-05", scene: "人と話す", targetTamil: "நண்பரை பாத்து பேசினேன்.", structuredRoman: "naṇpar-ai pāttu pēciṉ-ēṉ.", pronunciationRoman: "naṇbare pāttu pēsinēn.", katakana: "ナンバレ パーットゥ ペーシネーン。", meaningJa: "友達に会って話しました。", literalJapanese: "友達・を＋会って＋話した・私", note: "பாத்து は「見て・会って」。順番を示します。" }),
       P({ id: "sp11-06", scene: "買い物", targetTamil: "கடைல தண்ணி வாங்கி ஹோட்டலுக்கு வந்தேன்.", structuredRoman: "kaṭai-la taṇṇi vāṅki hōṭṭal-ukku vant-ēṉ.", pronunciationRoman: "kaḍaila taṇṇi vāngi hōṭṭalukku vandēn.", katakana: "カダイラ タンニ ヴァーンギ ホーッタルック ヴァンデーン。", meaningJa: "店で水を買ってホテルへ戻りました。", literalJapanese: "店・場所＋水＋買って＋ホテル・到達＋来た・私", note: "動作が三つ以上でも、文を終えるのは最後の一つだけです。" })
     ],
     drills: [
@@ -1471,7 +1471,7 @@
         options: [
         { targetTamil: "கடற்கரைக்கு போற பஸ் எது?", structuredRoman: "kaṭaṟkarai-kku pōṟ-a pas etu?", pronunciationRoman: "kaḍarkaraikku pōra bas edu?", katakana: "カダルカライック ポーラ バス エドゥ？", ja: "海岸へ行くバスはどれですか", tag: "正解" },
         { targetTamil: "பஸ் கடற்கரைக்கு போகுது.", structuredRoman: "pas kaṭaṟkarai-kku pōku-tu.", pronunciationRoman: "bas kaḍarkaraikku pōgudu.", katakana: "バス カダルカライック ポーグドゥ。", ja: "バスは海岸へ行きます", tag: "質問になっていない" },
-        { targetTamil: "கடற்கரை எங்கே?", structuredRoman: "kaṭaṟkarai eṅkē?", pronunciationRoman: "kaḍarkare engē?", katakana: "カダルカレ エンゲー？", ja: "海岸はどこですか", tag: "行き先の場所をきいている" },
+        { targetTamil: "கடற்கரை எங்கே?", structuredRoman: "kaṭaṟkarai eṅkē?", pronunciationRoman: "kaḍarkarai engē?", katakana: "カダルカライ エンゲー？", ja: "海岸はどこですか", tag: "行き先の場所をきいている" },
         { targetTamil: "பஸ் எவ்வளவு?", structuredRoman: "pas evvaḷavu?", pronunciationRoman: "bas evvaḷavu?", katakana: "バス エッヴァラヴ？", ja: "バスはいくらですか", tag: "値段をきいている" }
         ],
         answer: 0,
@@ -1735,7 +1735,7 @@
         options: [
         { targetTamil: "பஸ் வரலனா நடக்கலாம்.", structuredRoman: "pas vara-la-ṉā naṭakkalām.", pronunciationRoman: "bas varalanā naḍakkalām.", katakana: "バス ヴァララナー ナダッカラーム。", ja: "バスが来なければ歩きましょう", tag: "正解" },
         { targetTamil: "பஸ் வர்றப்போ நடக்கலாம்.", structuredRoman: "pas varṟa-ppō naṭakkalām.", pronunciationRoman: "bas varrappō naḍakkalām.", katakana: "バス ヴァッラッポー ナダッカラーム。", ja: "バスが来るとき歩きましょう", tag: "時間の節" },
-        { targetTamil: "பஸ் வர்ற வரை நடக்கலாம்.", structuredRoman: "pas varṟa varai naṭakkalām.", pronunciationRoman: "bas varra vare naḍakkalām.", katakana: "バス ヴァッラ ヴァレ ナダッカラーム。", ja: "バスが来るまで歩きましょう", tag: "終点の指定" },
+        { targetTamil: "பஸ் வர்ற வரை நடக்கலாம்.", structuredRoman: "pas varṟa varai naṭakkalām.", pronunciationRoman: "bas varra varai naḍakkalām.", katakana: "バス ヴァッラ ヴァライ ナダッカラーム。", ja: "バスが来るまで歩きましょう", tag: "終点の指定" },
         { targetTamil: "பஸ் வரலனா நடக்க முடியாது.", structuredRoman: "pas vara-la-ṉā naṭakka muṭiyātu.", pronunciationRoman: "bas varalanā naḍakka muḍiyādu.", katakana: "バス ヴァララナー ナダッカ ムディヤードゥ。", ja: "バスが来なければ歩けません", tag: "主文が違う" }
         ],
         answer: 0,
