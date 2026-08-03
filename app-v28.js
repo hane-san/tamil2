@@ -1274,4 +1274,21 @@
   function escapeAttr(value) {
     return escapeHtml(value).replace(/'/g, "&#39;");
   }
+
+  // Minimal surface for later layers that need to read the open chapter or ask
+  // for a redraw. Nothing here changes lesson data or scoring rules.
+  window.TAMIL_APP_V28 = Object.freeze({
+    version: "4.8",
+    currentChapter,
+    currentView: () => state.view,
+    rerender: render,
+    resetChapterQuiz(chapterId) {
+      state.quizzes[chapterId] = { answers: {}, finished: false };
+      const progress = getChapterProgress(chapterId);
+      progress.practice = false;
+      progress.check = false;
+      saveStored();
+      render();
+    }
+  });
 })();

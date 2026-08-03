@@ -33,7 +33,7 @@
   {
     "id": "l20-02",
     "targetTamil": "மழை பெய்தாலும் நான் போவேன்.",
-    "structuredRoman": "maḻai peyt-ālum nāṉ pō-v-ēṉ.",
+    "structuredRoman": "maḻai peyt-ālum nāṉ pōv-ēṉ.",
     "pronunciationRoman": "maḻai peidālum nān pōvēn.",
     "katakana": "マライ ペイダールム ナーン ポーヴェーン。",
     "meaningJa": "雨が降っても私は行きます。",

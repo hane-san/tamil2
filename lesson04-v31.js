@@ -105,7 +105,7 @@
       id: "l4-05",
       targetTamil: "கடைக்கு போங்க.",
       structuredRoman: "kaṭai-kku pōṅka.",
-      pronunciationRoman: "kaḍaikku pōṅga.",
+      pronunciationRoman: "kaḍaikku pōnga.",
       katakana: "カダイック ポーンガ。",
       meaningJa: "店へ行ってください。",
       literalJapanese: "店・到達＋行ってください",
@@ -201,7 +201,7 @@
       targetTamil: "ரவிக்கிட்ட டிக்கெட் இருக்கு.",
       structuredRoman: "ravi-kkiṭṭa ṭikkeṭ irukku.",
       pronunciationRoman: "ravikkiṭṭa ṭikkeṭ irukku.",
-      katakana: "ラヴィッキッタ ティッケット イルック。",
+      katakana: "ラヴィッキッタ ティッケトゥ イルック。",
       meaningJa: "ラヴィは切符を持っています。",
       literalJapanese: "ラヴィ・人の所／手元＋切符＋ある",
       morphemes: [

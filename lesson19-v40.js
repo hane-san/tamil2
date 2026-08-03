@@ -16,7 +16,7 @@
     "targetTamil": "அவர் நாளைக்கு வர்றேன்னு சொன்னார்.",
     "structuredRoman": "avar nāḷai-kku varṟ-ēṉ-ṉu coṉṉ-ār.",
     "pronunciationRoman": "avar nāḷaikku varrēnnu sonnār.",
-    "katakana": "アヴァル ナーレック ヴァッレーンヌ ソンナール。",
+    "katakana": "アヴァル ナーライック ヴァッレーンヌ ソンナール。",
     "meaningJa": "その方は「明日来ます」と言いました。",
     "literalJapanese": "その方＋明日＋来ます・私＋引用＋言いました・敬意",
     "morphemes": [
@@ -309,7 +309,7 @@
     "targetTamil": "கடை நாளைக்கு திறக்கும்னு கேள்விப்பட்டேன்.",
     "structuredRoman": "kaṭai nāḷai-kku tiṟakkum-ṉu kēḷvippaṭṭ-ēṉ.",
     "pronunciationRoman": "kaḍai nāḷaikku tirakkumnu kēḷvippaṭṭēn.",
-    "katakana": "カダイ ナーレック ティラックムヌ ケールヴィッパッテーン。",
+    "katakana": "カダイ ナーライック ティラックムヌ ケールヴィッパッテーン。",
     "meaningJa": "店は明日開くと聞きました。",
     "literalJapanese": "店＋明日＋開く＋引用＋伝聞で聞きました",
     "morphemes": [
@@ -378,7 +378,7 @@
     "targetTamil": "அவர் நாளைக்கு வருவார்னு நினைக்கறேன்.",
     "structuredRoman": "avar nāḷai-kku varuv-ār-ṉu niṉaikkaṟ-ēṉ.",
     "pronunciationRoman": "avar nāḷaikku varuvārnu ninaikkarēn.",
-    "katakana": "アヴァル ナーレック ヴァルヴァールヌ ニナイッカレーン。",
+    "katakana": "アヴァル ナーライック ヴァルヴァールヌ ニナイッカレーン。",
     "meaningJa": "その方は明日来ると思います。",
     "literalJapanese": "その方＋明日＋来る・敬意＋引用＋思います・私",
     "morphemes": [
