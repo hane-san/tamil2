@@ -298,7 +298,7 @@
     "id": "l15-10",
     "targetTamil": "நான் இங்கே உட்காரலாமா?",
     "structuredRoman": "nāṉ iṅkē uṭkāra-lām-ā?",
-    "pronunciationRoman": "nāṉ ingē uṭkāralāmā?",
+    "pronunciationRoman": "nān ingē uṭkāralāmā?",
     "katakana": "ナーン インゲー ウッカーラーマー？",
     "meaningJa": "私はここに座ってもよいですか。",
     "literalJapanese": "私＋ここに＋座る＋許可＋疑問",

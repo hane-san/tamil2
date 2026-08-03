@@ -25,6 +25,10 @@ jobs:
         run: npm ci
       - name: Validate public PART 0 and lessons 1–20
         run: npm run test:data
+      - name: Validate one reading per word form
+        run: npm run test:reading
+      - name: Validate v4.9 practice pack
+        run: npm run test:practice
       - name: Validate supplement A–H structure
         run: npm run test:supplements
       - name: Validate Japanese copy polish
