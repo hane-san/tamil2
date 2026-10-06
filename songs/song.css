@@ -35,12 +35,12 @@ t{
 t:active{background:var(--blue-soft);border-radius:5px}
 r{
   color:#596579;font-style:italic;font-size:.82em;white-space:nowrap;
-  display:inline-block;margin-inline-start:.38em;line-height:1.55;
+  display:inline-block;margin-inline-start:0;line-height:1.55;
 }
-t + r{margin-inline-start:.38em}
-h1 r,h2 r,h3 r{font-size:.72em;margin-inline-start:.42em;font-weight:500}
+t + r{margin-inline-start:0}
+h1 r,h2 r,h3 r{font-size:.72em;margin-inline-start:0;font-weight:500}
 td > r{display:block;margin:.14rem 0 0;white-space:normal;font-size:.79em}
-.index r{margin-inline-start:.42em}
+.index r{margin-inline-start:0}
 .line{
   background:#fbfcfe;border-left:4px solid var(--blue);border-radius:11px;
   padding:14px 14px 13px;margin:11px 0 17px
@@ -102,7 +102,7 @@ sup{font-size:.7em}
   table{font-size:.81rem}
   th,td{padding:8px 7px}
   .line .ta{font-size:1.38rem}
-  r{font-size:.78em;margin-inline-start:.32em}
+  r{font-size:.78em;margin-inline-start:0}
   td > r{font-size:.76em;margin-top:.12rem}
   h2 r,h3 r{display:block;margin:.1rem 0 0;font-size:.72em}
 }
