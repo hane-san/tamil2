@@ -6,6 +6,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const failures = [];
 let assertions = 0;
+const ASSET_VERSION = "20261006-9";
 
 function assert(condition, message) {
   assertions += 1;
@@ -29,20 +30,21 @@ assert(manifest.start_url === "./songs/", `manifest start_url must be ./songs/; 
 assert(manifest.scope === "./", `manifest scope must remain ./; got ${manifest.scope}`);
 
 const library = read("songs/index.html");
+assert(library.includes(`song.css?v=${ASSET_VERSION}`), "song library must cache-bust the current song stylesheet");
 const lessons = [
   {
     shell: "songs/01-vaazhndhu-paaru.html",
-    href: "01-vaazhndhu-paaru.html",
+    href: `01-vaazhndhu-paaru.html?v=${ASSET_VERSION}`,
     parts: ["01-title.html", "01-a.html", "01-b.html", "01-c.html", "01-d.html", "01-summary.html"]
   },
   {
     shell: "songs/02-marandhu-poche.html",
-    href: "02-marandhu-poche.html",
+    href: `02-marandhu-poche.html?v=${ASSET_VERSION}`,
     parts: ["02-title.html", "02-a.html", "02-b.html", "02-c.html", "02-d.html", "02-summary.html"]
   },
   {
     shell: "songs/03-innum-ethana-kaalam.html",
-    href: "03-innum-ethana-kaalam.html",
+    href: `03-innum-ethana-kaalam.html?v=${ASSET_VERSION}`,
     parts: ["03-title.html", "03-a.html", "03-b.html", "03-c.html", "03-d.html", "03-summary.html"]
   }
 ];
@@ -51,8 +53,9 @@ for (const lesson of lessons) {
   assert(exists(lesson.shell), `${lesson.shell} is missing`);
   assert(library.includes(`href="${lesson.href}"`), `song library does not link ${lesson.href}`);
   const shell = read(lesson.shell);
-  assert(shell.includes('song.css'), `${lesson.shell} does not load song.css`);
-  assert(shell.includes('song.js'), `${lesson.shell} does not load song.js`);
+  assert(shell.includes(`song.css?v=${ASSET_VERSION}`), `${lesson.shell} does not load the current song.css build`);
+  assert(shell.includes(`song.js?v=${ASSET_VERSION}`), `${lesson.shell} does not load the current song.js build`);
+  assert(shell.includes("no-cache, no-store, must-revalidate"), `${lesson.shell} must discourage stale shell caching`);
   for (const part of lesson.parts) {
     const relative = `songs/${part}`;
     assert(exists(relative), `${relative} is missing`);
@@ -64,7 +67,7 @@ for (const lesson of lessons) {
 
 // Every song HTML file, including older lessons, must preserve a real ASCII
 // half-width space between a Tamil <t> tag and its following romanisation <r> tag.
-// CSS spacing is only visual; this rule keeps the source itself readable too.
+// Runtime JS upgrades that separator to NBSP for webviews that visually collapse it.
 const songHtmlFiles = fs.readdirSync(path.join(root, "songs"))
   .filter(name => name.endsWith(".html"))
   .map(name => `songs/${name}`)
@@ -77,6 +80,8 @@ for (const file of songHtmlFiles) {
 
 const songJs = read("songs/song.js");
 assert(songJs.includes("ensureTamilRomanSpaces"), "song.js must keep the runtime Tamil/roman spacing safeguard");
+assert(songJs.includes("\\u00A0"), "song.js must preserve a non-collapsing visual Tamil/roman separator at runtime");
+assert(songJs.includes("cache:'no-store'"), "song.js must bypass stale caches for lesson fragments");
 assert(songJs.includes("ta-IN"), "song.js must request Tamil TTS locale ta-IN");
 
 if (failures.length) {

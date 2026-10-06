@@ -25,11 +25,19 @@
     root.querySelectorAll('t + r').forEach(r=>{
       const prev = r.previousSibling;
       if(prev && prev.nodeType === Node.TEXT_NODE){
-        if(!/\s$/.test(prev.nodeValue || '')) prev.nodeValue += ' ';
+        const value = prev.nodeValue || '';
+        // Preserve a real visual separator in iOS/GitHub webviews. Source HTML
+        // still keeps an ASCII half-width space; at runtime whitespace-only text
+        // is upgraded to NBSP so it cannot collapse away visually.
+        if(/^\s*$/.test(value)){
+          prev.nodeValue = '\u00A0';
+        }else if(!/[\s\u00A0]$/.test(value)){
+          prev.nodeValue += '\u00A0';
+        }
         return;
       }
       if(prev && prev.nodeType === Node.ELEMENT_NODE && prev.tagName.toLowerCase() === 't'){
-        r.parentNode.insertBefore(document.createTextNode(' '), r);
+        r.parentNode.insertBefore(document.createTextNode('\u00A0'), r);
       }
     });
   }
@@ -64,7 +72,7 @@
     const loading=main && main.querySelector('.loading');
     try{
       for(const url of window.SONG_PARTS){
-        const res=await fetch(url,{cache:'no-cache'});
+        const res=await fetch(url,{cache:'no-store'});
         if(!res.ok) throw new Error(url+' '+res.status);
         const html=await res.text();
         const box=document.createElement('div');
