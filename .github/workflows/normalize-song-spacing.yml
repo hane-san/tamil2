@@ -1,0 +1,36 @@
+name: Normalize song spacing
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Normalize Tamil → romanisation spacing
+        run: node tools/normalize-song-spacing.mjs
+      - name: Commit normalized song HTML if needed
+        shell: bash
+        run: |
+          if git diff --quiet -- songs; then
+            echo "No spacing changes needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add songs/*.html
+          git commit -m "Normalize Tamil romanisation spacing"
+          git push
