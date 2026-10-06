@@ -62,16 +62,15 @@ for (const lesson of lessons) {
   }
 }
 
-// New song material must preserve a visible Tamil → romanisation gap in source HTML,
-// not depend only on CSS. Runtime JS also repairs older material defensively.
-for (const file of [
-  "songs/03-title.html",
-  "songs/03-a.html",
-  "songs/03-b.html",
-  "songs/03-c.html",
-  "songs/03-d.html",
-  "songs/03-summary.html"
-]) {
+// Every song HTML file, including older lessons, must preserve a real ASCII
+// half-width space between a Tamil <t> tag and its following romanisation <r> tag.
+// CSS spacing is only visual; this rule keeps the source itself readable too.
+const songHtmlFiles = fs.readdirSync(path.join(root, "songs"))
+  .filter(name => name.endsWith(".html"))
+  .map(name => `songs/${name}`)
+  .sort();
+
+for (const file of songHtmlFiles) {
   const html = read(file);
   assert(!/<\/t><r>/u.test(html), `${file}: Tamil and romanisation touch without a half-width space`);
 }
