@@ -6,7 +6,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const failures = [];
 let assertions = 0;
-const ASSET_VERSION = "20261006-9";
+const ASSET_VERSION = "20261006-10";
 
 function assert(condition, message) {
   assertions += 1;
@@ -23,14 +23,15 @@ function exists(relative) {
 
 const rootIndex = read("index.html");
 assert(rootIndex.includes("songs/"), "root index must send the user to songs/");
-assert(rootIndex.includes("location.replace('songs/')") || rootIndex.includes('location.replace("songs/")'), "root index must redirect to songs/ in normal browsing");
+assert(rootIndex.includes("20261006-10"), "root index must cache-bust the song-first entry");
 
 const manifest = JSON.parse(read("manifest-v41.webmanifest"));
-assert(manifest.start_url === "./songs/", `manifest start_url must be ./songs/; got ${manifest.start_url}`);
+assert(manifest.start_url === "./songs/?v=20261006-10", `manifest start_url must be ./songs/?v=20261006-10; got ${manifest.start_url}`);
 assert(manifest.scope === "./", `manifest scope must remain ./; got ${manifest.scope}`);
 
 const library = read("songs/index.html");
 assert(library.includes(`song.css?v=${ASSET_VERSION}`), "song library must cache-bust the current song stylesheet");
+
 const lessons = [
   {
     shell: "songs/01-vaazhndhu-paaru.html",
@@ -46,6 +47,11 @@ const lessons = [
     shell: "songs/03-innum-ethana-kaalam.html",
     href: `03-innum-ethana-kaalam.html?v=${ASSET_VERSION}`,
     parts: ["03-title.html", "03-a.html", "03-b.html", "03-c.html", "03-d.html", "03-summary.html"]
+  },
+  {
+    shell: "songs/04-eppadi-iruntha-naanga.html",
+    href: `04-eppadi-iruntha-naanga.html?v=${ASSET_VERSION}`,
+    parts: ["04-title.html", "04-a.html", "04-b.html", "04-c.html", "04-d.html", "04-summary.html"]
   }
 ];
 
@@ -65,9 +71,9 @@ for (const lesson of lessons) {
   }
 }
 
-// Every song HTML file, including older lessons, must preserve a real ASCII
-// half-width space between a Tamil <t> tag and its following romanisation <r> tag.
-// Runtime JS upgrades that separator to NBSP for webviews that visually collapse it.
+// Tamil and its inline romanisation must never touch in source.
+// We accept either a real half-width space or &nbsp;; the normalizer upgrades
+// adjacent pairs to &nbsp; so iOS/GitHub webviews keep a visible separator.
 const songHtmlFiles = fs.readdirSync(path.join(root, "songs"))
   .filter(name => name.endsWith(".html"))
   .map(name => `songs/${name}`)
@@ -75,7 +81,7 @@ const songHtmlFiles = fs.readdirSync(path.join(root, "songs"))
 
 for (const file of songHtmlFiles) {
   const html = read(file);
-  assert(!/<\/t><r>/u.test(html), `${file}: Tamil and romanisation touch without a half-width space`);
+  assert(!/<\/t><r>/u.test(html), `${file}: Tamil and romanisation touch with no separator`);
 }
 
 const songJs = read("songs/song.js");
@@ -83,6 +89,9 @@ assert(songJs.includes("ensureTamilRomanSpaces"), "song.js must keep the runtime
 assert(songJs.includes("\\u00A0"), "song.js must preserve a non-collapsing visual Tamil/roman separator at runtime");
 assert(songJs.includes("cache:'no-store'"), "song.js must bypass stale caches for lesson fragments");
 assert(songJs.includes("ta-IN"), "song.js must request Tamil TTS locale ta-IN");
+
+const normalizer = read("tools/normalize-song-spacing.mjs");
+assert(normalizer.includes("&nbsp;"), "song spacing normalizer must store a non-collapsing separator");
 
 if (failures.length) {
   console.error(`song shell validation failed: ${failures.length} issue(s), ${assertions} assertions`);

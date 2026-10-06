@@ -16,9 +16,11 @@ for (const name of files) {
   const before = fs.readFileSync(file, 'utf8');
   let after = before;
 
-  // Source-level rule: Tamil tag immediately followed by its romanisation tag
-  // must contain an actual ASCII half-width space, not only CSS spacing.
-  after = after.replace(/<\/t><r>/gu, '</t> <r>');
+  // Keep Tamil → romanisation visibly separated even in iOS/GitHub webviews.
+  // A normal ASCII space can be visually swallowed/collapsed in some cached
+  // fragments, so adjacent <t> + <r> pairs are stored with a non-breaking
+  // regular-width space in the HTML source itself.
+  after = after.replace(/<\/t>(?:[\t\n\r ]|&nbsp;|\u00A0)*<r>/gu, '</t>&nbsp;<r>');
 
   if (after !== before) {
     fs.writeFileSync(file, after, 'utf8');
