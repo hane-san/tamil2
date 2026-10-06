@@ -1,0 +1,97 @@
+:root{
+  --bg:#f5f6f8; --paper:#fff; --ink:#20242a; --muted:#697386;
+  --line:#e4e7ec; --blue:#2f66b3; --blue-soft:#eef4fb;
+  --green:#2d7454; --green-soft:#eef7f1; --sand:#faf8f2;
+  --amber:#8a6418; --amber-soft:#fff8e8; --shadow:0 6px 22px rgba(16,24,40,.055);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans JP",sans-serif;
+  line-height:1.85;
+}
+main{width:min(900px,calc(100% - 20px));margin:auto;padding:12px 0 64px}
+.card{
+  background:var(--paper);border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);padding:19px 17px;margin:0 0 12px;
+}
+.hero{padding:23px 20px}
+.small{color:var(--muted);font-size:.82rem}
+h1{margin:.15rem 0 .1rem;font-size:clamp(2.2rem,8vw,4.2rem);line-height:1.12;letter-spacing:-.02em}
+h2{margin:0 0 .75rem;font-size:1.3rem;line-height:1.4}
+h3{margin:1.4rem 0 .45rem;font-size:1.03rem}
+h4{margin:1.1rem 0 .35rem;font-size:.95rem}
+p{margin:.5rem 0 1rem}
+.roman{font-style:italic;color:#3f4956;font-size:1.02rem}
+.kana{color:var(--muted)}
+.meaning{border-top:1px solid var(--line);margin-top:1rem;padding-top:.85rem}
+.audiohint{margin-top:.8rem;color:var(--muted);font-size:.79rem}
+t{
+  color:var(--blue);cursor:pointer;text-decoration:none;
+  border-bottom:1px dotted rgba(47,102,179,.45);-webkit-tap-highlight-color:transparent
+}
+t:active{background:var(--blue-soft);border-radius:5px}
+r{color:#596579;font-style:italic;font-size:.82em;white-space:nowrap}
+.line{
+  background:#fbfcfe;border-left:4px solid var(--blue);border-radius:11px;
+  padding:13px 13px 12px;margin:10px 0 16px
+}
+.line .ta{font-size:1.52rem;font-weight:700;line-height:1.45}
+.line .literal{border-top:1px dashed var(--line);margin-top:.65rem;padding-top:.62rem}
+.now{
+  background:var(--green-soft);border:1px solid #d3e8da;border-radius:11px;
+  padding:10px 12px;margin:10px 0 13px
+}
+.now b{color:var(--green)}
+.flow{
+  background:#f2f4f7;border-radius:11px;padding:11px 13px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:.86rem;white-space:pre-wrap;overflow:auto;margin:9px 0 14px
+}
+.structure{
+  background:var(--sand);border:1px solid #ece7d7;border-radius:11px;
+  padding:11px 12px;margin:10px 0 14px
+}
+.note{
+  background:var(--amber-soft);border:1px solid #f1dfb6;border-radius:11px;
+  padding:10px 12px;margin:10px 0 14px
+}
+table{
+  width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);
+  border-radius:11px;overflow:hidden;margin:9px 0 16px;font-size:.89rem
+}
+th,td{padding:8px 9px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:#f8f9fb}
+tr:last-child td{border-bottom:none}
+.focus td{background:var(--green-soft)}
+.hr{height:1px;background:var(--line);margin:18px 0}
+.tag{display:inline-block;font-size:.74rem;font-weight:700;padding:.06rem .42rem;border-radius:999px;background:var(--blue-soft);color:#244f8e}
+.examples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.ex{border:1px solid var(--line);border-radius:11px;padding:11px;background:#fff}
+.ex .ta{font-size:1.08rem;font-weight:700}
+.index a{color:var(--ink);text-decoration:none;border-bottom:1px dotted #999}
+.index div{padding:.24rem 0}
+sup{font-size:.7em}
+@media(max-width:680px){
+  main{width:calc(100% - 10px);padding-top:6px}
+  .card{padding:15px 12px;border-radius:13px}
+  .hero{padding:18px 13px}
+  .examples{grid-template-columns:1fr}
+  table{font-size:.81rem}
+  th,td{padding:7px 6px}
+  .line .ta{font-size:1.38rem}
+  r{font-size:.77em}
+}
+@media print{
+  body{background:#fff} main{width:100%;padding:0}
+  .card{box-shadow:none;break-inside:avoid}
+  .audiohint{display:none}
+}
+.lexhead{margin:14px 0 6px;font-size:.92rem;font-weight:800;color:#384250}
+.lexnote{color:#4d5968;font-size:.9rem;margin:-6px 0 14px}
+.lex-table td:first-child{white-space:nowrap}
+.lex-table .core{font-weight:700}
+.song-site-header{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;gap:12px;padding:10px max(12px,env(safe-area-inset-left));background:rgba(245,246,248,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.song-site-header a{color:#344054;text-decoration:none;font-weight:700;font-size:.86rem}
+@media print{.song-site-header{display:none}}
