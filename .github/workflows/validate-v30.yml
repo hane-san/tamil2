@@ -24,6 +24,9 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
+      - name: Prepare curriculum entry point for legacy validators
+        run: cp textbook.html index.html
+
       - name: Run data validation
         run: npm run test:data
 
