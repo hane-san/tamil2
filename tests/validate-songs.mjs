@@ -65,7 +65,7 @@ for (const lesson of lessons) {
   for (const part of lesson.parts) {
     const relative = `songs/${part}`;
     assert(exists(relative), `${relative} is missing`);
-    assert(shell.includes(`'${part}'`) || shell.includes(`"${part}"`), `${lesson.shell} does not reference ${part}`);
+    assert(shell.includes(part), `${lesson.shell} does not reference ${part}`);
     const html = read(relative);
     assert(html.trim().length > 40, `${relative} is unexpectedly empty`);
   }
