@@ -6,7 +6,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const failures = [];
 let assertions = 0;
-const ASSET_VERSION = "20261008-12";
+const ASSET_VERSION = "20261008-13";
 
 function assert(condition, message) {
   assertions += 1;
@@ -23,14 +23,14 @@ function exists(relative) {
 
 const rootIndex = read("index.html");
 assert(rootIndex.includes("songs/"), "root index must send the user to songs/");
-assert(rootIndex.includes("20261008-12"), "root index must cache-bust the song-first entry");
+assert(rootIndex.includes("20261008-13"), "root index must cache-bust the song-first entry");
 
 const manifest = JSON.parse(read("manifest-v41.webmanifest"));
-assert(manifest.start_url === "./songs/?v=20261008-12", `manifest start_url must be ./songs/?v=20261008-12; got ${manifest.start_url}`);
+assert(manifest.start_url === "./songs/?v=20261008-13", `manifest start_url must be ./songs/?v=20261008-13; got ${manifest.start_url}`);
 assert(manifest.scope === "./", `manifest scope must remain ./; got ${manifest.scope}`);
 
 const library = read("songs/index.html");
-assert(library.includes(`song.css?v=${ASSET_VERSION}`), "song library must cache-bust the current song stylesheet");
+assert(library.includes(`song-tamil-20261008.css?v=${ASSET_VERSION}`), "song library must load the Tamil theme stylesheet");
 
 const lessons = [
   {
@@ -69,7 +69,7 @@ for (const lesson of lessons) {
   assert(exists(lesson.shell), `${lesson.shell} is missing`);
   assert(library.includes(`href="${lesson.href}"`), `song library does not link ${lesson.href}`);
   const shell = read(lesson.shell);
-  assert(shell.includes(`song.css?v=${ASSET_VERSION}`), `${lesson.shell} does not load the current song.css build`);
+  assert(shell.includes(`song-tamil-20261008.css?v=${ASSET_VERSION}`), `${lesson.shell} does not load the current Tamil theme stylesheet`);
   assert(shell.includes(`song.js?v=${ASSET_VERSION}`), `${lesson.shell} does not load the current song.js build`);
   assert(shell.includes("no-cache, no-store, must-revalidate"), `${lesson.shell} must discourage stale shell caching`);
   for (const part of lesson.parts) {
