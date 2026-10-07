@@ -52,6 +52,11 @@ const lessons = [
     shell: "songs/04-eppadi-iruntha-naanga.html",
     href: `04-eppadi-iruntha-naanga.html?v=${ASSET_VERSION}`,
     parts: ["04-title.html", "04-a.html", "04-b.html", "04-c.html", "04-d.html", "04-summary.html"]
+  },
+  {
+    shell: "songs/05-morattu-muttal.html",
+    href: `05-morattu-muttal.html?v=${ASSET_VERSION}`,
+    parts: ["05-title.html", "05-a.html", "05-b.html", "05-c.html", "05-d.html", "05-summary.html"]
   }
 ];
 
