@@ -51,6 +51,27 @@
 - Lesson 1 の `V + பாரு pāru`、Lesson 2 の `புரியல puriyala`・結果表現を再利用し、曲を跨いで同じ構造を反復する。
 - 本文は `03-title.html`、`03-a.html`〜`03-d.html`、`03-summary.html` に分割。
 
+## Lesson 4
+
+- `04-eppadi-iruntha-naanga.html` — எப்புடி இருந்த நாங்க / eppuḍi irundha nāṅga
+- 映画：Sulthan
+- 主な項目：超口語 `எப்புடி eppuḍi` / `இப்புடி ippuḍi`、結果完了 `ஆயிட்டோம் āyiṭṭōm`、一人称複数、`முடியல muḍiyala`、条件 `-ச்சா -ccā`、口語命令 `-க்கோ -kkō`。
+- 本文は `04-title.html`、`04-a.html`〜`04-d.html`、`04-summary.html` に分割。
+
+## Lesson 5
+
+- `05-morattu-muttal.html` — மொரட்டு முட்டாள் / moraṭṭu muṭṭāḷ
+- 映画：With Love
+- 主な項目：条件 `-ஆல் -āl`、譲歩 `-ஆலும் -ālum`、名詞疑問、保持・結果 `வச்சிகிட்டேன் vaccikkiṭṭēn`、与格経験者、口語現在疑問。
+- 本文は `05-title.html`、`05-a.html`〜`05-d.html`、`05-summary.html` に分割。
+
+## Lesson 6
+
+- `06-aiyo-kadhaley.html` — ஐயோ காதலே / aiyō kādhalē
+- 映画：With Love
+- 主な項目：口語非人間現在 `-ுது -udhu`、譲歩 `-ஆலும் -ālum`、否定名詞修飾 `-ஆத -ādha`、否定連結 `-ஆமல் -āmal`、不定形、経験者与格 `எனக்கு enakku`。
+- 本文は `06-title.html`、`06-a.html`〜`06-d.html`、`06-summary.html` に分割。
+
 ## 追加方針
 
 曲数を増やす際も、一曲を単なる翻訳にせず、既習文法の再登場と新しい文法の導入が見えるようにします。最終的には初級〜中級の主要項目が複数曲を通じて反復される構成を目指します。
