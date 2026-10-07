@@ -2,8 +2,28 @@ name: Validate TN-SST v3
 
 on:
   pull_request:
+    paths:
+      - 'textbook.html'
+      - '*.js'
+      - 'tests/validate-v30.mjs'
+      - 'tests/dom-v30.cjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/validate-v30.yml'
   push:
     branches: [main]
+    paths:
+      - 'textbook.html'
+      - '*.js'
+      - 'tests/validate-v30.mjs'
+      - 'tests/dom-v30.cjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/validate-v30.yml'
+
+concurrency:
+  group: validate-tn-sst-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read

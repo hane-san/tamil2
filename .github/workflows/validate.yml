@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: validate-curriculum-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

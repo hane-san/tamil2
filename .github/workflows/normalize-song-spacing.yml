@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'songs/**/*.html'
+      - 'tools/normalize-song-spacing.mjs'
+      - '.github/workflows/normalize-song-spacing.yml'
+
+concurrency:
+  group: normalize-song-spacing-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
