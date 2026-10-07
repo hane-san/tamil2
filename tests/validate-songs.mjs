@@ -6,7 +6,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const failures = [];
 let assertions = 0;
-const ASSET_VERSION = "20261006-10";
+const ASSET_VERSION = "20261008-11";
 
 function assert(condition, message) {
   assertions += 1;
@@ -23,10 +23,10 @@ function exists(relative) {
 
 const rootIndex = read("index.html");
 assert(rootIndex.includes("songs/"), "root index must send the user to songs/");
-assert(rootIndex.includes("20261006-10"), "root index must cache-bust the song-first entry");
+assert(rootIndex.includes("20261008-11"), "root index must cache-bust the song-first entry");
 
 const manifest = JSON.parse(read("manifest-v41.webmanifest"));
-assert(manifest.start_url === "./songs/?v=20261006-10", `manifest start_url must be ./songs/?v=20261006-10; got ${manifest.start_url}`);
+assert(manifest.start_url === "./songs/?v=20261008-11", `manifest start_url must be ./songs/?v=20261008-11; got ${manifest.start_url}`);
 assert(manifest.scope === "./", `manifest scope must remain ./; got ${manifest.scope}`);
 
 const library = read("songs/index.html");
