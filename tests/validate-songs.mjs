@@ -62,6 +62,11 @@ const lessons = [
     shell: "songs/06-aiyo-kadhaley.html",
     href: `06-aiyo-kadhaley.html?v=${ASSET_VERSION}`,
     parts: ["06-title.html", "06-a.html", "06-b.html", "06-c.html", "06-d.html", "06-summary.html"]
+  },
+  {
+    shell: "songs/07-edhukku-dhan-indha-kaadhal.html",
+    href: `07-edhukku-dhan-indha-kaadhal.html?v=${ASSET_VERSION}`,
+    parts: ["07-title.html", "07-a.html", "07-b.html", "07-c.html", "07-d.html", "07-summary.html"]
   }
 ];
 
