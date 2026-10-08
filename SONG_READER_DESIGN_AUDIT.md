@@ -1,7 +1,7 @@
 # Song reader design — 2026-10-09
 
 ## Changes
-- Quiet paper palette with peacock green, ink blue, brass and restrained rose.
+- Tamil-inspired colour palette: kumkum vermilion, turmeric gold, peacock teal, indigo and leaf green on warm ivory paper. Accents stay local to the reading cues, controls, borders and kolam-like rings.
 - Japanese explanation paragraphs use a serif face; controls, headings and vocabulary records keep sans-serif faces. Tamil fallbacks now also cover Tamil outside custom `t` elements.
 - 47 manually selected markers identify complete grammar assertions, distinctions and caution points. Existing emphasis remains.
 - Narrow screens show each table record vertically, retaining original column names and explicit table accessibility roles.
