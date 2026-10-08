@@ -55,14 +55,14 @@
     const el=e.target.closest('t');
     if(!el) return;
     e.preventDefault();
-    speakTamil(el.textContent.trim());
+    speakTamil(el.innerHTML.replace(/<br\s*\/?\s*>/gi,' ').replace(/<[^>]*>/g,'').trim());
   });
 
   document.addEventListener('keydown', e=>{
     const el=e.target.closest && e.target.closest('t');
     if(!el || (e.key!=='Enter' && e.key!==' ')) return;
     e.preventDefault();
-    speakTamil(el.textContent.trim());
+    speakTamil(el.innerHTML.replace(/<br\s*\/?\s*>/gi,' ').replace(/<[^>]*>/g,'').trim());
   });
 
   async function loadParts(){
@@ -81,6 +81,10 @@
         while(box.firstChild) main.insertBefore(box.firstChild,loading || null);
       }
       if(loading) loading.remove();
+      if(location.hash){
+        const target=document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        if(target) target.scrollIntoView();
+      }
       prepareTamil(document);
     }catch(err){
       if(loading) loading.textContent='本文の読み込みに失敗しました。ページを再読み込みしてください。';

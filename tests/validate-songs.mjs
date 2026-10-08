@@ -6,7 +6,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const failures = [];
 let assertions = 0;
-const ASSET_VERSION = "20261008-13";
+const ASSET_VERSION = "20261008-14";
 
 function assert(condition, message) {
   assertions += 1;
@@ -23,10 +23,10 @@ function exists(relative) {
 
 const rootIndex = read("index.html");
 assert(rootIndex.includes("songs/"), "root index must send the user to songs/");
-assert(rootIndex.includes("20261008-13"), "root index must cache-bust the song-first entry");
+assert(rootIndex.includes("20261008-14"), "root index must cache-bust the song-first entry");
 
 const manifest = JSON.parse(read("manifest-v41.webmanifest"));
-assert(manifest.start_url === "./songs/?v=20261008-13", `manifest start_url must be ./songs/?v=20261008-13; got ${manifest.start_url}`);
+assert(manifest.start_url === "./songs/?v=20261008-14", `manifest start_url must be ./songs/?v=20261008-14; got ${manifest.start_url}`);
 assert(manifest.scope === "./", `manifest scope must remain ./; got ${manifest.scope}`);
 
 const library = read("songs/index.html");
@@ -78,6 +78,7 @@ const lessons = [
     href: `09-varalaama.html?v=${ASSET_VERSION}`,
     parts: ["09-title.html", "09-a.html", "09-b.html", "09-c.html", "09-d.html", "09-summary.html"]
   }
+, {shell:"songs/10-sarvam-thaalamayam.html",href:`10-sarvam-thaalamayam.html?v=${ASSET_VERSION}`,parts:["10-title.html","10-a.html","10-b.html","10-c.html","10-d.html","10-summary.html"]}
 ];
 
 for (const lesson of lessons) {

@@ -191,3 +191,5 @@ a{color:var(--indigo)}strong{color:#553127}
 @media print{
   body{background:#fff}body::before,body::after{display:none}main{width:100%;padding:0}.card{box-shadow:none;break-inside:avoid}.audiohint,.song-site-header{display:none}
 }
+
+.source-lyrics{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;line-height:1.9}section[id]{scroll-margin-top:80px}details{margin:1em 0}summary{cursor:pointer;color:#07534f;font-weight:700}main{min-width:0} .note r{overflow-wrap:anywhere}
