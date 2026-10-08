@@ -6,18 +6,34 @@
     return voices.find(v => /^ta(-|_)/i.test(v.lang)) || voices.find(v => /Tamil/i.test(v.name)) || null;
   }
 
-  function speakTamil(text){
+  let activeTamil=null;
+  let activeUtterance=null;
+
+  function speakTamil(text,element){
     if(!('speechSynthesis' in window)){
       alert('このブラウザでは音声読み上げに対応していません。');
       return;
     }
     synth.cancel();
+    if(activeTamil) activeTamil.classList.remove("is-speaking");
+    activeTamil=element || null;
+    if(activeTamil) activeTamil.classList.add("is-speaking");
     const u = new SpeechSynthesisUtterance(text);
     u.lang='ta-IN';
     u.rate=.86;
     u.pitch=1;
     const voice=chooseTamilVoice();
     if(voice) u.voice=voice;
+    activeUtterance=u;
+    const finish=()=>{
+      if(activeUtterance===u){
+        if(activeTamil) activeTamil.classList.remove("is-speaking");
+        activeTamil=null;
+        activeUtterance=null;
+      }
+    };
+    u.onend=finish;
+    u.onerror=finish;
     synth.speak(u);
   }
 
@@ -42,7 +58,25 @@
     });
   }
 
+  function prepareReadingTables(root=document){
+    root.querySelectorAll("table").forEach(table=>{
+      table.classList.add("reading-table");
+      table.setAttribute("role","table");
+      const headers=Array.from(table.querySelectorAll("thead tr:first-child th")).map(th=>th.textContent.trim());
+      table.querySelectorAll("thead,tbody").forEach(group=>group.setAttribute("role","rowgroup"));
+      table.querySelectorAll("tr").forEach(row=>row.setAttribute("role","row"));
+      table.querySelectorAll("th").forEach(th=>{th.setAttribute("role","columnheader");th.setAttribute("scope","col");});
+      table.querySelectorAll("tbody tr").forEach(row=>{
+        Array.from(row.cells).forEach((cell,index)=>{
+          cell.setAttribute("role","cell");
+          if(headers[index] && cell.colSpan===1) cell.dataset.label=headers[index];
+        });
+      });
+    });
+  }
+
   function prepareTamil(root=document){
+    prepareReadingTables(root);
     ensureTamilRomanSpaces(root);
     root.querySelectorAll('t').forEach(el=>{
       el.setAttribute('role','button');
@@ -55,14 +89,14 @@
     const el=e.target.closest('t');
     if(!el) return;
     e.preventDefault();
-    speakTamil(el.innerHTML.replace(/<br\s*\/?\s*>/gi,' ').replace(/<[^>]*>/g,'').trim());
+    speakTamil(el.innerHTML.replace(/<br\s*\/?\s*>/gi,' ').replace(/<[^>]*>/g,'').trim(),el);
   });
 
   document.addEventListener('keydown', e=>{
     const el=e.target.closest && e.target.closest('t');
     if(!el || (e.key!=='Enter' && e.key!==' ')) return;
     e.preventDefault();
-    speakTamil(el.innerHTML.replace(/<br\s*\/?\s*>/gi,' ').replace(/<[^>]*>/g,'').trim());
+    speakTamil(el.innerHTML.replace(/<br\s*\/?\s*>/gi,' ').replace(/<[^>]*>/g,'').trim(),el);
   });
 
   async function loadParts(){

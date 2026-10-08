@@ -28,7 +28,9 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
       - name: Validate song-first entry and song lessons
-        run: node tests/validate-songs.mjs
+        run: |
+          node tests/validate-songs.mjs
+          node tests/validate-song-reader.cjs
       - name: Prepare curriculum entry point for legacy validators
         run: cp textbook.html index.html
       - name: Validate public PART 0 and lessons 1–20
