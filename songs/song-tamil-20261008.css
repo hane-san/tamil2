@@ -325,3 +325,10 @@ section[id]{scroll-margin-top:85px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
 @media print{body{background:#fff;overflow:visible}main{width:100%;max-width:none}.card{box-shadow:none;border-color:#ddd}.reading-table{display:table!important}mark{background:#eee6c9!important;print-color-adjust:exact}}
+
+/* Lesson text is injected after the shell loads: keep the whole reader vertically stable. */
+#songMain{min-width:0;max-width:100%;overscroll-behavior-x:none;touch-action:pan-y pinch-zoom}
+#songMain>.card,#songMain>.loading{min-width:0;max-width:100%}
+#songMain .line,#songMain .lex-table,#songMain .note,#songMain .now,#songMain .structure,
+#songMain .flow,#songMain details,#songMain pre{min-width:0;max-width:100%;overflow-wrap:anywhere}
+#songMain .source-lyrics,#songMain .flow{white-space:pre-wrap}
