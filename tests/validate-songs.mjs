@@ -32,6 +32,14 @@ assert(manifest.scope === "./", `manifest scope must remain ./; got ${manifest.s
 const library = read("songs/index.html");
 assert(library.includes(`song-tamil-20261008.css?v=${ASSET_VERSION}`), "song library must load the Tamil theme stylesheet");
 
+const songCards = [...library.matchAll(/<a class="song-card"[^>]*>([\s\S]*?)<\/a>/gu)].map(match => match[1]);
+assert(songCards.length === 10, `song library must contain 10 lesson cards; got ${songCards.length}`);
+songCards.forEach((card, index) => {
+  assert(card.includes('class="ta"'), `Lesson ${index + 1} card must show its Tamil title`);
+  assert(card.includes('class="roman-title"'), `Lesson ${index + 1} card must show its romanisation`);
+  assert(/[ァ-ヶー]/u.test(card), `Lesson ${index + 1} card must show a katakana reading`);
+});
+
 const lessons = [
   {
     shell: "songs/01-vaazhndhu-paaru.html",
@@ -85,6 +93,9 @@ for (const lesson of lessons) {
   assert(exists(lesson.shell), `${lesson.shell} is missing`);
   assert(library.includes(`href="${lesson.href}"`), `song library does not link ${lesson.href}`);
   const shell = read(lesson.shell);
+  const kanaLine = shell.match(/<div class="kana">([^<]+)<\/div>/u)?.[1] ?? "";
+  assert(kanaLine.length > 0, `${lesson.shell} must show a katakana reading in its lesson heading`);
+  assert(!/[\u0B80-\u0BFF]/u.test(kanaLine), `${lesson.shell} katakana line must not contain Tamil script`);
   assert(shell.includes(`song-tamil-20261008.css?v=${ASSET_VERSION}`), `${lesson.shell} does not load the current Tamil theme stylesheet`);
   assert(shell.includes(`song.js?v=${ASSET_VERSION}`), `${lesson.shell} does not load the current song.js build`);
   assert(shell.includes("no-cache, no-store, must-revalidate"), `${lesson.shell} must discourage stale shell caching`);
