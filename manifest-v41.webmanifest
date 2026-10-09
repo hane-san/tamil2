@@ -3,7 +3,7 @@
   "short_name": "口語タミル語",
   "description": "好きな歌から入り、語彙・口語形・格・活用を文法教科書へ往復しながら学ぶタミル語教材",
   "lang": "ja",
-  "start_url": "./songs/?v=20261009-17",
+  "start_url": "./songs/?v=20261009-18",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f8f0df",
