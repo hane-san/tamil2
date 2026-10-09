@@ -327,8 +327,7 @@ section[id]{scroll-margin-top:85px}
 @media print{body{background:#fff;overflow:visible}main{width:100%;max-width:none}.card{box-shadow:none;border-color:#ddd}.reading-table{display:table!important}mark{background:#eee6c9!important;print-color-adjust:exact}}
 
 /* Mobile Safari can retain a horizontal pan when an injected lesson node is wider than the screen. */
-html,body{width:100%;max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}
-body{min-width:0}
+@media screen{html,body{width:100%;max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}body{min-width:0}}
 #songMain{width:min(880px,calc(100% - 32px));min-width:0;max-width:100%;margin-inline:auto;overscroll-behavior-x:none;touch-action:pan-y pinch-zoom}
 @media(max-width:680px){
   #songMain{width:calc(100% - 20px);margin-inline:auto}

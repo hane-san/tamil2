@@ -6,7 +6,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const failures = [];
 let assertions = 0;
-const ASSET_VERSION = "20261009-18";
+const ASSET_VERSION = "20261009-19";
 
 function assert(condition, message) {
   assertions += 1;
@@ -23,10 +23,10 @@ function exists(relative) {
 
 const rootIndex = read("index.html");
 assert(rootIndex.includes("songs/"), "root index must send the user to songs/");
-assert(rootIndex.includes("20261009-18"), "root index must cache-bust the song-first entry");
+assert(rootIndex.includes("20261009-19"), "root index must cache-bust the song-first entry");
 
 const manifest = JSON.parse(read("manifest-v41.webmanifest"));
-assert(manifest.start_url === "./songs/?v=20261009-18", `manifest start_url must be ./songs/?v=20261009-18; got ${manifest.start_url}`);
+assert(manifest.start_url === "./songs/?v=20261009-19", `manifest start_url must be ./songs/?v=20261009-19; got ${manifest.start_url}`);
 assert(manifest.scope === "./", `manifest scope must remain ./; got ${manifest.scope}`);
 
 const library = read("songs/index.html");
@@ -129,7 +129,7 @@ assert(songJs.includes("cache:'no-store'"), "song.js must bypass stale caches fo
 assert(songJs.includes("ta-IN"), "song.js must request Tamil TTS locale ta-IN");
 
 const stylesheet = read("songs/song-tamil-20261008.css");
-assert(stylesheet.includes("html,body{width:100%;max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}"), "the lesson page must not retain a horizontal pan on mobile");
+assert(stylesheet.includes("@media screen{html,body{width:100%;max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}body{min-width:0}}"), "the lesson page must not retain a horizontal pan on mobile");
 assert(stylesheet.includes("#songMain{width:min(880px,calc(100% - 32px));min-width:0;max-width:100%;margin-inline:auto;overscroll-behavior-x:none;touch-action:pan-y pinch-zoom}"), "injected lesson content must stay within the centered reading surface");
 assert(stylesheet.includes("#songMain{width:calc(100% - 20px);margin-inline:auto}"), "the lesson reading surface must fit mobile widths");
 
