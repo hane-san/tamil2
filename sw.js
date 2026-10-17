@@ -1,7 +1,8 @@
-const CACHE_NAME = "tamil2-tn-sst-v49-preview-20260803";
+const CACHE_NAME = "tamil2-song-study-20261017-01";
 const APP_FILES = [
   "./",
   "./index.html",
+  "./textbook.html",
   "./styles-v28.css",
   "./styles-supplements-v46.css",
   "./styles-ui-v48.css",
@@ -63,7 +64,7 @@ self.addEventListener("install", event => {
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))))
+      .then(keys => Promise.all(keys.filter(key => key.startsWith("tamil2-") && key !== CACHE_NAME).map(key => caches.delete(key))))
       .then(() => self.clients.claim())
   );
 });
@@ -75,17 +76,26 @@ self.addEventListener("fetch", event => {
       fetch(event.request)
         .then(response => {
           const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put("./index.html", copy));
+          if (response.ok) caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
           return response;
         })
-        .catch(() => caches.match("./index.html"))
+        .catch(async () => (await caches.match(event.request, { ignoreSearch: true })) || new Response(
+          '<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>通信を確認してください</title><body><h1>このページはまだ保存されていません</h1><p>通信を確認して、再読み込みしてください。</p></body></html>',
+          { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+        ))
     );
     return;
   }
+  // Lesson fragments explicitly request a fresh copy. Versioned assets must
+  // also keep their query string so a previous release cannot shadow this one.
+  if (event.request.cache === "no-store") {
+    event.respondWith(fetch(event.request));
+    return;
+  }
   event.respondWith(
-    caches.match(event.request, { ignoreSearch: true }).then(cached => cached || fetch(event.request).then(response => {
+    caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
       const copy = response.clone();
-      caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+      if (response.ok) caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
       return response;
     }))
   );

@@ -132,7 +132,7 @@ assert(supplementCss.includes("env(safe-area-inset-bottom)"), "supplement bottom
 assert(uiCss.includes(".audio-dock,.supplement-audio-dock{display:none!important}"), "lower audio docks must be removed from the visible UI");
 assert(uiCss.includes(".settings-audio-section"), "audio controls must be styled inside reading settings");
 
-const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
+const indexHtml = fs.readFileSync(path.join(root, "textbook.html"), "utf8");
 assert(indexHtml.includes('src="audio-shell-v48.js"'), "index must create hidden compatibility audio controls before the core app");
 assert(indexHtml.includes('src="supplement-preview-loader-v48.js"'), "index must load the versioned supplement preview loader");
 assert(indexHtml.includes('src="ui-controls-v48.js"'), "index must load settings and launcher integration");

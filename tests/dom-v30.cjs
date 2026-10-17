@@ -15,7 +15,7 @@ class LocalResourceLoader extends ResourceLoader {
   fetch(url) {
     const parsed = new URL(url);
     if (parsed.hostname !== "tamil2.local") return null;
-    const relative = decodeURIComponent(parsed.pathname).replace(/^\/+/, "") || "index.html";
+    const relative = decodeURIComponent(parsed.pathname).replace(/^\/+/, "") || "textbook.html";
     const resolved = path.resolve(root, relative);
     if (!resolved.startsWith(root + path.sep) || !fs.existsSync(resolved)) return null;
     return Promise.resolve(fs.readFileSync(resolved));
@@ -27,8 +27,8 @@ const virtualConsole = new VirtualConsole();
 virtualConsole.on("jsdomError", error => consoleErrors.push(error.message));
 virtualConsole.on("error", message => consoleErrors.push(String(message)));
 
-const dom = new JSDOM(fs.readFileSync(path.join(root, "index.html"), "utf8"), {
-  url: "https://tamil2.local/index.html",
+const dom = new JSDOM(fs.readFileSync(path.join(root, "textbook.html"), "utf8"), {
+  url: "https://tamil2.local/textbook.html",
   runScripts: "dangerously",
   resources: new LocalResourceLoader(),
   pretendToBeVisual: true,

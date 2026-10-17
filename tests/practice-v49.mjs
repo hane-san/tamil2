@@ -185,11 +185,11 @@ before.forEach((baseChapter, index) => {
 
 // ------------------------------------------------------------------- shipping
 
-const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
+const indexHtml = fs.readFileSync(path.join(root, "textbook.html"), "utf8");
 for (const file of ["practice-v49.js", "practice-ui-v49.js"]) {
-  assert(indexHtml.includes(`src="${file}"`), `index.html does not load ${file}`);
+  assert(indexHtml.includes(`src="${file}"`), `textbook.html does not load ${file}`);
 }
-assert(indexHtml.includes('href="styles-practice-v49.css"'), "index.html does not load styles-practice-v49.css");
+assert(indexHtml.includes('href="styles-practice-v49.css"'), "textbook.html does not load styles-practice-v49.css");
 assert(
   indexHtml.indexOf('src="practice-v49.js"') < indexHtml.indexOf('src="curriculum-v41.js"'),
   "practice-v49.js must load before curriculum-v41.js freezes the chapter list"

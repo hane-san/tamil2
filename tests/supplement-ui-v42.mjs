@@ -138,7 +138,7 @@ assert(serialized.schemaVersion === 1, "serialized supplement schema mismatch");
 assert(Object.keys(serialized.progress).join(",") === "A,B,C,D,E,F,G,H", "serialized progress must contain A–H");
 assert(!Object.prototype.hasOwnProperty.call(serialized, "chapterIndex"), "supplement state must not contain the core chapter index");
 
-const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
+const indexHtml = fs.readFileSync(path.join(root, "textbook.html"), "utf8");
 assert(!indexHtml.includes('src="supplement-ui-v42.js"'), "draft supplement UI must remain outside the public index");
 assert(!indexHtml.includes('src="supplementH-clarity-v45.js"'), "draft supplement H clarity overlay must remain outside the public index");
 
