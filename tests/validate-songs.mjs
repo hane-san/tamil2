@@ -6,7 +6,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const failures = [];
 let assertions = 0;
-const ASSET_VERSION = "20261009-19";
+const ASSET_VERSION = "20261017-01";
 
 function assert(condition, message) {
   assertions += 1;
@@ -23,10 +23,10 @@ function exists(relative) {
 
 const rootIndex = read("index.html");
 assert(rootIndex.includes("songs/"), "root index must send the user to songs/");
-assert(rootIndex.includes("20261009-19"), "root index must cache-bust the song-first entry");
+assert(rootIndex.includes("20261017-01"), "root index must cache-bust the song-first entry");
 
 const manifest = JSON.parse(read("manifest-v41.webmanifest"));
-assert(manifest.start_url === "./songs/?v=20261009-19", `manifest start_url must be ./songs/?v=20261009-19; got ${manifest.start_url}`);
+assert(manifest.start_url === "./songs/?v=20261017-01", `manifest start_url must be ./songs/?v=20261017-01; got ${manifest.start_url}`);
 assert(manifest.scope === "./", `manifest scope must remain ./; got ${manifest.scope}`);
 
 const library = read("songs/index.html");
@@ -98,7 +98,7 @@ for (const lesson of lessons) {
   assert(!/[\u0B80-\u0BFF]/u.test(kanaLine), `${lesson.shell} katakana line must not contain Tamil script`);
   assert(shell.includes('class="audiohint"'), `${lesson.shell} must display the shared Tamil audio hint`);
   assert(shell.includes(`song-tamil-20261008.css?v=${ASSET_VERSION}`), `${lesson.shell} does not load the current Tamil theme stylesheet`);
-  assert(shell.includes(`song.js?v=${ASSET_VERSION}`), `${lesson.shell} does not load the current song.js build`);
+  assert(shell.includes(`reader.js?v=${ASSET_VERSION}`), `${lesson.shell} does not load the current reader.js build`);
   assert(shell.includes("no-cache, no-store, must-revalidate"), `${lesson.shell} must discourage stale shell caching`);
   for (const part of lesson.parts) {
     const relative = `songs/${part}`;
@@ -122,11 +122,11 @@ for (const file of songHtmlFiles) {
   assert(!/<\/t><r>/u.test(html), `${file}: Tamil and romanisation touch with no separator`);
 }
 
-const songJs = read("songs/song.js");
-assert(songJs.includes("ensureTamilRomanSpaces"), "song.js must keep the runtime Tamil/roman spacing safeguard");
-assert(songJs.includes("\\u00A0"), "song.js must preserve a non-collapsing visual Tamil/roman separator at runtime");
-assert(songJs.includes("cache:'no-store'"), "song.js must bypass stale caches for lesson fragments");
-assert(songJs.includes("ta-IN"), "song.js must request Tamil TTS locale ta-IN");
+const songJs = read("songs/reader.js");
+assert(songJs.includes("ensureTamilRomanSpaces"), "reader.js must keep the runtime Tamil/roman spacing safeguard");
+assert(songJs.includes("\\u00A0"), "reader.js must preserve a non-collapsing visual Tamil/roman separator at runtime");
+assert(songJs.includes("cache:'no-store'"), "reader.js must bypass stale caches for lesson fragments");
+assert(songJs.includes("ta-IN"), "reader.js must request Tamil TTS locale ta-IN");
 
 const stylesheet = read("songs/song-tamil-20261008.css");
 assert(stylesheet.includes("@media screen{html,body{width:100%;max-width:100%;overflow-x:hidden;overscroll-behavior-x:none}body{min-width:0}}"), "the lesson page must not retain a horizontal pan on mobile");

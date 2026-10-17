@@ -1,0 +1,99 @@
+/* Shared interaction layer for the library, ten lessons, map and bridge. */
+:root{--ui-font:"Noto Sans JP","Noto Sans Tamil",system-ui,sans-serif;--focus-ring:#234e89}
+[hidden]{display:none!important}
+body{font-family:var(--ui-font);line-height:1.9}
+.card>p,.lexnote,details>p,.library-hero .lead{font-family:var(--ui-font);letter-spacing:0;line-height:1.95}
+main,.library,#songMain{padding-bottom:calc(100px + env(safe-area-inset-bottom))}
+button,input,select,textarea{font:inherit;color:inherit;max-width:100%}
+button,a,input,select,summary{-webkit-tap-highlight-color:rgba(8,121,108,.12)}
+button,input,select,textarea{border:1px solid #b8c9bd;border-radius:10px;background:#fffdf8}
+textarea{display:block;width:100%;padding:12px;resize:vertical;margin-top:8px;min-height:100px}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.45}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--focus-ring);outline-offset:3px}
+input[type=search],input[type=url],select{width:100%;padding:12px;min-height:48px;min-width:0}
+input[aria-invalid=true]{border:2px solid var(--kumkum)}
+label{display:block;font-weight:600;font-size:.9rem}
+.song-site-header a{min-height:44px;font-size:.875rem}
+.song-site-header{padding-inline:max(16px,calc((100% - 880px)/2));gap:18px}
+.study-button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:9px 14px;border:1px solid #b8c9bd;border-radius:10px;background:#fffdf8;color:var(--peacock-deep);font-size:.875rem;font-weight:600;line-height:1.6;text-decoration:none;white-space:normal;text-align:center}
+.study-button:hover{background:#eaf2e7;border-color:#7f9e88}
+.study-button.primary,.study-toolbar [aria-pressed=true],.filter-row [aria-pressed=true]{background:var(--peacock-deep);color:#fff;border-color:var(--peacock-deep)}
+.study-muted{font-size:.85rem;line-height:1.8;color:#596358;margin:.65rem 0}
+.eyebrow{font-size:.75rem;letter-spacing:.12em;font-weight:700;color:var(--peacock-deep);margin-bottom:10px}
+.study-workspace>h2{font-family:var(--ui-font);font-size:1.35rem;letter-spacing:-.02em}
+.study-focus{font-size:1rem;color:#304d42;padding:12px 14px;background:#eef3e7;border-radius:10px;margin:12px 0 18px}
+.study-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;border-radius:13px;background:#e8eddf;margin:20px 0}
+.study-toolbar .study-button{min-height:48px;border-color:transparent}
+.study-jumps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.study-jumps .study-button{flex:1;padding-inline:9px;min-width:110px;font-size:.82rem}
+.listen-panel{scroll-margin-top:90px}
+.line-counter{font-size:.85rem;font-variant-numeric:tabular-nums;color:var(--peacock-deep);font-weight:700;margin:18px 0 0}
+.listen-stage .line{padding:24px;background:linear-gradient(135deg,#edf5e9,#fffdf4);margin:10px 0 16px;border-left-width:4px}
+.listen-stage .line .ta{font-size:clamp(1.55rem,4vw,2rem);line-height:1.9}
+.listen-stage .line .roman{font-size:1.05rem;margin-top:12px}
+.listen-stage .line .kana{font-size:.9rem;margin:8px 0 16px}
+.listen-stage .literal{margin-bottom:16px}
+.listen-stage t{display:inline-block;min-height:44px}
+.line-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.line-controls .study-button{min-height:52px}
+.line>.study-button{margin-top:12px}
+.music-panel{padding:0 16px;background:#f4f6ed;border-color:#c6d5bf}
+.music-panel>summary{font-size:1rem;min-height:52px}
+.music-links,.filter-row{display:flex;flex-wrap:wrap;gap:8px}
+.spotify-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:16px}
+.spotify-form label{grid-column:1/-1}
+.spotify-player iframe{display:block;width:100%;border:0;border-radius:12px;margin:14px 0}
+.spotify-player .study-button{margin:0 0 14px}
+.form-message{font-size:.85rem;line-height:1.8;overflow-wrap:anywhere}
+.music-panel>.study-button{margin-top:6px}
+.study-settings,.study-glossary{margin-top:18px}
+.setting-fields{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;padding:6px 0}
+.setting-fields label{display:flex;align-items:center;gap:10px;min-height:46px;cursor:pointer;font-weight:500}
+.setting-fields input{width:20px;height:20px;flex-shrink:0;accent-color:var(--peacock-deep)}
+.study-glossary dl,.study-contrasts dl{margin:16px 0}
+.study-glossary dt,.study-contrasts dt{font-size:.9rem;font-weight:700;color:var(--peacock-deep);margin:16px 0 4px}
+.study-glossary dd,.study-contrasts dd{font-size:.9rem;line-height:1.9;margin:0}
+.study-contrasts>.study-button{margin-bottom:16px}
+.study-notes .setting-fields{grid-template-columns:1fr}
+.library-search{margin:26px 0 18px}
+.library-search input{margin:8px 0 14px;background:#fffdf8}
+.library-search .study-muted{margin-bottom:0}
+.library-hero .primary{margin-top:18px}
+.study-steps{list-style:none;counter-reset:step;display:flex;flex-wrap:wrap;gap:12px 24px;padding:0;margin:24px 0 8px}
+.study-steps li{display:flex;align-items:center;gap:9px;font-size:.85rem;font-weight:600}
+.study-steps li::before{counter-increment:step;content:counter(step);display:grid;place-items:center;background:var(--peacock-deep);color:#fff;border-radius:50%;width:27px;height:27px;font-size:.8rem}
+.song-card .meta{font-size:.875rem}.song-card .tags span{font-size:.78rem}
+.song-progress{margin-top:18px;padding-top:12px;border-top:1px solid var(--line);font-size:.85rem;font-weight:700;color:var(--peacock-deep)}
+.song-list .song-card{display:flex;flex-direction:column}.song-card .song-progress{margin-top:auto;padding-top:20px}.song-card .tags{margin-bottom:16px}
+.lesson-pagination{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-top:24px}
+.speech-status{position:fixed;z-index:50;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 24px);padding:10px 16px;background:#173e35;color:#fff;border-radius:12px;box-shadow:0 5px 20px #0002;font-size:.85rem;line-height:1.7;pointer-events:none}
+.speech-status:empty{display:none}
+.skip-link{position:fixed;top:8px;left:16px;z-index:100;padding:12px;background:#fff;color:#173e35;transform:translateY(-200%)}
+.skip-link:focus{transform:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+body[data-study-mode=listen] .reading-content{display:none}
+body[data-study-mode=listen] .hero .meaning{display:none}
+.hide-reading-kana .line>.kana{display:none}
+.hide-reading-roman .line>.roman{display:none}
+html[data-study-size=large]{font-size:19px}
+html[data-study-size=large] .line .ta{font-size:1.7rem}
+html[data-study-size=large] .line .kana{font-size:.95rem}
+.line[id]{scroll-margin-top:100px}
+@media(min-width:1000px){.library-hero{padding:36px}.song-card{padding:26px}.study-workspace{padding:30px 36px}}
+@media(max-width:680px){
+  .song-site-header{padding-inline:12px}.song-site-header a{font-size:.8rem}
+  .study-workspace{padding:20px 16px}.study-workspace>h2{font-size:1.2rem}
+  .listen-stage .line{padding:18px 14px}.study-toolbar{padding:6px;gap:6px}
+  .study-toolbar .study-button{padding:10px 6px;font-size:.82rem}
+  .setting-fields{grid-template-columns:1fr}
+  .spotify-form{grid-template-columns:1fr}.spotify-form label{grid-column:auto}
+  .study-steps{gap:12px;flex-direction:column}
+  .song-list{gap:14px}
+}
+@media print{
+  .study-workspace,.study-jumps,.study-settings,.study-glossary,.lesson-pagination,.speech-status,.skip-link,.line>.study-button{display:none!important}
+  body[data-study-mode=listen] .reading-content{display:block}
+  body[data-study-mode=listen] .hero .meaning{display:block}
+  .hide-reading-kana .line>.kana,.hide-reading-roman .line>.roman{display:block}
+}

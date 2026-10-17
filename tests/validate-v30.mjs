@@ -221,12 +221,12 @@ for (const item of entries) {
   assert(item.kana === item.katakana, `${item.id}: legacy kana projection must come from katakana`);
 }
 
-const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
+const indexHtml = fs.readFileSync(path.join(root, "textbook.html"), "utf8");
 for (const activeFile of runtimeFiles) {
-  assert(indexHtml.includes(`src="${activeFile}"`), `index.html does not load ${activeFile}`);
+  assert(indexHtml.includes(`src="${activeFile}"`), `textbook.html does not load ${activeFile}`);
 }
 for (const legacyFile of ["curriculum-v28.js", "travel-v28.js", "grammar-v28.js", "reference-v28.js", "transcription-v28.js"]) {
-  assert(!indexHtml.includes(`src="${legacyFile}"`), `index.html still loads legacy authority ${legacyFile}`);
+  assert(!indexHtml.includes(`src="${legacyFile}"`), `textbook.html still loads legacy authority ${legacyFile}`);
 }
 
 const styles = fs.readFileSync(path.join(root, "styles-v28.css"), "utf8");

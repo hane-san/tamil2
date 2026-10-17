@@ -1,6 +1,8 @@
-# 口語タミル語の教科書
+# 歌で学ぶタミル語と口語文法の教科書
 
-地域横断型の Standard Spoken Tamil（SST）を、タミル文字・形態・発音・カナの役割を分けて学ぶスマートフォン向け教材です。
+公開入口は「歌で学ぶタミル語」です。好きな曲を聴きながら、一行ずつ意味と形を確かめられます。Spotifyの曲URLによる埋め込み、訳の自己テスト、続きと学習メモの保存に対応しています。使い方は [songs/README.md](songs/README.md) を参照してください。
+
+文法教科書は `textbook.html` から開きます。地域横断型の Standard Spoken Tamil（SST）を、タミル文字・形態・発音・カナの役割を分けて学ぶスマートフォン向け教材です。
 
 ## 現在の状態
 
@@ -127,7 +129,7 @@ npm run build:practice   # tools/practice-spec-v49.mjs → practice-v49.js
 
 ## 統合プレビュー
 
-`index.html` は `supplement-preview-loader-v46.js` を入口として、補講A〜H、補講Hの文体補助、日本語説明の仕上げ層、別進捗UI、補講ランタイムを順番に読み込みます。
+`textbook.html` は `supplement-preview-loader-v48.js` を入口として、補講A〜H、補講Hの文体補助、日本語説明の仕上げ層、別進捗UI、補講ランタイムを順番に読み込みます。
 
 - 左上メニューから「補講A〜H」を開く
 - URLは `#supp=hub` または `#supp=A&view=read` 形式
@@ -207,7 +209,7 @@ CIは次の層を別ステップで検査します。
 
 ## 主なファイル
 
-- `index.html` — 本課シェル＋補講プレビュー入口
+- `textbook.html` — 本課シェル＋補講プレビュー入口
 - `styles-v28.css` — 本課UI
 - `styles-supplements-v46.css` — 補講・iPhone縦画面UI
 - `app-v28.js` — 本課ナビ・進捗・音声

@@ -5,7 +5,7 @@ const assert=require('node:assert/strict');
 const {JSDOM}=require('jsdom');
 const root=path.resolve(__dirname,'..');
 const songs=path.join(root,'songs');
-const script=fs.readFileSync(path.join(songs,'song.js'),'utf8');
+const script=fs.readFileSync(path.join(songs,'reader.js'),'utf8');
 const shells=fs.readdirSync(songs).filter(name=>name.endsWith('.html')&&fs.readFileSync(path.join(songs,name),'utf8').includes('SONG_PARTS'));
 (async()=>{
  for(const shell of shells){
@@ -32,7 +32,12 @@ const shells=fs.readdirSync(songs).filter(name=>name.endsWith('.html')&&fs.readF
     if(headings[index]&&cell.colSpan===1)assert.equal(cell.dataset.label,headings[index]);
    });
   }
-  const targets=[...w.document.querySelectorAll('t')];
+  const targets=[...w.document.querySelectorAll('t[role="button"]')];
+  const indexTamil=w.document.querySelector('.index a t');
+  if(indexTamil){
+   assert.equal(indexTamil.hasAttribute('role'),false,'Tamil inside navigation must not become a nested button');
+   indexTamil.click();assert.equal(spoken.length,0,'navigation does not trigger TTS');
+  }
   targets[0].click();assert.equal(spoken.length,1);assert.equal(spoken[0].lang,'ta-IN');assert(targets[0].classList.contains('is-speaking'));
   targets[1].dispatchEvent(new w.KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
   assert.equal(spoken.length,2);assert(!targets[0].classList.contains('is-speaking'));assert(targets[1].classList.contains('is-speaking'));
@@ -40,6 +45,8 @@ const shells=fs.readdirSync(songs).filter(name=>name.endsWith('.html')&&fs.readF
   targets[1].click();assert.equal(spoken.length,3);
   spoken[1].onend();assert(targets[1].classList.contains('is-speaking'),'replaying the same word retains the new selection');
   spoken[2].onend();assert(!targets[1].classList.contains('is-speaking'));
+  const multiline=w.document.createElement('t');multiline.innerHTML='வா<br>போ';w.document.body.append(multiline);multiline.click();
+  assert.equal(spoken.at(-1).text,'வா போ','line breaks separate words in speech');
   const fullText=w.document.getElementById('songMain').textContent;
   const details=w.document.querySelector('details');if(details)details.open=true;
   assert.equal(w.document.getElementById('songMain').textContent,fullText,'opening review retains all text');

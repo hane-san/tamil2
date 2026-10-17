@@ -95,7 +95,7 @@ supplement.quiz.forEach((question, index) => {
   assert(Boolean(question.rule), `quiz ${index + 1}: carry-home rule missing`);
 });
 
-const indexHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
+const indexHtml = fs.readFileSync(path.join(root, "textbook.html"), "utf8");
 assert(!indexHtml.includes('src="supplementF-v44.js"'), "draft supplement F must remain outside the public index");
 
 if (failures.length) {
